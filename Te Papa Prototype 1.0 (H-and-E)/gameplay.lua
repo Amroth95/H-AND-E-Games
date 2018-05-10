@@ -21,28 +21,47 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
     -- Create a tap counter (mechaincal prototype only)
-    local tapCount = 0
- 
+    local tapCount = 1
+
     local tapText = display.newText( tapCount, display.contentCenterX, 20, native.systemFont, 40 )
     tapText:setFillColor( 0, 0, 0 )
     sceneGroup:insert( tapText )
 
     -- Create  grow plant button
-    local balloon = display.newImageRect( "balloon.png", 112, 112 )
+    local balloon = display.newImageRect( "animation/animation1.png", 370, 380 )
     balloon.x = display.contentCenterX
     balloon.y = display.contentCenterY
-    balloon.alpha = 0.8
+    balloon.alpha = 0.9
     sceneGroup:insert(balloon)
+
+-- on touch make image
+
+    local function Tapballoon()
+        tapCount = tapCount + 1
+        tapText.text = tapCount
+        tapFilename = "animation/animation" .. tostring(tapCount) .. ".png"
+        print ("tapFilename: " .. tapFilename)
+        -- tap = display.newImageRect( "animation/animation"..tostring(tapCount).."png", 370, 380 )
+        tap = display.newImageRect(sceneGroup, tapFilename, 370, 380)
+        tap.x = display.contentCenterX
+        tap.y = display.contentCenterY
+
+    end
+  balloon:addEventListener( "tap", Tapballoon )
+
 
     -- Create Button push function
     local function TapCounter()
         tapCount = tapCount + 1
-        tapText.text = tapCount 
+        tapText.text = tapCount
+        Tapballoons(tapCount)
+
     end
- 
-    balloon:addEventListener( "tap", TapCounter )
+
+    -- balloon:addEventListener( "tap", TapCounter )
 
     -- create the title text
+
     local myText = display.newText( "Main Gameplay:", 160, 120, native.systemFont, 16 )
     myText:setFillColor( 0, 0, 0 )
     sceneGroup:insert( myText )
