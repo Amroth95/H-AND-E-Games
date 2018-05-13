@@ -46,8 +46,23 @@ function scene:create( event )
         tap.x = display.contentCenterX
         tap.y = display.contentCenterY
 
+        -- if tapCount reaches a set number, the scene changes to endgame (IN DEVELOPMENT)
+
+        if tapCount == 4 then
+            local options = {
+                effect = "fade",
+                time = 500,
+                params = {
+                }
+            }
+            composer.gotoScene( "endgame", options )
+        end
+
     end
   balloon:addEventListener( "tap", Tapballoon )
+
+  
+
 
 
     -- Create Button push function
