@@ -45,7 +45,7 @@ function scene:create( event )
         tap = display.newImageRect(sceneGroup, tapFilename, 370, 380)
         tap.x = display.contentCenterX
         tap.y = display.contentCenterY
-
+        
         -- if tapCount reaches a set number, the scene changes to endgame (IN DEVELOPMENT)
 
         if tapCount == 4 then
@@ -55,6 +55,8 @@ function scene:create( event )
                 params = {
                 }
             }
+            -- removes scene so it can be freshly reloaded on next play 
+            composer.removeScene( "gameplay", options)
             composer.gotoScene( "endgame", options )
         end
 
@@ -77,7 +79,7 @@ function scene:create( event )
 
     -- create the title text
 
-    local myText = display.newText( "Main Gameplay:", 160, 120, native.systemFont, 16 )
+    local myText = display.newText( "Main Gameplay:", 270, 120, native.systemFont, 16 )
     myText:setFillColor( 0, 0, 0 )
     sceneGroup:insert( myText )
 
@@ -85,7 +87,7 @@ function scene:create( event )
     -- create a group
     local group = display.newGroup()
     -- make a rounded ractangle
-    local myRoundedRect = display.newRoundedRect( 160, 460, 250, 50, 12 )
+    local myRoundedRect = display.newRoundedRect( 270, 760, 250, 50, 12 )
     myRoundedRect.strokeWidth = 3
     myRoundedRect:setFillColor( 0.5 )
     myRoundedRect:setStrokeColor( 1, 0, 0 )
@@ -93,7 +95,7 @@ function scene:create( event )
     group:insert( myRoundedRect )
 
     -- create text on top of button
-    local myButtonText = display.newText( "Skip to end (Development Only)", 160, 460, native.systemFont, 16 )
+    local myButtonText = display.newText( "Skip to end (Development Only)", 270, 760, native.systemFont, 16 )
     myButtonText:setFillColor( 1, 0, 0 )
     -- add text to group
     group:insert( myButtonText )
@@ -109,6 +111,8 @@ function scene:create( event )
           params = {
           }
       }
+      -- removes scene so it can be freshly reloaded on next play 
+      composer.removeScene( "gameplay", options)
       composer.gotoScene( "endgame", options )
     end
     -- attach this function to the button

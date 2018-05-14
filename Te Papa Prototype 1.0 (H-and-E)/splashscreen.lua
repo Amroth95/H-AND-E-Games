@@ -22,7 +22,7 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
     -- create the title text
-    local myText = display.newText( "H-and-E Games Presents:", 160, 200, native.systemFont, 16 )
+    local myText = display.newText( "H-and-E Games Presents:", 270, 200, native.systemFont, 16 )
     myText:setFillColor( 0, 0, 0 )
     sceneGroup:insert( myText )
 
@@ -30,7 +30,7 @@ function scene:create( event )
     -- create a group
     local group = display.newGroup()
     -- make a rounded ractangle
-    local myRoundedRect = display.newRoundedRect( 160, 240, 150, 50, 12 )
+    local myRoundedRect = display.newRoundedRect( 270, 240, 150, 50, 12 )
     myRoundedRect.strokeWidth = 3
     myRoundedRect:setFillColor( 0.5 )
     myRoundedRect:setStrokeColor( 1, 0, 0 )
@@ -38,7 +38,7 @@ function scene:create( event )
     group:insert( myRoundedRect )
 
     -- create text on top of button
-    local myButtonText = display.newText( "START", 160, 240, native.systemFont, 16 )
+    local myButtonText = display.newText( "START", 270, 240, native.systemFont, 16 )
     myButtonText:setFillColor( 1, 0, 0 )
     -- add text to group
     group:insert( myButtonText )
