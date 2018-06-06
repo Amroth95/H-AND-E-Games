@@ -6,7 +6,7 @@
 
 -- Background part of main.lua file so it appears on all scenes (subject to change)
 
-local background = display.newImageRect( "background.png", 1920, 1080 )
+local background = display.newImageRect( "images/background.png", 1920, 1080 )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
@@ -14,4 +14,4 @@ background.y = display.contentCenterY
 local composer = require( "composer" )
 
 -- to jump to a different scene, use this line:
-composer.gotoScene( "splashscreen" )
+composer.gotoScene( "scenes.proto_spawn" )
