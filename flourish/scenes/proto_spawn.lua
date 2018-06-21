@@ -65,7 +65,7 @@ local function createPalette (  )
   -- paletteGroup:insert( btn_swatchGreen )
   -- btn_swatchGreen:addEventListener( "tap", btn_swatch_tap )
 
-  paletteGroup:insert (createPaletteSwatch({0.6, 0.1, 0.1}, 300, 500))
+  paletteGroup:insert (createPaletteSwatch({0.6, 0.1, 0.2}, 300, 500))
   paletteGroup:insert (createPaletteSwatch({0.3, 0.5, 0.1}, 375, 500))
   paletteGroup:insert (createPaletteSwatch({0, 0, 1}, 450, 500))
   paletteGroup:insert (createPaletteSwatch({0.4, 0.2, 0.1}, 525, 500))
