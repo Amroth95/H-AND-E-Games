@@ -8,9 +8,12 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-
-
-
+local function startGame()
+    composer.removeScene( "scenes..splashscreen", options)
+    composer.gotoScene( "scenes..proto_spawn", options )
+    display.remove(splasher)
+    display.remove(splashtext)
+end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -21,43 +24,16 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
-    -- create the title text
-    local myText = display.newText( "H-and-E Games Presents:", 270, 200, native.systemFont, 16 )
-    myText:setFillColor( 0, 0, 0 )
+    splasher = createImage("images/SplashTwo.png", 1920, 1080, display.contentCenterX, display.contentCenterY)
+    splasher.alpha = 0.7
+    
+    splasher:addEventListener( "tap", startGame )
+
+    splashtext = createImage("images/SplashOne.png", 1440, 810, display.contentCenterX, display.contentCenterY)
+
+    local myText = display.newText( "H-and-E Games Presents:", 470, 80, native.systemFont, 16 )
+    myText:setFillColor( 1, 1, 1 )
     sceneGroup:insert( myText )
-
-    -- create start button
-    -- create a group
-    local group = display.newGroup()
-    -- make a rounded ractangle
-    local myRoundedRect = display.newRoundedRect( 270, 240, 150, 50, 12 )
-    myRoundedRect.strokeWidth = 3
-    myRoundedRect:setFillColor( 0.5 )
-    myRoundedRect:setStrokeColor( 1, 0, 0 )
-    -- add rounded rect to group
-    group:insert( myRoundedRect )
-
-    -- create text on top of button
-    local myButtonText = display.newText( "START", 270, 240, native.systemFont, 16 )
-    myButtonText:setFillColor( 1, 0, 0 )
-    -- add text to group
-    group:insert( myButtonText )
-    -- add the group to the sceneGroup
-    sceneGroup:insert( group )
-
-    -- create button function
-    function buttonFunction (event)
-      -- create the transition effects
-      local options = {
-          effect = "fade",
-          time = 500,
-          params = {
-          }
-      }
-      composer.gotoScene( "scenes..gameplay", options )
-    end
-    -- attach this function to the button
-    group:addEventListener( "tap", buttonFunction )
 end
 
 
