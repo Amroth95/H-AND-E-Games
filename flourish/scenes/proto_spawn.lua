@@ -204,11 +204,9 @@ function scene:create( event )
         img_plant:scale(0.8, 0.8)
         img_plant:removeEventListener( "tap", tintPlant )
 
-        transition.to(img_plant2, {x=314, y=282, time=1000})
+        transition.to(img_plant2, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
         img_plant2:scale(0.8, 0.8)
         img_plant2:removeEventListener( "tap", tintPlant )
-
-        resetTimer(  )
 
     end
     donebtn_spawn:addEventListener( "tap", donebtn_spawn_tap )
