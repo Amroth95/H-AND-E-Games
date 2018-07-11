@@ -6,7 +6,7 @@
 
 -- Background part of main.lua file so it appears on all scenes (subject to change)
 
-local background = display.newImageRect( "images/background.png", 1920, 1080 )
+local background = display.newImageRect( "images/background.png", display.contentWidth, display.contentHeight )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 

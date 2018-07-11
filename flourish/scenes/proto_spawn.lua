@@ -13,22 +13,22 @@ local proto_dest
 
     -- create timer for splashscreen
     local secondsLeft = 10  -- 10 minutes = 600 seconds
- 
+
     local clockText = display.newText( "00:10", display.contentCenterX, 80, native.systemFont, 72 )
     clockText:setFillColor( 0.7, 0.7, 1 )
 
     local function updateTime( event )
- 
+
         -- Decrement the number of seconds
         secondsLeft = secondsLeft - 1
-     
+
         -- Time is tracked in seconds; convert it to minutes and seconds
         local minutes = math.floor( secondsLeft / 10 )
         local seconds = secondsLeft % 10
-     
+
         -- Make it a formatted string
         local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
-         
+
         -- Update the text object
         clockText.text = timeDisplay
 
@@ -45,7 +45,7 @@ local proto_dest
     end
 
     function timeup ()
-        
+
         if secondsLeft <= 0
          then composer.gotoScene( "scenes..splashscreen", options )
               composer.removeScene( "scenes..proto_spawn", options )
@@ -114,7 +114,7 @@ local function createPalette (  )
   paletteGroup:insert (createPaletteSwatch({0.3, 0.5, 0.1}, 375, 500))
   paletteGroup:insert (createPaletteSwatch({0, 0, 1}, 450, 500))
   paletteGroup:insert (createPaletteSwatch({0.4, 0.2, 0.1}, 525, 500))
-  
+
   return palette
 end
 
@@ -161,23 +161,49 @@ function scene:create( event )
       toggleVisibility( donebtn_spawn )
       toggleVisibility( btn_spawn )
 
-      img_plant = createImage("images/bush_01.png", 128, 128, display.contentCenterX, display.contentCenterY)
+      img_plant = createImage("images/plant1/plant1.png", 128, 128, display.contentCenterX, display.contentCenterY)
       img_plant:addEventListener( "tap", tintPlant )
-      img_plant:setFillColor(0.7)
+      img_plant:setFillColor(0.9)
 
-      local mask = graphics.newMask( "images/bush_01_mask.png" )
-      img_plant:setMask( mask )
+
 
       sceneGroup:insert( img_plant )
 
-      img_plant2 = createImage("images/bush_01.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant2 = createImage("images/plant1/plant2.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.9)
 
-      local mask2 = graphics.newMask( "images/bush_01_mask.png" )
-      img_plant2:setMask( mask2 )
+    sceneGroup:insert( img_plant2 )
 
-      sceneGroup:insert( img_plant2 )
+      img_plant3 = createImage("images/plant1/plant3.png", 128, 128, display.contentCenterX-130, display.contentCenterY+32)
+      img_plant3:addEventListener( "tap", tintPlant )
+      img_plant3:setFillColor(0.9)
+
+    sceneGroup:insert( img_plant3 )
+
+      img_plant4 = createImage("images/plant1/plant4.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant4:addEventListener( "tap", tintPlant )
+      img_plant4:setFillColor(0.9)
+
+
+    sceneGroup:insert( img_plant4 )
+
+      img_plant5 = createImage("images/plant1/plant5.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant5:addEventListener( "tap", tintPlant )
+      img_plant5:setFillColor(0.9)
+
+      local mask4 = graphics.newMask( "images/bush_01_mask.png" )
+      img_plant5:setMask( mask4 )
+
+    sceneGroup:insert( img_plant5 )
+
+    img_plant6 = createImage("images/plant1/plant6.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant6:addEventListener( "tap", tintPlant )
+      img_plant6:setFillColor(0.9)
+
+
+      sceneGroup:insert( img_plant6 )
+
 
       -- proto_dest = display.newRect( 500, 300, 200, 60 )
       -- proto_rect.color = {0,0,0}
@@ -187,24 +213,24 @@ function scene:create( event )
       palette = createPalette(  )
 
       resetTimer(  )
-      
+
     end
     btn_spawn:addEventListener( "tap", btn_spawn_tap )
     -- add the group to the sceneGroup
     sceneGroup:insert( btn_spawn )
 
-    
+
 
     -- sends plant to background, makes them non-interactable and resets the level back to original start up (WORK IN PROGRESS)
     local function donebtn_spawn_tap ()
         toggleVisibility( btn_spawn )
         toggleVisibility( donebtn_spawn )
 
-        transition.to(img_plant, {x=250, y=250, time=1000})
+        transition.to(img_plant, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
         img_plant:scale(0.8, 0.8)
         img_plant:removeEventListener( "tap", tintPlant )
 
-        transition.to(img_plant2, {x=314, y=282, time=1000})
+        transition.to(img_plant2, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
         img_plant2:scale(0.8, 0.8)
         img_plant2:removeEventListener( "tap", tintPlant )
 
