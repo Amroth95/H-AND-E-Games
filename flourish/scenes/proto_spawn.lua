@@ -234,8 +234,6 @@ function scene:create( event )
         img_plant2:scale(0.8, 0.8)
         img_plant2:removeEventListener( "tap", tintPlant )
 
-        resetTimer(  )
-
     end
     donebtn_spawn:addEventListener( "tap", donebtn_spawn_tap )
     -- add the group to the sceneGroup
