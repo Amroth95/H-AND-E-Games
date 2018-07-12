@@ -161,7 +161,7 @@ function scene:create( event )
       toggleVisibility( donebtn_spawn )
       toggleVisibility( btn_spawn )
 
-      img_plant = createImage("images/plant1/plant1.png", 128, 128, display.contentCenterX, display.contentCenterY)
+      img_plant = createImage("images/plant1/plant1.png", 131, 75, display.contentCenterX-280, display.contentCenterY+70)
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.9)
 
@@ -169,35 +169,34 @@ function scene:create( event )
 
       sceneGroup:insert( img_plant )
 
-      img_plant2 = createImage("images/plant1/plant2.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant2 = createImage("images/plant1/plant2.png", 130, 98, display.contentCenterX-400, display.contentCenterY+70)
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.9)
 
     sceneGroup:insert( img_plant2 )
 
-      img_plant3 = createImage("images/plant1/plant3.png", 128, 128, display.contentCenterX-130, display.contentCenterY+32)
+      img_plant3 = createImage("images/plant1/plant3.png", 150, 195, display.contentCenterX-280, display.contentCenterY-10)
       img_plant3:addEventListener( "tap", tintPlant )
       img_plant3:setFillColor(0.9)
 
     sceneGroup:insert( img_plant3 )
 
-      img_plant4 = createImage("images/plant1/plant4.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant4 = createImage("images/plant1/plant4.png", 180, 138, display.contentCenterX-425, display.contentCenterY-10)
       img_plant4:addEventListener( "tap", tintPlant )
       img_plant4:setFillColor(0.9)
 
 
     sceneGroup:insert( img_plant4 )
 
-      img_plant5 = createImage("images/plant1/plant5.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+      img_plant5 = createImage("images/plant1/plant5.png", 103, 185, display.contentCenterX-370, display.contentCenterY-10)
       img_plant5:addEventListener( "tap", tintPlant )
       img_plant5:setFillColor(0.9)
 
-      local mask4 = graphics.newMask( "images/bush_01_mask.png" )
-      img_plant5:setMask( mask4 )
+
 
     sceneGroup:insert( img_plant5 )
 
-    img_plant6 = createImage("images/plant1/plant6.png", 128, 128, display.contentCenterX+64, display.contentCenterY+32)
+    img_plant6 = createImage("images/plant1/plant6.png", 128, 167, display.contentCenterX-280, display.contentCenterY)
       img_plant6:addEventListener( "tap", tintPlant )
       img_plant6:setFillColor(0.9)
 
@@ -233,6 +232,8 @@ function scene:create( event )
         transition.to(img_plant2, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
         img_plant2:scale(0.8, 0.8)
         img_plant2:removeEventListener( "tap", tintPlant )
+
+        resetTimer(  )
 
     end
     donebtn_spawn:addEventListener( "tap", donebtn_spawn_tap )
