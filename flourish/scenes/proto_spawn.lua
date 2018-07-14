@@ -5,16 +5,30 @@ local scene = composer.newScene()
 local img_plant, img_plant2
 local proto_rect
 local proto_dest
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+--add image+movement+
+image = display.newImageRect("images/dino.png", 90, 180)
+image.x = display.contentCenterX+100
+image.y = display.contentCenterY-250
+
+function goLeft()
+transition.to( image, { time=1500, delay=1500, x=(image.x - 150), onComplete=goRight() } )
+end
+
+
+function goRight()
+transition.to( image, { time=1500, delay=1500, x=(image.x + 150), onComplete=goRight} )
+end
+
+goLeft()
 
     -- create timer for splashscreen
     local secondsLeft = 10  -- 10 minutes = 600 seconds
 
-    local clockText = display.newText( "00:10", display.contentCenterX, 80, native.systemFont, 72 )
+    local clockText = display.newText( "00:10", display.contentCenterX, 80, native.systemFont, 42 )
     clockText:setFillColor( 0.7, 0.7, 1 )
 
     local function updateTime( event )
