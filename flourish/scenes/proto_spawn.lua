@@ -82,56 +82,6 @@ local function btn_swatch_tap ( event, color )
   -- event.target:scale(1.25)
 end
 
-local function createPaletteSwatch ( color, x, y )
-  local btn_new = display.newCircle( x, y, 30 )
-  btn_new.color = color
-  btn_new.strokeWidth = 3
-  btn_new:setFillColor( unpack(color) )
-  btn_new:setStrokeColor( 0 )
-   -- paletteGroup:insert( btn_swatchRed )
-  btn_new:addEventListener( "tap", btn_swatch_tap )
-  return btn_new
-end
-
-
-local function createPalette (  )
-  print ( "createPalette" )
-
-  local paletteGroup = display.newGroup()
-
-  -- create three colour swatch circles
-  -- local btn_swatchRed = display.newCircle( 300, 500, 30 )
-  -- btn_swatchRed.color = {1, 0, 0}
-  -- btn_swatchRed.strokeWidth = 3
-  -- btn_swatchRed:setFillColor( 1, 0, 0 )
-  -- btn_swatchRed:setStrokeColor( 0 )
-  -- paletteGroup:insert( btn_swatchRed )
-  -- btn_swatchRed:addEventListener( "tap", btn_swatch_tap )
-  --
-  -- local btn_swatchBlue = display.newCircle( 375, 500, 30 )
-  -- btn_swatchBlue.color = {0.3, 0.5, 0.1}
-  -- btn_swatchBlue.strokeWidth = 3
-  -- btn_swatchBlue:setFillColor( 0.3, 0.5, 0.1 )
-  -- btn_swatchBlue:setStrokeColor( 0 )
-  -- paletteGroup:insert( btn_swatchBlue )
-  -- btn_swatchBlue:addEventListener( "tap", btn_swatch_tap )
-  --
-  -- local btn_swatchGreen = display.newCircle( 450, 500, 30 )
-  -- btn_swatchGreen.color = {0, 0, 1}
-  -- btn_swatchGreen.strokeWidth = 3
-  -- btn_swatchGreen:setFillColor( 0, 0, 1 )
-  -- btn_swatchGreen:setStrokeColor( 0 )
-  -- paletteGroup:insert( btn_swatchGreen )
-  -- btn_swatchGreen:addEventListener( "tap", btn_swatch_tap )
-
-  paletteGroup:insert (createPaletteSwatch({0.6, 0.1, 0.2}, 300, 500))
-  paletteGroup:insert (createPaletteSwatch({0.3, 0.5, 0.1}, 375, 500))
-  paletteGroup:insert (createPaletteSwatch({0, 0, 1}, 450, 500))
-  paletteGroup:insert (createPaletteSwatch({0.4, 0.2, 0.1}, 525, 500))
-
-  return palette
-end
-
 
 local function tintPlant ( event )
   -- img_plant:setFillColor(unpack(proto_rect.color))
@@ -156,28 +106,78 @@ function scene:create( event )
 
 
     -- Color indicator, (Test Only)
-    proto_rect = display.newRect( 300, 100, 100, 30 )
+    proto_rect = display.newRect( 100, 50, 100, 30 )
     proto_rect.color = {0,0,0}
     sceneGroup:insert( proto_rect )
 
+    -- Color palette Buttons (Set to insivisble on game start)
+
+    -- Palette For Player 1
+
+    local btn_new1 = display.newCircle( 40, 500, 20 )
+    btn_new1.color = { 0.3, 0.5, 0.3 }
+    btn_new1.strokeWidth = 3
+    btn_new1:setStrokeColor( 0.3, 0.5, 0.3 )
+    btn_new1:setFillColor( 0.3, 0.5, 0.3 )
+    btn_new1:addEventListener( "tap", btn_swatch_tap )
+    sceneGroup:insert( btn_new1 )
+    toggleVisibility( btn_new1 )
+
+    local btn_new2 = display.newCircle( 90, 500, 20 )
+    btn_new2.color = { 0.3, 0.5, 0.1 }
+    btn_new2.strokeWidth = 3
+    btn_new2:setStrokeColor( 0.3, 0.5, 0.1 )
+    btn_new2:setFillColor( 0.3, 0.5, 0.1 )
+    btn_new2:addEventListener( "tap", btn_swatch_tap )
+    sceneGroup:insert( btn_new2 )
+    toggleVisibility( btn_new2 )
+
+    local btn_new3 = display.newCircle( 140, 500, 20 )
+    btn_new3.color = { 0.1, 0.4, 0.2 }
+    btn_new3.strokeWidth = 3
+    btn_new3:setStrokeColor( 0.1, 0.4, 0.2 )
+    btn_new3:setFillColor( 0.1, 0.4, 0.2 )
+    btn_new3:addEventListener( "tap", btn_swatch_tap )
+    sceneGroup:insert( btn_new3 )
+    toggleVisibility( btn_new3 )
+
+    local btn_new4 = display.newCircle( 190, 500, 20 )
+    btn_new4.color = { 0.4, 0.2, 0.1 }
+    btn_new4.strokeWidth = 3
+    btn_new4:setStrokeColor( 0.4, 0.2, 0.1 )
+    btn_new4:setFillColor( 0.4, 0.2, 0.1 )
+    btn_new4:addEventListener( "tap", btn_swatch_tap )
+    sceneGroup:insert( btn_new4 )
+    toggleVisibility( btn_new4 )
 
 
-    -- creates done button for when you're finished colouring, set to invisible on level start.
-    local donebtn_spawn = createRoundedRectButton(400, 400, 150, 50, 12, "Done")
-    toggleVisibility( donebtn_spawn )
 
+    -- creates done buttons for when you're finished colouring, set to invisible on level start.
+    local donebtn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Done")
+    toggleVisibility( donebtn_spawnFern )
 
+    local donebtn_spawnBush = createRoundedRectButton(125, 450, 150, 35, 12, "Done")
+    toggleVisibility( donebtn_spawnBush )
 
-    --first spawn plant button prototype
-    local btn_spawn = createRoundedRectButton(400, 400, 150, 50, 12, "Spawn Bush")
-    -- make it a button, creates plant and palette, also makes done button visible
-    local function btn_spawn_tap ()
-      toggleVisibility( donebtn_spawn )
-      toggleVisibility( btn_spawn )
+    --Creates Buttons for spawning Plants
+    local btn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Spawn Fern")
+
+    local btn_spawnBush = createRoundedRectButton(125, 500, 150, 35, 12, "Spawn Bush")
+    
+    -- Spawn Fern
+    local function btn_spawn_tapFern ()
+      toggleVisibility( donebtn_spawnFern )
+      toggleVisibility( btn_spawnBush )
+      toggleVisibility( btn_spawnFern )
+      
+      toggleVisibility( btn_new1 )
+      toggleVisibility( btn_new2 )
+      toggleVisibility( btn_new3 )
+      toggleVisibility( btn_new4 )
 
       img_plant = createImage("images/plant1/plant1.png", 131, 75, display.contentCenterX-280, display.contentCenterY+70)
       img_plant:addEventListener( "tap", tintPlant )
-      img_plant:setFillColor(0.9)
+      img_plant:setFillColor(0.6)
 
 
 
@@ -185,74 +185,228 @@ function scene:create( event )
 
       img_plant2 = createImage("images/plant1/plant2.png", 130, 98, display.contentCenterX-400, display.contentCenterY+70)
       img_plant2:addEventListener( "tap", tintPlant )
-      img_plant2:setFillColor(0.9)
+      img_plant2:setFillColor(0.7)
 
-    sceneGroup:insert( img_plant2 )
+      sceneGroup:insert( img_plant2 )
 
       img_plant3 = createImage("images/plant1/plant3.png", 150, 195, display.contentCenterX-280, display.contentCenterY-10)
       img_plant3:addEventListener( "tap", tintPlant )
-      img_plant3:setFillColor(0.9)
+      img_plant3:setFillColor(0.8)
 
-    sceneGroup:insert( img_plant3 )
+      sceneGroup:insert( img_plant3 )
 
       img_plant4 = createImage("images/plant1/plant4.png", 180, 138, display.contentCenterX-425, display.contentCenterY-10)
       img_plant4:addEventListener( "tap", tintPlant )
-      img_plant4:setFillColor(0.9)
+      img_plant4:setFillColor(0.6)
 
 
-    sceneGroup:insert( img_plant4 )
+      sceneGroup:insert( img_plant4 )
 
       img_plant5 = createImage("images/plant1/plant5.png", 103, 185, display.contentCenterX-370, display.contentCenterY-10)
       img_plant5:addEventListener( "tap", tintPlant )
-      img_plant5:setFillColor(0.9)
+      img_plant5:setFillColor(0.7)
 
 
 
-    sceneGroup:insert( img_plant5 )
+      sceneGroup:insert( img_plant5 )
 
-    img_plant6 = createImage("images/plant1/plant6.png", 128, 167, display.contentCenterX-280, display.contentCenterY)
+      img_plant6 = createImage("images/plant1/plant6.png", 128, 167, display.contentCenterX-280, display.contentCenterY)
       img_plant6:addEventListener( "tap", tintPlant )
-      img_plant6:setFillColor(0.9)
+      img_plant6:setFillColor(0.7)
 
 
       sceneGroup:insert( img_plant6 )
 
 
-      -- proto_dest = display.newRect( 500, 300, 200, 60 )
-      -- proto_rect.color = {0,0,0}
-      -- proto_dest:addEventListener( "tap", tintDest )
-      -- sceneGroup:insert( proto_dest )
+      resetTimer(  )
 
-      palette = createPalette(  )
+    end
+    btn_spawnFern:addEventListener( "tap", btn_spawn_tapFern )
+    -- add the group to the sceneGroup
+    sceneGroup:insert( btn_spawnFern )
+
+
+   
+    --Spawn Bush
+    local function btn_spawn_tapBush ()
+      toggleVisibility( donebtn_spawnBush )
+      toggleVisibility( btn_spawnBush )
+      toggleVisibility( btn_spawnFern )
+
+      toggleVisibility( btn_new1 )
+      toggleVisibility( btn_new2 )
+      toggleVisibility( btn_new3 )
+      toggleVisibility( btn_new4 )
+
+      img_plant = createImage("images/bush_01.png", 128, 128, display.contentCenterX-345, display.contentCenterY+77)
+      img_plant:addEventListener( "tap", tintPlant )
+      img_plant:setFillColor(0.7)
+
+      local mask = graphics.newMask( "images/bush_01_mask.png" )
+      img_plant:setMask( mask )
+
+      sceneGroup:insert( img_plant )
+
+      img_plant2 = createImage("images/bush_01.png", 128, 128, display.contentCenterX-380, display.contentCenterY+55)
+      img_plant2:addEventListener( "tap", tintPlant )
+      img_plant2:setFillColor(0.6)
+
+      local mask2 = graphics.newMask( "images/bush_01_mask.png" )
+      img_plant2:setMask( mask2 )
+
+      sceneGroup:insert( img_plant2 )
+
+      img_plant3 = createImage("images/bush_01.png", 128, 128, display.contentCenterX-400, display.contentCenterY+77)
+      img_plant3:addEventListener( "tap", tintPlant )
+      img_plant3:setFillColor(0.5)
+
+      local mask3 = graphics.newMask( "images/bush_01_mask.png" )
+      img_plant3:setMask( mask3 )
+
+      sceneGroup:insert( img_plant3 )
+
 
       resetTimer(  )
 
     end
-    btn_spawn:addEventListener( "tap", btn_spawn_tap )
+    btn_spawnBush:addEventListener( "tap", btn_spawn_tapBush )
     -- add the group to the sceneGroup
-    sceneGroup:insert( btn_spawn )
+    sceneGroup:insert( btn_spawnBush )
 
 
 
     -- sends plant to background, makes them non-interactable and resets the level back to original start up (WORK IN PROGRESS)
-    local function donebtn_spawn_tap ()
-        toggleVisibility( btn_spawn )
-        toggleVisibility( donebtn_spawn )
+    local function donebtn_spawn_tapFern ()
+        toggleVisibility( btn_spawnBush )
+        toggleVisibility( btn_spawnFern )
+        toggleVisibility( donebtn_spawnFern )
 
-        transition.to(img_plant, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
-        img_plant:scale(0.8, 0.8)
+        toggleVisibility( btn_new1 )
+        toggleVisibility( btn_new2 )
+        toggleVisibility( btn_new3 )
+        toggleVisibility( btn_new4 )
+
+
+        finishedPlant = display.newGroup();
+
+        finishedPlant:insert(img_plant)
+        finishedPlant:insert(img_plant2)
+        finishedPlant:insert(img_plant3)
+        finishedPlant:insert(img_plant4)
+        finishedPlant:insert(img_plant5)
+        finishedPlant:insert(img_plant6)
+
+        transition.to(finishedPlant, {
+            x= math.random(-60, 700 ), 
+            y= math.random(-8, -4), 
+            time=1000})
+        img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
-
-        transition.to(img_plant2, {x=math.random(0, display.contentWidth), y=math.random(0, display.contentHeight) , time=1000})
-        img_plant2:scale(0.8, 0.8)
+        img_plant2:scale(0.95, 0.95)
         img_plant2:removeEventListener( "tap", tintPlant )
+        img_plant3:scale(0.95, 0.95)
+        img_plant3:removeEventListener( "tap", tintPlant )
+        img_plant4:scale(0.95, 0.95)
+        img_plant4:removeEventListener( "tap", tintPlant )
+        img_plant5:scale(0.95, 0.95)
+        img_plant5:removeEventListener( "tap", tintPlant )
+        img_plant6:scale(0.95, 0.95)
+        img_plant6:removeEventListener( "tap", tintPlant )
 
         resetTimer(  )
 
+        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
+
+        local function updateTimeForDone( event )
+
+            -- Decrement the number of seconds
+            secondsTillcomplete = secondsTillcomplete - 1
+    
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( secondsTillcomplete / 1 )
+            local seconds = secondsLeft % 1
+    
+            Donetimeup ()
+    
+        end
+
+        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
+
+        function Donetimeup ()
+
+            if secondsTillcomplete <= 0
+             then 
+                sceneGroup:insert( finishedPlant )
+                  
+            end
+        end
+
+
     end
-    donebtn_spawn:addEventListener( "tap", donebtn_spawn_tap )
+    donebtn_spawnFern:addEventListener( "tap", donebtn_spawn_tapFern )
     -- add the group to the sceneGroup
-    sceneGroup:insert( donebtn_spawn )
+    sceneGroup:insert( donebtn_spawnFern )
+
+    local function donebtn_spawn_tapBush ()
+        toggleVisibility( btn_spawnBush )
+        toggleVisibility( btn_spawnFern )
+        toggleVisibility( donebtn_spawnBush )
+
+        toggleVisibility( btn_new1 )
+        toggleVisibility( btn_new2 )
+        toggleVisibility( btn_new3 )
+        toggleVisibility( btn_new4 )
+
+        finishedPlant = display.newGroup();
+
+        finishedPlant:insert(img_plant)
+        finishedPlant:insert(img_plant2)
+        finishedPlant:insert(img_plant3)
+
+        transition.to(finishedPlant, {
+            x= math.random(-60, 700 ), 
+            y= math.random(-13, -10), 
+            time=1000})
+        img_plant:scale(0.95, 0.95)
+        img_plant:removeEventListener( "tap", tintPlant )
+        img_plant2:scale(0.95, 0.95)
+        img_plant2:removeEventListener( "tap", tintPlant )
+        img_plant3:scale(0.95, 0.95)
+        img_plant3:removeEventListener( "tap", tintPlant )
+
+        resetTimer(  )
+
+        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
+
+        local function updateTimeForDone( event )
+
+            -- Decrement the number of seconds
+            secondsTillcomplete = secondsTillcomplete - 1
+    
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( secondsTillcomplete / 1 )
+            local seconds = secondsLeft % 1
+    
+            Donetimeup ()
+    
+        end
+
+        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
+
+        function Donetimeup ()
+
+            if secondsTillcomplete <= 0
+             then 
+                sceneGroup:insert( finishedPlant )
+                  
+            end
+        end
+
+
+    end
+    donebtn_spawnBush:addEventListener( "tap", donebtn_spawn_tapBush )
+    -- add the group to the sceneGroup
+    sceneGroup:insert( donebtn_spawnBush )
 
 end
 
