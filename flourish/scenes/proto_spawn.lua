@@ -11,16 +11,16 @@ local proto_dest
 -- -----------------------------------------------------------------------------------
 --add image+movement+
 image = display.newImageRect("images/dino.png", 90, 180)
-image.x = display.contentCenterX+100
+image.x = display.contentCenterX+400
 image.y = display.contentCenterY-250
 
 function goLeft()
-transition.to( image, { time=1500, delay=1500, x=(image.x - 150), onComplete=goRight() } )
+transition.to( image, { time=6000, delay=50, x=(image.x - 2850), onComplete=goRight() } )
 end
 
 
 function goRight()
-transition.to( image, { time=1500, delay=1500, x=(image.x + 150), onComplete=goRight} )
+transition.to( image, { time=6000, delay=50, x=(image.x + 1850), onComplete=goRight} )
 end
 
 goLeft()
@@ -163,13 +163,13 @@ function scene:create( event )
     local btn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Spawn Fern")
 
     local btn_spawnBush = createRoundedRectButton(125, 500, 150, 35, 12, "Spawn Bush")
-    
+
     -- Spawn Fern
     local function btn_spawn_tapFern ()
       toggleVisibility( donebtn_spawnFern )
       toggleVisibility( btn_spawnBush )
       toggleVisibility( btn_spawnFern )
-      
+
       toggleVisibility( btn_new1 )
       toggleVisibility( btn_new2 )
       toggleVisibility( btn_new3 )
@@ -226,7 +226,7 @@ function scene:create( event )
     sceneGroup:insert( btn_spawnFern )
 
 
-   
+
     --Spawn Bush
     local function btn_spawn_tapBush ()
       toggleVisibility( donebtn_spawnBush )
@@ -297,8 +297,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant6)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-8, -4), 
+            x= math.random(-60, 700 ),
+            y= math.random(-8, -4),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -321,13 +321,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -335,9 +335,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
@@ -364,8 +364,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant3)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-13, -10), 
+            x= math.random(-60, 700 ),
+            y= math.random(-13, -10),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -382,13 +382,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -396,9 +396,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
