@@ -153,16 +153,25 @@ function scene:create( event )
 
 
     -- creates done buttons for when you're finished colouring, set to invisible on level start.
-    local donebtn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Done")
+
+    local donebtn_spawnFern = display.newImageRect( "images/Done Button Template.png", 150, 55)
+    donebtn_spawnFern.x = display.contentCenterX-360
+    donebtn_spawnFern.y = display.contentCenterY+180
     toggleVisibility( donebtn_spawnFern )
 
-    local donebtn_spawnBush = createRoundedRectButton(125, 450, 150, 35, 12, "Done")
+    local donebtn_spawnBush = display.newImageRect( "images/Done Button Template.png", 150, 55)
+    donebtn_spawnBush.x = display.contentCenterX-360
+    donebtn_spawnBush.y = display.contentCenterY+180
     toggleVisibility( donebtn_spawnBush )
 
     --Creates Buttons for spawning Plants
-    local btn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Spawn Fern")
-
-    local btn_spawnBush = createRoundedRectButton(125, 500, 150, 35, 12, "Spawn Bush")
+    local btn_spawnFern = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 50, 50)
+    btn_spawnFern.x = display.contentCenterX-440
+    btn_spawnFern.y = display.contentCenterY+230
+   
+    local btn_spawnBush = display.newImageRect( "images/selectbuttons/Select Bush Button.png", 50, 50)
+    btn_spawnBush.x = display.contentCenterX-385
+    btn_spawnBush.y = display.contentCenterY+230
     
     -- Spawn Fern
     local function btn_spawn_tapFern ()
@@ -175,7 +184,7 @@ function scene:create( event )
       toggleVisibility( btn_new3 )
       toggleVisibility( btn_new4 )
 
-      img_plant = createImage("images/plant1/plant1.png", 131, 75, display.contentCenterX-280, display.contentCenterY+70)
+      img_plant = createImage("images/plant1/plant1.png", 65, 37.5, display.contentCenterX-330, display.contentCenterY+115)
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.6)
 
@@ -183,26 +192,26 @@ function scene:create( event )
 
       sceneGroup:insert( img_plant )
 
-      img_plant2 = createImage("images/plant1/plant2.png", 130, 98, display.contentCenterX-400, display.contentCenterY+70)
+      img_plant2 = createImage("images/plant1/plant2.png", 65, 49, display.contentCenterX-390, display.contentCenterY+115)
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.7)
 
       sceneGroup:insert( img_plant2 )
 
-      img_plant3 = createImage("images/plant1/plant3.png", 150, 195, display.contentCenterX-280, display.contentCenterY-10)
+      img_plant3 = createImage("images/plant1/plant3.png", 75, 97.5, display.contentCenterX-330, display.contentCenterY+85)
       img_plant3:addEventListener( "tap", tintPlant )
       img_plant3:setFillColor(0.8)
 
       sceneGroup:insert( img_plant3 )
 
-      img_plant4 = createImage("images/plant1/plant4.png", 180, 138, display.contentCenterX-425, display.contentCenterY-10)
+      img_plant4 = createImage("images/plant1/plant4.png", 90, 67, display.contentCenterX-400, display.contentCenterY+85)
       img_plant4:addEventListener( "tap", tintPlant )
       img_plant4:setFillColor(0.6)
 
 
       sceneGroup:insert( img_plant4 )
 
-      img_plant5 = createImage("images/plant1/plant5.png", 103, 185, display.contentCenterX-370, display.contentCenterY-10)
+      img_plant5 = createImage("images/plant1/plant5.png", 51.5, 92.5, display.contentCenterX-380, display.contentCenterY+85)
       img_plant5:addEventListener( "tap", tintPlant )
       img_plant5:setFillColor(0.7)
 
@@ -210,7 +219,7 @@ function scene:create( event )
 
       sceneGroup:insert( img_plant5 )
 
-      img_plant6 = createImage("images/plant1/plant6.png", 128, 167, display.contentCenterX-280, display.contentCenterY)
+      img_plant6 = createImage("images/plant1/plant6.png", 64, 83.5, display.contentCenterX-330, display.contentCenterY+85)
       img_plant6:addEventListener( "tap", tintPlant )
       img_plant6:setFillColor(0.7)
 
@@ -298,7 +307,7 @@ function scene:create( event )
 
         transition.to(finishedPlant, {
             x= math.random(-60, 700 ), 
-            y= math.random(-8, -4), 
+            y= math.random(-30, -20), 
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -365,7 +374,7 @@ function scene:create( event )
 
         transition.to(finishedPlant, {
             x= math.random(-60, 700 ), 
-            y= math.random(-13, -10), 
+            y= math.random(-20, -12), 
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
