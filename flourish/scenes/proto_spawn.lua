@@ -229,36 +229,16 @@ function scene:create( event )
     sceneGroup:insert( donebtn_spawnFern )
 
     --Creates Buttons for spawning Plants
-    local btn_spawnFlax = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 50, 50)
-    btn_spawnFlax.x = display.contentCenterX-443
-    btn_spawnFlax.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnFlax )
-   
-    local btn_spawnPalm = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 50, 50)
-    btn_spawnPalm.x = display.contentCenterX-387
-    btn_spawnPalm.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnPalm )
+    local btn_spawnFern = createRoundedRectButton(125, 450, 150, 35, 12, "Spawn Fern")
 
-    local btn_spawnPine = display.newImageRect( "images/selectbuttons/Select Pine Button.png", 50, 50)
-    btn_spawnPine.x = display.contentCenterX-333
-    btn_spawnPine.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnPine )
+    local btn_spawnBush = createRoundedRectButton(125, 500, 150, 35, 12, "Spawn Bush")
 
-    local btn_spawnFern = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 50, 50)
-    btn_spawnFern.x = display.contentCenterX-277
-    btn_spawnFern.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnFern )
-    
-    --Creates Spawn functions for buttons
-    
-    -- Spawn Flax
-    local function btn_spawn_tapFlax ()
-      toggleVisibility( donebtn_spawnFlax )
-      toggleVisibility( btn_spawnPalm )
-      toggleVisibility( btn_spawnFlax )
-      toggleVisibility( btn_spawnPine )
+    -- Spawn Fern
+    local function btn_spawn_tapFern ()
+      toggleVisibility( donebtn_spawnFern )
+      toggleVisibility( btn_spawnBush )
       toggleVisibility( btn_spawnFern )
-      
+
       toggleVisibility( btn_new1 )
       toggleVisibility( btn_new2 )
       toggleVisibility( btn_new3 )
@@ -310,16 +290,16 @@ function scene:create( event )
       resetTimer(  )
 
     end
-    btn_spawnFlax:addEventListener( "tap", btn_spawn_tapFlax )
-    
-    
-   
-    -- Spawn Palm
-    local function btn_spawn_tapPalm ()
-      toggleVisibility( donebtn_spawnPalm )
-      toggleVisibility( btn_spawnPalm )
-      toggleVisibility( btn_spawnFlax )
-      toggleVisibility( btn_spawnPine )
+    btn_spawnFern:addEventListener( "tap", btn_spawn_tapFern )
+    -- add the group to the sceneGroup
+    sceneGroup:insert( btn_spawnFern )
+
+
+
+    --Spawn Bush
+    local function btn_spawn_tapBush ()
+      toggleVisibility( donebtn_spawnBush )
+      toggleVisibility( btn_spawnBush )
       toggleVisibility( btn_spawnFern )
 
       toggleVisibility( btn_new1 )
@@ -502,8 +482,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant6)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-30, -20), 
+            x= math.random(-60, 700 ),
+            y= math.random(-8, -4),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -526,13 +506,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -540,9 +520,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
@@ -712,8 +692,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant4)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-30, -20), 
+            x= math.random(-60, 700 ),
+            y= math.random(-13, -10),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -732,13 +712,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -746,9 +726,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
