@@ -9,73 +9,123 @@ local proto_dest
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
---add image+movement+
-image = display.newImageRect("images/dino.png", 90, 180)
-image.x = display.contentCenterX+100
-image.y = display.contentCenterY-250
+
+-- Prototype of dinosaur movement (Lines 14 to 77)
+
+Dino = display.newImageRect("images/dino.png", 90, 180)
+Dino.x = display.contentCenterX+400
+Dino.y = display.contentCenterY-250
+
 
 function goLeft()
-transition.to( image, { time=1500, delay=1500, x=(image.x - 150), onComplete=goRight() } )
+ transition.to( Dino, { time=6000, x=(45) } )
+
+ local leftsecondsTillcomplete = 7
+
+ local function LeftTimer( event )
+
+   -- Decrement the number of seconds
+   leftsecondsTillcomplete = leftsecondsTillcomplete - 1
+
+   -- Time is tracked in seconds; convert it to minutes and seconds
+   local minutes = math.floor( leftsecondsTillcomplete / 7 )
+   local seconds = leftsecondsTillcomplete % 7
+
+   Lefttimeup ()
+
+ end
+
+ gorighttimer = timer.performWithDelay( 1000, LeftTimer, leftsecondsTillcomplete )
+
+ function Lefttimeup ()
+   if leftsecondsTillcomplete <= 0
+    then 
+       goRight()
+    end
+         
+ end
+ 
 end
 
 
 function goRight()
-transition.to( image, { time=1500, delay=1500, x=(image.x + 150), onComplete=goRight} )
+ transition.to( Dino, { time=6000, x=(875) } )
+ 
+ local rightsecondsTillcomplete = 7
+
+ local function RightTimer( event )
+
+   -- Decrement the number of seconds
+   rightsecondsTillcomplete = rightsecondsTillcomplete - 1
+
+   -- Time is tracked in seconds; convert it to minutes and seconds
+   local minutes = math.floor( rightsecondsTillcomplete / 7 )
+   local seconds = rightsecondsTillcomplete % 7
+
+   Righttimeup ()
+
+ end
+
+ gorighttimer = timer.performWithDelay( 1000, RightTimer, rightsecondsTillcomplete )
+
+ function Righttimeup ()
+   if rightsecondsTillcomplete <= 0
+    then 
+       goLeft()
+    end
+         
+ end
 end
+
 
 goLeft()
 
-    -- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
+-- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
     
-    local secondsLeft = 25  -- 10 minutes = 600 seconds
+local secondsLeft = 25  -- 10 minutes = 600 seconds
 
-    local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
-    clockText:setFillColor( 0.7, 0.7, 1 )
+local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
+clockText:setFillColor( 0.7, 0.7, 1 )
 
-    local function updateTime( event )
+local function updateTime( event )
 
-        -- Decrement the number of seconds
-        secondsLeft = secondsLeft - 1
+ -- Decrement the number of seconds
+  secondsLeft = secondsLeft - 1
 
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( secondsLeft / 25 )
-        local seconds = secondsLeft % 25
+ -- Time is tracked in seconds; convert it to minutes and seconds
+  local minutes = math.floor( secondsLeft / 25 )
+  local seconds = secondsLeft % 25
 
-        -- Make it a formatted string
-        local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
+ -- Make it a formatted string
+  local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
 
-        -- Update the text object
-        clockText.text = timeDisplay
+ -- Update the text object
+    clockText.text = timeDisplay
 
-        timeup ()
+  timeup ()
 
+end
+
+local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+
+local function resetTimer( )
+    timer.cancel(countDownTimer)
+    secondsLeft = 25
+    countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+end
+
+function timeup ()
+
+    if secondsLeft <= 0
+        then composer.gotoScene( "scenes..splashscreen", options )
+        composer.removeScene( "scenes..proto_spawn", options )
+        display.remove(clockText)
     end
-
-    local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-
-    local function resetTimer( )
-        timer.cancel(countDownTimer)
-        secondsLeft = 25
-        countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    end
-
-    function timeup ()
-
-        if secondsLeft <= 0
-         then composer.gotoScene( "scenes..splashscreen", options )
-              composer.removeScene( "scenes..proto_spawn", options )
-              display.remove(clockText)
-        end
-    end
+end
 
 
 
 local function btn_swatch_tap ( event, color )
-  -- get the colour of the button tapped
-  -- local red, green, blue, alpha = unpack(event.target.fill)
-  -- print( "Object tapped: " .. tostring(event.target) )
-  -- print (unpack(event.target.color))
-  -- event.target.rect:setFillColor(unpack(event.target.color))
   proto_rect:setFillColor(unpack(event.target.color))
   proto_rect.color = event.target.color
   print(unpack(proto_rect.color))
@@ -85,7 +135,6 @@ end
 
 
 local function tintPlant ( event )
-  -- img_plant:setFillColor(unpack(proto_rect.color))
   event.target:setFillColor(unpack(proto_rect.color))
   resetTimer( )
 end
@@ -104,7 +153,7 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
-
+    sceneGroup:insert( Dino )
 
     -- Color indicator, (Test Only)
     proto_rect = display.newRect( 100, 50, 100, 30 )
