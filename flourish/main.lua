@@ -23,3 +23,4 @@ local composer = require( "composer" )
 
 -- to jump to a different scene, use this line:
 composer.gotoScene( "scenes.proto_spawn" )
+ 

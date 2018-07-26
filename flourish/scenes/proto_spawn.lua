@@ -11,8 +11,28 @@ local proto_dest
 -- -----------------------------------------------------------------------------------
 
 -- Prototype of dinosaur movement (Lines 14 to 77)
+ function Dino()
+local sheetOptions =
+{
+    width = 581,
+    height = 621,
+    numFrames = 9
+}
+local sequences_runningCat = {
+    -- consecutive frames sequence
+    {
+        name = "normalRun",
+        start = 1,
+        count = 9,
+        time = 700,
+        loopCount = 0,
+        loopDirection = "forward"
+    }
+}
 
-Dino = display.newImageRect("images/dino.png", 90, 180)
+local Dino = graphics.newImageSheet( "images/sprite/sheetdino.png", sheetOptions )
+}
+
 Dino.x = display.contentCenterX+400
 Dino.y = display.contentCenterY-250
 
@@ -39,18 +59,18 @@ function goLeft()
 
  function Lefttimeup ()
    if leftsecondsTillcomplete <= 0
-    then 
+    then
        goRight()
     end
-         
+
  end
- 
+
 end
 
 
 function goRight()
  transition.to( Dino, { time=6000, x=(875) } )
- 
+
  local rightsecondsTillcomplete = 7
 
  local function RightTimer( event )
@@ -70,10 +90,10 @@ function goRight()
 
  function Righttimeup ()
    if rightsecondsTillcomplete <= 0
-    then 
+    then
        goLeft()
     end
-         
+
  end
 end
 
@@ -81,7 +101,7 @@ end
 goLeft()
 
 -- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
-    
+
 local secondsLeft = 25  -- 10 minutes = 600 seconds
 
 local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
@@ -233,7 +253,7 @@ function scene:create( event )
     btn_spawnFlax.x = display.contentCenterX-443
     btn_spawnFlax.y = display.contentCenterY+230
     sceneGroup:insert( btn_spawnFlax )
-   
+
     local btn_spawnPalm = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 50, 50)
     btn_spawnPalm.x = display.contentCenterX-387
     btn_spawnPalm.y = display.contentCenterY+230
@@ -248,9 +268,9 @@ function scene:create( event )
     btn_spawnFern.x = display.contentCenterX-277
     btn_spawnFern.y = display.contentCenterY+230
     sceneGroup:insert( btn_spawnFern )
-    
+
     --Creates Spawn functions for buttons
-    
+
     -- Spawn Flax
     local function btn_spawn_tapFlax ()
       toggleVisibility( donebtn_spawnFlax )
@@ -258,7 +278,7 @@ function scene:create( event )
       toggleVisibility( btn_spawnFlax )
       toggleVisibility( btn_spawnPine )
       toggleVisibility( btn_spawnFern )
-      
+
       toggleVisibility( btn_new1 )
       toggleVisibility( btn_new2 )
       toggleVisibility( btn_new3 )
@@ -311,9 +331,9 @@ function scene:create( event )
 
     end
     btn_spawnFlax:addEventListener( "tap", btn_spawn_tapFlax )
-    
-    
-   
+
+
+
     -- Spawn Palm
     local function btn_spawn_tapPalm ()
       toggleVisibility( donebtn_spawnPalm )
@@ -331,7 +351,7 @@ function scene:create( event )
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.7)
 
-      
+
       img_plant:setMask( mask )
 
       sceneGroup:insert( img_plant )
@@ -340,7 +360,7 @@ function scene:create( event )
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.6)
 
-      
+
       img_plant2:setMask( mask2 )
 
       sceneGroup:insert( img_plant2 )
@@ -349,7 +369,7 @@ function scene:create( event )
       img_plant3:addEventListener( "tap", tintPlant )
       img_plant3:setFillColor(0.5)
 
-      
+
       img_plant3:setMask( mask3 )
 
       sceneGroup:insert( img_plant3 )
@@ -359,7 +379,7 @@ function scene:create( event )
 
     end
     btn_spawnPalm:addEventListener( "tap", btn_spawn_tapPalm )
-    
+
     -- Spawn Pine
     local function btn_spawn_tapPine ()
         toggleVisibility( donebtn_spawnPine )
@@ -367,64 +387,64 @@ function scene:create( event )
         toggleVisibility( btn_spawnFlax )
         toggleVisibility( btn_spawnPine )
         toggleVisibility( btn_spawnFern )
-            
+
         toggleVisibility( btn_new1 )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
-      
+
         img_plant = createImage("images/plant4/plant1.png", 20, 200, display.contentCenterX-360, display.contentCenterY+35)
         img_plant:addEventListener( "tap", tintPlant )
         img_plant:setFillColor(0.6)
-      
-      
-      
+
+
+
         sceneGroup:insert( img_plant )
-      
+
         img_plant2 = createImage("images/plant4/plant2.png", 65, 35, display.contentCenterX-360, display.contentCenterY-35)
         img_plant2:addEventListener( "tap", tintPlant )
         img_plant2:setFillColor(0.7)
-      
+
         sceneGroup:insert( img_plant2 )
-      
+
         img_plant3 = createImage("images/plant4/plant3.png", 75, 35, display.contentCenterX-360, display.contentCenterY-15)
         img_plant3:addEventListener( "tap", tintPlant )
         img_plant3:setFillColor(0.8)
-      
+
         sceneGroup:insert( img_plant3 )
-      
+
         img_plant4 = createImage("images/plant4/plant4.png", 25, 25, display.contentCenterX-360, display.contentCenterY-70)
         img_plant4:addEventListener( "tap", tintPlant )
         img_plant4:setFillColor(0.6)
-      
-      
+
+
         sceneGroup:insert( img_plant4 )
-      
+
         img_plant5 = createImage("images/plant4/plant5.png", 85, 35, display.contentCenterX-360, display.contentCenterY+10)
         img_plant5:addEventListener( "tap", tintPlant )
         img_plant5:setFillColor(0.7)
-      
-      
-      
+
+
+
         sceneGroup:insert( img_plant5 )
-      
+
         img_plant6 = createImage("images/plant4/plant6.png", 115, 35, display.contentCenterX-360, display.contentCenterY+35)
         img_plant6:addEventListener( "tap", tintPlant )
         img_plant6:setFillColor(0.7)
-      
-      
+
+
         sceneGroup:insert( img_plant6 )
 
         img_plant7 = createImage("images/plant4/plant7.png", 145, 45, display.contentCenterX-360, display.contentCenterY+65)
         img_plant7:addEventListener( "tap", tintPlant )
         img_plant7:setFillColor(0.7)
-      
-      
+
+
         sceneGroup:insert( img_plant7 )
-      
-      
+
+
         resetTimer(  )
-      
+
     end
     btn_spawnPine:addEventListener( "tap", btn_spawn_tapPine )
 
@@ -436,46 +456,46 @@ function scene:create( event )
         toggleVisibility( btn_spawnFlax )
         toggleVisibility( btn_spawnPine )
         toggleVisibility( btn_spawnFern )
-        
+
         toggleVisibility( btn_new1 )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
-  
+
         img_plant = createImage("images/plant3/plant1.png", 101.25, 93.75, display.contentCenterX-350, display.contentCenterY+75)
         img_plant:addEventListener( "tap", tintPlant )
         img_plant:setFillColor(0.6)
-  
-  
-  
+
+
+
         sceneGroup:insert( img_plant )
-  
+
         img_plant2 = createImage("images/plant3/plant2.png", 67.5, 48.75, display.contentCenterX-323, display.contentCenterY+94)
         img_plant2:addEventListener( "tap", tintPlant )
         img_plant2:setFillColor(0.7)
-  
+
         sceneGroup:insert( img_plant2 )
-  
+
         img_plant3 = createImage("images/plant3/plant3.png", 60, 33.75, display.contentCenterX-382, display.contentCenterY+107)
         img_plant3:addEventListener( "tap", tintPlant )
         img_plant3:setFillColor(0.8)
-  
+
         sceneGroup:insert( img_plant3 )
-  
+
         img_plant4 = createImage("images/plant3/plant4.png", 67.5, 26.25, display.contentCenterX-325, display.contentCenterY+112)
         img_plant4:addEventListener( "tap", tintPlant )
         img_plant4:setFillColor(0.6)
-  
-  
+
+
         sceneGroup:insert( img_plant4 )
-  
-        
+
+
         resetTimer(  )
-  
+
     end
     btn_spawnFern:addEventListener( "tap", btn_spawn_tapFern )
 
-        
+
     -- sends plant to background, makes them non-interactable and resets the level back to original start up (WORK IN PROGRESS)
 
     -- Done Flax
@@ -502,8 +522,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant6)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-30, -20), 
+            x= math.random(-60, 700 ),
+            y= math.random(-30, -20),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -526,13 +546,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -540,17 +560,17 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
 
     end
     donebtn_spawnFlax:addEventListener( "tap", donebtn_spawn_tapFlax )
-    
-    
+
+
     -- Done Palm
     local function donebtn_spawn_tapPalm ()
         toggleVisibility( btn_spawnPalm )
@@ -571,8 +591,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant3)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-40, -33), 
+            x= math.random(-60, 700 ),
+            y= math.random(-40, -33),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -589,13 +609,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -603,9 +623,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
@@ -639,8 +659,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant7)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-40, -35), 
+            x= math.random(-60, 700 ),
+            y= math.random(-40, -35),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -665,13 +685,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -679,9 +699,9 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
@@ -712,8 +732,8 @@ function scene:create( event )
         finishedPlant:insert(img_plant4)
 
         transition.to(finishedPlant, {
-            x= math.random(-60, 700 ), 
-            y= math.random(-30, -20), 
+            x= math.random(-60, 700 ),
+            y= math.random(-30, -20),
             time=1000})
         img_plant:scale(0.95, 0.95)
         img_plant:removeEventListener( "tap", tintPlant )
@@ -732,13 +752,13 @@ function scene:create( event )
 
             -- Decrement the number of seconds
             secondsTillcomplete = secondsTillcomplete - 1
-    
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillcomplete / 1 )
             local seconds = secondsLeft % 1
-    
+
             Donetimeup ()
-    
+
         end
 
         DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
@@ -746,17 +766,17 @@ function scene:create( event )
         function Donetimeup ()
 
             if secondsTillcomplete <= 0
-             then 
+             then
                 sceneGroup:insert( finishedPlant )
-                  
+
             end
         end
 
 
     end
     donebtn_spawnFern:addEventListener( "tap", donebtn_spawn_tapFern )
-    
-    
+
+
 
 end
 
