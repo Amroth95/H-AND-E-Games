@@ -10,35 +10,28 @@ local proto_dest
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
--- Prototype of dinosaur movement (Lines 14 to 77)
- function Dino()
-local sheetOptions =
-{
-    width = 581,
-    height = 621,
-    numFrames = 9
-}
-local sequences_runningCat = {
-    -- consecutive frames sequence
-    {
-        name = "normalRun",
-        start = 1,
-        count = 9,
-        time = 700,
-        loopCount = 0,
-        loopDirection = "forward"
-    }
-}
+-- Prototype of dinosaur movement (Lines 14 to 94)
 
-local Dino = graphics.newImageSheet( "images/sprite/sheetdino.png", sheetOptions )
-}
+local DinosheetData = { width =581, height =621, numFrames=9, sheetContentWidth=5229, sheetContentHeight=621 } 
+                 
+local DinoImageSheet = graphics.newImageSheet("images/sprite sheet/dinosaur sprite test.png", DinosheetData)
+    
+local sequenceDinoData = { {name="normalRun", start=1, count=9, time=750} }
+    
+local Dino = display.newSprite(DinoImageSheet, sequenceDinoData)
+Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
+Dino:scale(0.2, 0.2)
+Dino:play()
+
 
 Dino.x = display.contentCenterX+400
-Dino.y = display.contentCenterY-250
+Dino.y = display.contentCenterY-190
 
 
 function goLeft()
- transition.to( Dino, { time=6000, x=(45) } )
+ transition.to( Dino, { time=6000, x=(55) } )
+
+ Dino.xScale = 0.2
 
  local leftsecondsTillcomplete = 7
 
@@ -70,6 +63,8 @@ end
 
 function goRight()
  transition.to( Dino, { time=6000, x=(875) } )
+
+ Dino.xScale = -0.2
 
  local rightsecondsTillcomplete = 7
 
@@ -149,6 +144,11 @@ local function btn_swatch_tap ( event, color )
   proto_rect:setFillColor(unpack(event.target.color))
   proto_rect.color = event.target.color
   print(unpack(proto_rect.color))
+  
+  local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+
+  local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+  
   resetTimer( )
   -- event.target:scale(1.25)
 end
@@ -156,12 +156,30 @@ end
 
 local function tintPlant ( event )
   event.target:setFillColor(unpack(proto_rect.color))
+
+  local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+
+  local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
   resetTimer( )
 end
 
 local function tintDest ( event )
   proto_dest:setFillColor(unpack(proto_rect.color))
 end
+
+-- Sound effects for buttons
+local function clicksound ()
+    local Clickselect = audio.loadSound( "sounds/buttons/Click Sound.mp3" )
+
+    local Clickselectchannel = audio.play( Clickselect, { channel=3, loops=0 } )
+end
+
+local function donesound ()
+    local Clickdone = audio.loadSound( "sounds/buttons/Done Plant.mp3" )
+
+    local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
+end
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -175,10 +193,18 @@ function scene:create( event )
 
     sceneGroup:insert( Dino )
 
-     -- Color indicator, (Test Only)
+    -- Color indicator, (Test Only)
     proto_rect = display.newRect( 100, 50, 100, 30 )
     proto_rect.color = {0,0,0}
     sceneGroup:insert( proto_rect )
+
+    
+    -- Counts the number of finished plants (Text won't be in the final game)
+    local FinishedPlantCount = 0
+
+    local FinishedPlantText = display.newText( FinishedPlantCount, display.contentCenterX, 20, native.systemFont, 40 )
+    FinishedPlantText:setFillColor( 0, 0, 0 )
+    sceneGroup:insert( FinishedPlantText )
 
     -- Color palette Buttons (Set to insivisble on game start)
 
@@ -284,6 +310,8 @@ function scene:create( event )
       toggleVisibility( btn_new3 )
       toggleVisibility( btn_new4 )
 
+      clicksound ()
+
       img_plant = createImage("images/plant1/plant1.png", 65, 37.5, display.contentCenterX-330, display.contentCenterY+115)
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.6)
@@ -347,6 +375,8 @@ function scene:create( event )
       toggleVisibility( btn_new3 )
       toggleVisibility( btn_new4 )
 
+      clicksound ()
+
       img_plant = createImage("images/plant2/plant3.png", 50, 110, display.contentCenterX-350, display.contentCenterY+77)
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.7)
@@ -392,6 +422,8 @@ function scene:create( event )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
+
+        clicksound ()
 
         img_plant = createImage("images/plant4/plant1.png", 20, 200, display.contentCenterX-360, display.contentCenterY+35)
         img_plant:addEventListener( "tap", tintPlant )
@@ -462,6 +494,8 @@ function scene:create( event )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
 
+        clicksound ()
+
         img_plant = createImage("images/plant3/plant1.png", 101.25, 93.75, display.contentCenterX-350, display.contentCenterY+75)
         img_plant:addEventListener( "tap", tintPlant )
         img_plant:setFillColor(0.6)
@@ -510,6 +544,12 @@ function scene:create( event )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
+
+        clicksound ()
+        donesound ()
+
+        FinishedPlantCount = FinishedPlantCount + 1
+        FinishedPlantText.text = FinishedPlantCount
 
 
         finishedPlant = display.newGroup();
@@ -584,6 +624,12 @@ function scene:create( event )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
 
+        clicksound ()
+        donesound ()
+
+        FinishedPlantCount = FinishedPlantCount + 1
+        FinishedPlantText.text = FinishedPlantCount
+
         finishedPlant = display.newGroup();
 
         finishedPlant:insert(img_plant)
@@ -646,6 +692,12 @@ function scene:create( event )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
+
+        clicksound ()
+        donesound ()
+
+        FinishedPlantCount = FinishedPlantCount + 1
+        FinishedPlantText.text = FinishedPlantCount
 
 
         finishedPlant = display.newGroup();
@@ -722,6 +774,12 @@ function scene:create( event )
         toggleVisibility( btn_new2 )
         toggleVisibility( btn_new3 )
         toggleVisibility( btn_new4 )
+
+        clicksound ()
+        donesound ()
+
+        FinishedPlantCount = FinishedPlantCount + 1
+        FinishedPlantText.text = FinishedPlantCount
 
 
         finishedPlant = display.newGroup();
