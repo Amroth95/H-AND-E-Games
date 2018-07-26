@@ -12,6 +12,8 @@ local proto_dest
 
 -- Prototype of dinosaur movement (Lines 14 to 77)
  function Dino()
+ local Dino = graphics.newImageSheet( "images/sprite/sheetdino.png", sheetOptions )
+
 local sheetOptions =
 {
     width = 581,
@@ -27,11 +29,10 @@ local sequences_runningCat = {
         time = 700,
         loopCount = 0,
         loopDirection = "forward"
+        }
     }
-}
+        end
 
-local Dino = graphics.newImageSheet( "images/sprite/sheetdino.png", sheetOptions )
-}
 
 Dino.x = display.contentCenterX+400
 Dino.y = display.contentCenterY-250
