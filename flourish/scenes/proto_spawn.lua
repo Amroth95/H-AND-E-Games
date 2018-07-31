@@ -9,29 +9,32 @@ local proto_dest
 local physics = require( "physics" )
 physics.start()
 
-local myTable = {}
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
--- Prototype of dinosaur movement (Lines 14 to 94)
+-- Prototype of dinosaur movement (Lines 21 to 107)
 
-local DinosheetData = { width =581, height =621, numFrames=9, sheetContentWidth=5229, sheetContentHeight=621 } 
-                 
-local DinoImageSheet = graphics.newImageSheet("images/sprite sheet/dinosaur sprite test.png", DinosheetData)
+local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 } 
+local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
+
+local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
+local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
+
+local sequenceDinoData = {
+    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
+    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=1500, loopCount=0} 
+}
     
-local sequenceDinoData = { {name="normalRun", start=1, count=9, time=750} }
-    
-local Dino = display.newSprite(DinoImageSheet, sequenceDinoData)
+local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
 Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
 Dino:scale(0.2, 0.2)
 Dino:play()
 
 
 Dino.x = display.contentCenterX+400
-Dino.y = display.contentCenterY+90
+Dino.y = display.contentCenterY-110
 physics.addBody(Dino, {density=200, friction=5, radius=25})
 physics.setGravity(0,0)
 Dino.myName = "Dino"
@@ -40,7 +43,7 @@ Dino.myName = "Dino"
 function goLeft()
  Dino.xScale = 0.2
 
- transition.to( Dino, { time=6000, x=(55) } )
+ transition.to( Dino, { time=6000, x=(75) } )
 
  local rightsecondsTillcomplete = 7
 
@@ -101,14 +104,18 @@ function goRight()
  end
 end
 
--- function for stoping the dino and making it eat (Work in Progress)
+-- function for stoping the dino and making it eat (Work in Progress) (Lines 110 to 147)
 function DinoEat ()
     transition.cancel(Dino)
+    Dino:setSequence( "normalEat" )
+    Dino:play()
     rightsecondsTillcomplete = 11
 
     local Eattimeseconds = 4
 
     local function Eattimeup ()
+        Dino:setSequence( "normalWalk" )
+        Dino:play()
         if Eattimeseconds <= 0 then
             if Dino.xScale >= 0.2 then
               goLeft()
@@ -254,22 +261,18 @@ function scene:create( event )
 
     -- Early collision test for Dino Eating Plants
 
-    local function Createplantgroup ()
-        for i=0,0 do
-            myTable[i] = display.newGroup()
-            myTable[i].name = "myTable[i]" .. i
-            sceneGroup:insert(myTable[i])
-            print( myTable[i] )
-
-        end
-    end
-
    local function DinoPlantCollision( self, event )
     if event.phase == "began" then
            if event.target.myName == "FinishedPlant" and event.other.myName == "Dino" then
               print("Plant detected")
 
               DinoEat ()
+              
+              transition.fadeOut( event.target.parent, {time = 1000} )
+
+              display.remove( event.target )
+              print("Yummy!")
+
 
               FinishedPlantCount = 0
               FinishedPlantText.text = FinishedPlantCount
@@ -627,6 +630,7 @@ function scene:create( event )
 
         finishedPlant = display.newGroup();
 
+
         finishedPlant:insert(img_plant)
         finishedPlant:insert(img_plant)
         finishedPlant:insert(img_plant2)
@@ -680,15 +684,11 @@ function scene:create( event )
 
             if secondsTillcomplete <= 0
              then
-              Createplantgroup ()
-              sceneGroup:insert( finishedPlant )
-              myTable[ #myTable + 1 ] = finishedPlant
-              print( #myTable )
 
               local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
               print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
 
-              local Sensor = display.newCircle( sqCenterX, sqCenterY, 20 )
+              local Sensor = display.newCircle( sqCenterX, sqCenterY-190, 20 )
               Sensor.strokeWidth = 3
               Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
               Sensor:setFillColor( 0.1, 0.4, 0.2 )
@@ -698,8 +698,13 @@ function scene:create( event )
               physics.pause( Sensor )
               Sensor.collision = DinoPlantCollision
               Sensor:addEventListener( "collision", Sensor )
-              sceneGroup:insert( Sensor )
               toggleVisibility( Sensor )
+
+              newestPlant = display.newGroup();
+              newestPlant:insert( finishedPlant )
+              newestPlant:insert( Sensor )
+              sceneGroup:insert( newestPlant )
+
 
               toggleVisibility( btn_spawnPalm )
               toggleVisibility( btn_spawnFlax )
@@ -774,15 +779,11 @@ function scene:create( event )
 
             if secondsTillcomplete <= 0
              then
-                Createplantgroup ()
-                sceneGroup:insert( finishedPlant )
-                myTable[ #myTable + 1 ] = finishedPlant
-                print( #myTable )
-  
+                
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
   
-                local Sensor = display.newCircle( sqCenterX, sqCenterY+50, 20 )
+                local Sensor = display.newCircle( sqCenterX, sqCenterY-160, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
@@ -792,9 +793,14 @@ function scene:create( event )
                 physics.pause( Sensor )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
-                sceneGroup:insert( Sensor )
                 toggleVisibility( Sensor )
-
+  
+                newestPlant = display.newGroup();
+                newestPlant:insert( finishedPlant )
+                newestPlant:insert( Sensor )
+                sceneGroup:insert( newestPlant )
+  
+  
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
@@ -881,15 +887,11 @@ function scene:create( event )
 
             if secondsTillcomplete <= 0
              then
-                Createplantgroup ()
-                sceneGroup:insert( finishedPlant )
-                myTable[ #myTable + 1 ] = finishedPlant
-                print( #myTable )
-  
+
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
   
-                local Sensor = display.newCircle( sqCenterX, sqCenterY+85, 20 )
+                local Sensor = display.newCircle( sqCenterX, sqCenterY-120, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
@@ -899,9 +901,14 @@ function scene:create( event )
                 physics.pause( Sensor )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
-                sceneGroup:insert( Sensor )
                 toggleVisibility( Sensor )
-
+  
+                newestPlant = display.newGroup();
+                newestPlant:insert( finishedPlant )
+                newestPlant:insert( Sensor )
+                sceneGroup:insert( newestPlant )
+  
+  
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
@@ -979,15 +986,11 @@ function scene:create( event )
 
             if secondsTillcomplete <= 0
              then
-                Createplantgroup ()
-                sceneGroup:insert( finishedPlant )
-                myTable[ #myTable + 1 ] = finishedPlant
-                print( #myTable )
-  
+
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
   
-                local Sensor = display.newCircle( sqCenterX, sqCenterY+40, 20 )
+                local Sensor = display.newCircle( sqCenterX, sqCenterY-180, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
@@ -997,9 +1000,14 @@ function scene:create( event )
                 physics.pause( Sensor )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
-                sceneGroup:insert( Sensor )
                 toggleVisibility( Sensor )
-
+  
+                newestPlant = display.newGroup();
+                newestPlant:insert( finishedPlant )
+                newestPlant:insert( Sensor )
+                sceneGroup:insert( newestPlant )
+  
+  
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
