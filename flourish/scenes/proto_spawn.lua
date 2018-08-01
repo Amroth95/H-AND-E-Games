@@ -113,19 +113,9 @@ function DinoEat ()
 
     local Eattimeseconds = 4
 
-local function plantdestroy()
-object = nill
     local function Eattimeup ()
         Dino:setSequence( "normalWalk" )
         Dino:play()
-
-        if Eattimeseconds <= 4 then
-         DinosheetData2 ()
-
-          if Eattimeseconds <= 2 then
-          plantdestroy()
-
-
         if Eattimeseconds <= 0 then
             if Dino.xScale >= 0.2 then
               goLeft()
@@ -727,9 +717,7 @@ function scene:create( event )
 
     end
     donebtn_spawnFlax:addEventListener( "tap", donebtn_spawn_tapFlax )
-    if object=nil then
-     object:removeSelf()
-    end
+
 
     -- Done Palm
     local function donebtn_spawn_tapPalm ()
@@ -824,9 +812,7 @@ function scene:create( event )
 
     end
     donebtn_spawnPalm:addEventListener( "tap", donebtn_spawn_tapPalm )
-    if object =nil then
-     object:removeSelf()
-    end
+
 
     -- Done Pine
      local function donebtn_spawn_tapPine ()
@@ -935,9 +921,7 @@ function scene:create( event )
     end
     donebtn_spawnPine:addEventListener( "tap", donebtn_spawn_tapPine )
 
-    if object =nil then
-     object:removeSelf()
-    end
+
     -- Done Fern
     local function donebtn_spawn_tapFern ()
 
@@ -1035,13 +1019,8 @@ function scene:create( event )
 
     end
     donebtn_spawnFern:addEventListener( "tap", donebtn_spawn_tapFern )
-
-
-
 end
-if object =nil then
- object:removeSelf()
-end
+
 -- show()
 function scene:show( event )
 
