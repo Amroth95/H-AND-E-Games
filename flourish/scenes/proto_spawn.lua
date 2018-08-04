@@ -376,7 +376,7 @@ function scene:create( event )
               print("Plant detected")
 
               DinoEat ()
-              
+
               transition.fadeOut( event.target.parent, {time = 1000} )
 
               display.remove( event.target )
@@ -899,10 +899,10 @@ function scene:create( event )
 
             if secondsTillcomplete <= 0
              then
-                
+
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-  
+
                 local Sensor = display.newCircle( sqCenterX, sqCenterY-160, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
@@ -914,13 +914,13 @@ function scene:create( event )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
                 toggleVisibility( Sensor )
-  
+
                 newestPlant = display.newGroup();
                 newestPlant:insert( finishedPlant )
                 newestPlant:insert( Sensor )
                 sceneGroup:insert( newestPlant )
-  
-  
+
+
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
@@ -1013,7 +1013,7 @@ function scene:create( event )
 
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-  
+
                 local Sensor = display.newCircle( sqCenterX, sqCenterY-120, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
@@ -1025,13 +1025,13 @@ function scene:create( event )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
                 toggleVisibility( Sensor )
-  
+
                 newestPlant = display.newGroup();
                 newestPlant:insert( finishedPlant )
                 newestPlant:insert( Sensor )
                 sceneGroup:insert( newestPlant )
-  
-  
+
+
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
@@ -1115,7 +1115,7 @@ function scene:create( event )
 
                 local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
                 print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-  
+
                 local Sensor = display.newCircle( sqCenterX, sqCenterY-180, 20 )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
@@ -1127,13 +1127,13 @@ function scene:create( event )
                 Sensor.collision = DinoPlantCollision
                 Sensor:addEventListener( "collision", Sensor )
                 toggleVisibility( Sensor )
-  
+
                 newestPlant = display.newGroup();
                 newestPlant:insert( finishedPlant )
                 newestPlant:insert( Sensor )
                 sceneGroup:insert( newestPlant )
-  
-  
+
+
                 toggleVisibility( btn_spawnPalm )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
@@ -1147,9 +1147,6 @@ function scene:create( event )
 
     end
     donebtn_spawnFern:addEventListener( "tap", donebtn_spawn_tapFern )
-
-
-
 end
 
 -- show()
