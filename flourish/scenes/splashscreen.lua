@@ -66,7 +66,7 @@ function scene:create( event )
     splasher:addEventListener( "tap", startGame )
     sceneGroup:insert( splasher )
 
-    splashtext = createImage("images/SplashOne.png", 1440, 810, display.contentCenterX, display.contentCenterY)
+    splashtext = createImage("images/SplashOne.png", 920, 500, display.contentCenterX, display.contentCenterY)
     sceneGroup:insert( splashtext )
 
     local myText = display.newText( "H-and-E Games Presents:", 470, 80, native.systemFont, 16 )
