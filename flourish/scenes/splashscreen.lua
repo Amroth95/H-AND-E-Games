@@ -1,6 +1,9 @@
 local composer = require( "composer" )
+local name = require( "libraries.proto_utilities" )
 
 local scene = composer.newScene()
+
+local physics = require( "physics" )
 
 
 -- -----------------------------------------------------------------------------------
@@ -8,12 +11,6 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function startGame()
-    composer.removeScene( "scenes..splashscreen", options)
-    composer.gotoScene( "scenes..proto_spawn", options )
-    display.remove(splasher)
-    display.remove(splashtext)
-end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -24,12 +21,53 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
+
+    local function startGame()
+
+        local startoptions = {
+            effect = "fade",
+            time = 600
+        }
+        
+        composer.gotoScene( "scenes..proto_spawn", startoptions )
+        backtoGameplay ()
+    
+    end
+
+    function backtoGameplay ()
+
+        local secondsTillchange = 1  -- 10 minutes = 600 seconds
+  
+        local function updateTimeForScenechange( event )
+  
+            -- Decrement the number of seconds
+            secondsTillchange = secondsTillchange - 1
+  
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( secondsTillchange / 1 )
+            local seconds = secondsTillchange % 1
+  
+            Replaybegin()
+        end
+  
+        SceneChangeTimer = timer.performWithDelay( 600, updateTimeForScenechange, secondsTillchange )
+  
+        function Replaybegin()
+            if secondsTillchange <= 0 then
+                composer.removeScene( "scenes..splashscreen")
+            end
+        end
+      
+    end
+
     splasher = createImage("images/SplashTwo.png", 1920, 1080, display.contentCenterX, display.contentCenterY)
     splasher.alpha = 0.7
     
     splasher:addEventListener( "tap", startGame )
+    sceneGroup:insert( splasher )
 
     splashtext = createImage("images/SplashOne.png", 1440, 810, display.contentCenterX, display.contentCenterY)
+    sceneGroup:insert( splashtext )
 
     local myText = display.newText( "H-and-E Games Presents:", 470, 80, native.systemFont, 16 )
     myText:setFillColor( 1, 1, 1 )

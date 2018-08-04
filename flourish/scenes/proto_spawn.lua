@@ -2,236 +2,18 @@ local composer = require( "composer" )
 local name = require( "libraries.proto_utilities" )
 
 local scene = composer.newScene()
-local img_plant, img_plant2
 local proto_rect
 local proto_dest
 
 local physics = require( "physics" )
-physics.start()
+--physics.start()
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
--- Prototype of dinosaur movement (Lines 21 to 107)
 
-local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 } 
-local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
-
-local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
-local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
-
-local sequenceDinoData = {
-    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
-    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=1500, loopCount=0} 
-}
-    
-local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
-Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
-Dino:scale(0.2, 0.2)
-Dino:play()
-
-
-Dino.x = display.contentCenterX+400
-Dino.y = display.contentCenterY-110
-physics.addBody(Dino, {density=200, friction=5, radius=25})
-physics.setGravity(0,0)
-Dino.myName = "Dino"
-
-
-function goLeft()
- Dino.xScale = 0.2
-
- transition.to( Dino, { time=6000, x=(75) } )
-
- local rightsecondsTillcomplete = 7
-
- local function LeftTimer( event )
-
-   -- Decrement the number of seconds
-   rightsecondsTillcomplete = rightsecondsTillcomplete - 1
-
-   -- Time is tracked in seconds; convert it to minutes and seconds
-   local minutes = math.floor( rightsecondsTillcomplete / 7 )
-   local seconds = rightsecondsTillcomplete % 7
-
-   Lefttimeup ()
-
- end
-
- gorightttimer = timer.performWithDelay( 1000, LeftTimer, rightsecondsTillcomplete )
-
- function Lefttimeup ()
-   if rightsecondsTillcomplete <= 0
-    then
-       goRight()
-    end
-
- end
-
-end
-
-
-function goRight()
- Dino.xScale = -0.2
-
- transition.to( Dino, { time=6000, x=(875) } )
-
- local rightsecondsTillcomplete = 7
-
- local function RightTimer( event )
-
-   -- Decrement the number of seconds
-   rightsecondsTillcomplete = rightsecondsTillcomplete - 1
-
-   -- Time is tracked in seconds; convert it to minutes and seconds
-   local minutes = math.floor( rightsecondsTillcomplete / 7 )
-   local seconds = rightsecondsTillcomplete % 7
-
-   Righttimeup ()
-
- end
-
-  gorighttimer = timer.performWithDelay( 1000, RightTimer, rightsecondsTillcomplete )
-
- function Righttimeup ()
-   if rightsecondsTillcomplete <= 0
-    then
-       goLeft()
-    end
-
- end
-end
-
--- function for stoping the dino and making it eat (Work in Progress) (Lines 110 to 147)
-function DinoEat ()
-    transition.cancel(Dino)
-    Dino:setSequence( "normalEat" )
-    Dino:play()
-    rightsecondsTillcomplete = 11
-
-    local Eattimeseconds = 4
-
-    local function Eattimeup ()
-        Dino:setSequence( "normalWalk" )
-        Dino:play()
-        if Eattimeseconds <= 0 then
-            if Dino.xScale >= 0.2 then
-              goLeft()
-              print("Going Left")
-            else
-              goRight()
-              print("Going Right")
-            end
-        end
-    end
-
-    local function EatTimer( event )
-
-        -- Decrement the number of seconds
-        Eattimeseconds = Eattimeseconds - 1
-     
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( Eattimeseconds / 4 )
-        local seconds = Eattimeseconds % 4
-     
-        Eattimeup ()
-     
-    end
-     
-    eatingtimer = timer.performWithDelay( 1000, EatTimer, Eattimeseconds )
-     
-end
-
-
-goLeft()
-
--- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
-
-local secondsLeft = 25  -- 10 minutes = 600 seconds
-
-local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
-clockText:setFillColor( 0.7, 0.7, 1 )
-
-local function updateTime( event )
-
- -- Decrement the number of seconds
-  secondsLeft = secondsLeft - 1
-
- -- Time is tracked in seconds; convert it to minutes and seconds
-  local minutes = math.floor( secondsLeft / 25 )
-  local seconds = secondsLeft % 25
-
- -- Make it a formatted string
-  local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
-
- -- Update the text object
-    clockText.text = timeDisplay
-
-  timeup ()
-
-end
-
-local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-
-local function resetTimer( )
-    timer.cancel(countDownTimer)
-    secondsLeft = 25
-    countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-end
-
-function timeup ()
-
-    if secondsLeft <= 0
-        then composer.gotoScene( "scenes..splashscreen", options )
-        composer.removeScene( "scenes..proto_spawn", options )
-        display.remove(clockText)
-        physics.stop()
-    end
-end
-
-
-
-local function btn_swatch_tap ( event, color )
-  proto_rect:setFillColor(unpack(event.target.color))
-  proto_rect.color = event.target.color
-  print(unpack(proto_rect.color))
-  
-  local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
-
-  local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-  
-  resetTimer( )
-  -- event.target:scale(1.25)
-end
-
-
-local function tintPlant ( event )
-  event.target:setFillColor(unpack(proto_rect.color))
-
-  local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
-
-  local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
-  resetTimer( )
-end
-
-local function tintDest ( event )
-  proto_dest:setFillColor(unpack(proto_rect.color))
-end
-
--- Sound effects for buttons
-local function clicksound ()
-    local Clickselect = audio.loadSound( "sounds/buttons/Click Sound.mp3" )
-
-    local Clickselectchannel = audio.play( Clickselect, { channel=3, loops=0 } )
-end
-
-local function donesound ()
-    local Clickdone = audio.loadSound( "sounds/buttons/Done Plant.mp3" )
-
-    local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
-end
 
 
 -- -----------------------------------------------------------------------------------
@@ -243,24 +25,351 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
+    physics.start()
+
+    -----------------------------------
+    -- Set up for dinosaur animations
+    -----------------------------------
+
+    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 } 
+    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
+
+    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
+    local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
+
+    local sequenceDinoData = {
+    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
+    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0} 
+    }
+
+    -----------------------------------------
+    -- Dino Set up for movement and eating
+    -----------------------------------------
+    local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
+    Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
+    Dino:scale(0.2, 0.2)
+    Dino:play()
+
+
+    Dino.x = display.contentCenterX+400
+    Dino.y = display.contentCenterY-110
+    physics.addBody(Dino, {density=1000, friction=100, radius=30})
+    physics.setGravity(0,0)
+    Dino.myName = "Dino"
 
     sceneGroup:insert( Dino )
+    physics.pause( Dino )
 
+
+    function goLeft()
+        if Dino == nil then
+            do return end
+        else
+            Dino.xScale = 0.2
+            Dino:setSequence( "normalWalk" )
+            Dino:play()
+        end
+
+      transition.to( Dino, { time=6000, x=(75) } )
+
+      local rightsecondsTillcomplete = 7
+
+      local function LeftTimer( event )
+
+         -- Decrement the number of seconds
+         rightsecondsTillcomplete = rightsecondsTillcomplete - 1
+
+         -- Time is tracked in seconds; convert it to minutes and seconds
+         local minutes = math.floor( rightsecondsTillcomplete / 7 )
+         local seconds = rightsecondsTillcomplete % 7
+
+         Lefttimeup ()
+
+        end
+
+      local gorightttimer = timer.performWithDelay( 1000, LeftTimer, rightsecondsTillcomplete )
+
+      function Lefttimeup ()
+        if rightsecondsTillcomplete <= 0
+           then
+             goRight()
+           end
+
+        end
+
+    end
+
+
+    function goRight()
+        if Dino == nil then
+            do return end
+        else
+            Dino.xScale = -0.2
+            Dino:setSequence( "normalWalk" )
+            Dino:play()
+        end
+
+      transition.to( Dino, { time=6000, x=(875) } )
+
+      local rightsecondsTillcomplete = 7
+
+      local function RightTimer( event )
+
+         -- Decrement the number of seconds
+         rightsecondsTillcomplete = rightsecondsTillcomplete - 1
+
+         -- Time is tracked in seconds; convert it to minutes and seconds
+         local minutes = math.floor( rightsecondsTillcomplete / 7 )
+         local seconds = rightsecondsTillcomplete % 7
+
+         Righttimeup ()
+
+        end
+
+      local gorighttimer = timer.performWithDelay( 1000, RightTimer, rightsecondsTillcomplete )
+
+       function Righttimeup ()
+          if rightsecondsTillcomplete <= 0
+            then
+              goLeft()
+            end
+
+        end
+    end
+
+    -- function for stoping the dino and making it eat (Work in Progress)
+    function DinoEat ()
+      transition.pause(Dino)
+      Dino:setSequence( "normalEat" )
+      Dino:play()
+      rightsecondsTillcomplete = 11
+
+      local Eattimeseconds = 2
+
+        local function EatTimer( event )
+
+          -- Decrement the number of seconds
+          Eattimeseconds = Eattimeseconds - 1
+     
+          -- Time is tracked in seconds; convert it to minutes and seconds
+          local minutes = math.floor( Eattimeseconds / 2 )
+          local seconds = Eattimeseconds % 2
+     
+          Eattimeup ()
+     
+        end
+     
+      eatingtimer = timer.performWithDelay( 1000, EatTimer, Eattimeseconds )
+
+        function Eattimeup ()
+
+           if Dino == nil then
+              do return end
+            else
+                if Eattimeseconds <= 0 then
+                  if Dino.xScale >= 0.2 then
+                     goLeft()
+                     print("Going Left")
+                    else
+                     goRight()
+                     print("Going Right")
+                    end
+                   timer.cancel( eatingtimer )
+                end
+            end
+        end
+     
+    end
+
+   goLeft()
+
+    -------------------------------------------------------------------------------------------------------------------
+    -- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
+    -------------------------------------------------------------------------------------------------------------------
+
+    local secondsLeft = 25  -- 10 minutes = 600 seconds
+
+    local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
+    clockText:setFillColor( 0.7, 0.7, 1 )
+
+    local function updateTime( event )
+
+      -- Decrement the number of seconds
+      secondsLeft = secondsLeft - 1
+
+      -- Time is tracked in seconds; convert it to minutes and seconds
+      local minutes = math.floor( secondsLeft / 25 )
+      local seconds = secondsLeft % 25
+
+      -- Make it a formatted string
+      local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
+
+      -- Update the text object
+      clockText.text = timeDisplay
+
+      timeup ()
+
+    end
+
+    local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+    
+    local function resetTimer( )
+      timer.cancel(countDownTimer)
+      secondsLeft = 25
+      countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+    end
+
+    sceneGroup:insert( clockText )
+    
+    ------------------------
+    -- Colouring functions
+    ------------------------
+    local function btn_swatch_tap ( event, color )
+      proto_rect:setFillColor(unpack(event.target.color))
+      proto_rect.color = event.target.color
+      print(unpack(proto_rect.color))
+  
+      local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+
+      local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+  
+      resetTimer( )
+    end
+
+    local function tintPlant ( event )
+      event.target:setFillColor(unpack(proto_rect.color))
+
+      local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+
+      local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+      resetTimer( )
+    end
+
+    local function tintDest ( event )
+      proto_dest:setFillColor(unpack(proto_rect.color))
+    end
+
+    -----------------------------
+    -- Sound effects for buttons
+    -----------------------------
+    local function clicksound ()
+      local Clickselect = audio.loadSound( "sounds/buttons/Click Sound.mp3" )
+
+      local Clickselectchannel = audio.play( Clickselect, { channel=3, loops=0 } )
+    end
+
+    local function donesound ()
+      local Clickdone = audio.loadSound( "sounds/buttons/Done Plant.mp3" )
+
+      local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
+    end
+    
+    ----------------------------------------------
+    -- Splashscreen and endgame screen triggers 
+    ----------------------------------------------
+    local endgameCount = 0
+
+    function endgametrigger ()
+  
+        local endoptions = {
+            effect = "fade",
+            time = 1200
+        }
+    
+        if endgameCount >= 3
+            then composer.gotoScene( "scenes..endgame", endoptions )
+            display.remove( Sensor )
+            scenechange2 ()        
+        end
+
+    end
+
+    function timeup ()
+
+        local splashoptions = {
+            effect = "fade",
+            time = 600
+        }
+   
+        if secondsLeft <= 0
+            then composer.gotoScene( "scenes..splashscreen", splashoptions)
+            scenechange1 ()
+            Dino = nil
+        end
+
+    end
+
+    function scenechange1 ()
+
+      local secondsTillchange = 1  -- 10 minutes = 600 seconds
+
+        local function updateTimeForScenechange( event )
+
+          -- Decrement the number of seconds
+          secondsTillchange = secondsTillchange - 1
+
+          -- Time is tracked in seconds; convert it to minutes and seconds
+          local minutes = math.floor( secondsTillchange / 1 )
+          local seconds = secondsLeft % 1
+
+          Nextscene1 ()
+        end
+
+      SceneChangeTimer = timer.performWithDelay( 600, updateTimeForScenechange, secondsTillchange )
+
+       function Nextscene1()
+            if secondsTillchange <= 0 then
+              composer.removeScene( "scenes..proto_spawn")
+            end
+        end
+    end
+
+    function scenechange2 ()
+
+        local secondsTillchange = 1  -- 10 minutes = 600 seconds
+  
+        local function updateTimeForScenechange( event )
+  
+            -- Decrement the number of seconds
+            secondsTillchange = secondsTillchange - 1
+  
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( secondsTillchange / 1 )
+            local seconds = secondsLeft % 1
+  
+            Nextscene2 ()
+        end
+  
+        SceneChangeTimer = timer.performWithDelay( 1010, updateTimeForScenechange, secondsTillchange )
+  
+        function Nextscene2()
+            if secondsTillchange <= 0 then
+                endgameCount = 0
+                composer.removeScene( "scenes..proto_spawn")
+                Dino = nil
+            end
+        end
+    end
+
+    ------------------------------------
     -- Color indicator, (Test Only)
+    ------------------------------------
     proto_rect = display.newRect( 100, 50, 100, 30 )
     proto_rect.color = {0,0,0}
     sceneGroup:insert( proto_rect )
 
-
+    --------------------------------------------------------------------------
     -- Counts the number of finished plants (Text won't be in the final game)
+    --------------------------------------------------------------------------
     local FinishedPlantCount = 0
 
     local FinishedPlantText = display.newText( FinishedPlantCount, display.contentCenterX, 20, native.systemFont, 40 )
     FinishedPlantText:setFillColor( 0, 0, 0 )
     sceneGroup:insert( FinishedPlantText )
 
-    -- Early collision test for Dino Eating Plants
-
+    -----------------------------------------------------------------
+    -- Early collision test for Dino Eating Plants (Lines 316 to 342)
+    -----------------------------------------------------------------
    local function DinoPlantCollision( self, event )
     if event.phase == "began" then
            if event.target.myName == "FinishedPlant" and event.other.myName == "Dino" then
@@ -273,11 +382,14 @@ function scene:create( event )
               display.remove( event.target )
               print("Yummy!")
 
+              endgameCount = endgameCount + 1
 
               FinishedPlantCount = 0
               FinishedPlantText.text = FinishedPlantCount
 
               physics.pause( Sensor )
+
+              endgametrigger ()
 
             end
         end
@@ -285,10 +397,11 @@ function scene:create( event )
 
     Dino.collision = DinoPlantCollision
     Dino:addEventListener( "collision", Dino )
-
-
+ 
+    -------------------------------------------------------------
     -- Color palette Buttons (Set to insivisble on game start)
-
+    -------------------------------------------------------------
+    
     -- Palette For Player 1
 
     local btn_new1 = display.newCircle( 40, 500, 20 )
@@ -328,9 +441,9 @@ function scene:create( event )
     toggleVisibility( btn_new4 )
 
 
-
+    ---------------------------------------------------------------------------------------------
     -- creates done buttons for when you're finished colouring, set to invisible on level start.
-
+    ---------------------------------------------------------------------------------------------
     local donebtn_spawnFlax = display.newImageRect( "images/Done Button Template.png", 150, 55)
     donebtn_spawnFlax.x = display.contentCenterX-360
     donebtn_spawnFlax.y = display.contentCenterY+180
@@ -376,7 +489,9 @@ function scene:create( event )
     btn_spawnFern.y = display.contentCenterY+230
     sceneGroup:insert( btn_spawnFern )
 
+    ---------------------------------------
     --Creates Spawn functions for buttons
+    ---------------------------------------
 
     -- Spawn Flax
     local function btn_spawn_tapFlax ()
@@ -608,8 +723,9 @@ function scene:create( event )
     end
     btn_spawnFern:addEventListener( "tap", btn_spawn_tapFern )
 
-
+    -----------------------------------------------------------------------------------------------------------------------------
     -- sends plant to background, makes them non-interactable and resets the level back to original start up (WORK IN PROGRESS)
+    -----------------------------------------------------------------------------------------------------------------------------
 
     -- Done Flax
     local function donebtn_spawn_tapFlax ()
@@ -659,6 +775,7 @@ function scene:create( event )
 
         if FinishedPlantCount >= 4 then
             physics.start( Sensor )
+            physics.start( Dino )
         end
 
         resetTimer(  )
@@ -692,7 +809,7 @@ function scene:create( event )
               Sensor.strokeWidth = 3
               Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
               Sensor:setFillColor( 0.1, 0.4, 0.2 )
-              physics.addBody(Sensor, "Dynamic", {density=100, friction=5, radius=1})
+              physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
               physics.setGravity(0,0)
               Sensor.myName = "FinishedPlant"
               physics.pause( Sensor )
@@ -710,7 +827,9 @@ function scene:create( event )
               toggleVisibility( btn_spawnFlax )
               toggleVisibility( btn_spawnPine )
               toggleVisibility( btn_spawnFern )
-              
+
+              physics.pause( Dino )
+
             end
         end
 
@@ -754,6 +873,7 @@ function scene:create( event )
 
         if FinishedPlantCount >= 4 then
             physics.start( Sensor )
+            physics.start( Dino )
         end
 
         resetTimer(  )
@@ -787,7 +907,7 @@ function scene:create( event )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=100, friction=5, radius=1})
+                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
                 physics.setGravity(0,0)
                 Sensor.myName = "FinishedPlant"
                 physics.pause( Sensor )
@@ -805,6 +925,8 @@ function scene:create( event )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
                 toggleVisibility( btn_spawnFern )
+
+                physics.pause( Dino )
 
             end
         end
@@ -862,6 +984,7 @@ function scene:create( event )
 
         if FinishedPlantCount >= 4 then
             physics.start( Sensor )
+            physics.start( Dino )
         end
 
         resetTimer(  )
@@ -895,7 +1018,7 @@ function scene:create( event )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=100, friction=5, radius=1})
+                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
                 physics.setGravity(0,0)
                 Sensor.myName = "FinishedPlant"
                 physics.pause( Sensor )
@@ -913,6 +1036,8 @@ function scene:create( event )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
                 toggleVisibility( btn_spawnFern )
+
+                physics.pause( Dino )
 
             end
         end
@@ -961,6 +1086,7 @@ function scene:create( event )
 
         if FinishedPlantCount >= 4 then
             physics.start( Sensor )
+            physics.start( Dino )
         end
 
         resetTimer(  )
@@ -994,7 +1120,7 @@ function scene:create( event )
                 Sensor.strokeWidth = 3
                 Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
                 Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=100, friction=5, radius=1})
+                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
                 physics.setGravity(0,0)
                 Sensor.myName = "FinishedPlant"
                 physics.pause( Sensor )
@@ -1012,6 +1138,8 @@ function scene:create( event )
                 toggleVisibility( btn_spawnFlax )
                 toggleVisibility( btn_spawnPine )
                 toggleVisibility( btn_spawnFern )
+
+                physics.pause( Dino )
 
             end
         end
