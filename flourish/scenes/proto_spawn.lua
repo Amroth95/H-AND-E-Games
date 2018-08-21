@@ -27,9 +27,9 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     physics.start()
 
-    -----------------------------------
+    ---------------------------------------------------------------------------------------------------------
     -- Set up for dinosaur animations
-    -----------------------------------
+    ---------------------------------------------------------------------------------------------------------
 
     local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 }
     local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
@@ -42,14 +42,13 @@ function scene:create( event )
     {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
     }
 
-    -----------------------------------------
-    -- Dino Set up for movement and eating
-    -----------------------------------------
+    ---------------------------------------------------------------------------------------------------------------
+    -- Dino placement and set up for movement and eating
+    ---------------------------------------------------------------------------------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
     Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
     Dino:scale(0.2, 0.2)
     Dino:play()
-
 
     Dino.x = display.contentCenterX+400
     Dino.y = display.contentCenterY-110
@@ -60,7 +59,9 @@ function scene:create( event )
     sceneGroup:insert( Dino )
     physics.pause( Dino )
 
-
+    ---------------------------------------------------------------------------------------------------------
+    -- move the dino left
+    ---------------------------------------------------------------------------------------------------------
     function goLeft()
         if Dino == nil then
             do return end
@@ -99,7 +100,9 @@ function scene:create( event )
 
     end
 
-
+    ---------------------------------------------------------------------------------------------------------
+    -- move the dino right
+    ---------------------------------------------------------------------------------------------------------
     function goRight()
         if Dino == nil then
             do return end
@@ -137,12 +140,14 @@ function scene:create( event )
         end
     end
 
+    ---------------------------------------------------------------------------------------------------------
     -- function for stoping the dino and making it eat (Work in Progress)
+    ---------------------------------------------------------------------------------------------------------
     function DinoEat ()
       transition.pause(Dino)
       Dino:setSequence( "normalEat" )
       Dino:play()
-      rightsecondsTillcomplete = 11
+      --rightsecondsTillcomplete = 11 -- maybe remove -------------------------------------------------------------------------------------
 
       local Eattimeseconds = 2
 
@@ -178,14 +183,16 @@ function scene:create( event )
                 end
             end
         end
-
     end
 
+   ---------------------------------------------------------------------------------------------------------
+   --start the dinos movement
+   ---------------------------------------------------------------------------------------------------------
    goLeft()
 
-    -------------------------------------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------------------------------------------------------
     -- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
-    -------------------------------------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------------------------------------------------------
 
     local secondsLeft = 25  -- 10 minutes = 600 seconds
 
@@ -201,11 +208,14 @@ function scene:create( event )
       local minutes = math.floor( secondsLeft / 25 )
       local seconds = secondsLeft % 25
 
+      ---------------------------------------------------------------------------------------------------------------------------------
+      -- display timer
       -- Make it a formatted string
       local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
 
       -- Update the text object
       clockText.text = timeDisplay
+      ----------------------------------------------------------------------------------------------------------------------------------
 
       timeup ()
 
@@ -221,9 +231,13 @@ function scene:create( event )
 
     sceneGroup:insert( clockText )
 
-    ------------------------
+    ---------------------------------------------------------------------------------------------------------------------------------
     -- Colouring functions
-    ------------------------
+    ---------------------------------------------------------------------------------------------------------------------------------
+
+    ----------------------------------------------------------------------
+    -- set button colour and play sounds
+    ----------------------------------------------------------------------
     local function btn_swatch_tap ( event, color )
       proto_rect:setFillColor(unpack(event.target.color))
       proto_rect.color = event.target.color
@@ -236,6 +250,9 @@ function scene:create( event )
       resetTimer( )
     end
 
+    ----------------------------------------------------------------------
+    -- colour plant and play colour sounds
+    ----------------------------------------------------------------------
     local function tintPlant ( event )
       event.target:setFillColor(unpack(proto_rect.color))
 
@@ -249,9 +266,9 @@ function scene:create( event )
       proto_dest:setFillColor(unpack(proto_rect.color))
     end
 
-    -----------------------------
+    ----------------------------------------------------------------
     -- Sound effects for buttons
-    -----------------------------
+    ----------------------------------------------------------------
     local function clicksound ()
       local Clickselect = audio.loadSound( "sounds/buttons/Click Sound.mp3" )
 
@@ -264,13 +281,13 @@ function scene:create( event )
       local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
     end
 
-    ----------------------------------------------
+    --------------------------------------------------------------------------------------------------------------------
     -- Splashscreen and endgame screen triggers
-    ----------------------------------------------
+    --------------------------------------------------------------------------------------------------------------------
     local endgameCount = 0
 
+    -- check to see if its time to change to splash screen
     function endgametrigger ()
-
         local endoptions = {
             effect = "fade",
             time = 1200
@@ -279,13 +296,15 @@ function scene:create( event )
         if endgameCount >= 3
             then composer.gotoScene( "scenes..endgame", endoptions )
             display.remove( Sensor )
-            scenechange2 ()
+            SceneChangeTimer = timer.performWithDelay( 1010 )
+            endgameCount = 0
+            composer.removeScene( "scenes..proto_spawn")
+            Dino = nil
         end
-
     end
 
+    -- see if its time to go into idle screen
     function timeup ()
-
         local splashoptions = {
             effect = "fade",
             time = 600
@@ -293,67 +312,15 @@ function scene:create( event )
 
         if secondsLeft <= 0
             then composer.gotoScene( "scenes..splashscreen", splashoptions)
-            scenechange1 ()
+            SceneChangeTimer = timer.performWithDelay( 600 )
+            composer.removeScene( "scenes..proto_spawn")
             Dino = nil
         end
-
     end
 
-    function scenechange1 ()
-
-      local secondsTillchange = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForScenechange( event )
-
-          -- Decrement the number of seconds
-          secondsTillchange = secondsTillchange - 1
-
-          -- Time is tracked in seconds; convert it to minutes and seconds
-          local minutes = math.floor( secondsTillchange / 1 )
-          local seconds = secondsLeft % 1
-
-          Nextscene1 ()
-        end
-
-      SceneChangeTimer = timer.performWithDelay( 600, updateTimeForScenechange, secondsTillchange )
-
-       function Nextscene1()
-            if secondsTillchange <= 0 then
-              composer.removeScene( "scenes..proto_spawn")
-            end
-        end
-    end
-
-    function scenechange2 ()
-
-        local secondsTillchange = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForScenechange( event )
-
-            -- Decrement the number of seconds
-            secondsTillchange = secondsTillchange - 1
-
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillchange / 1 )
-            local seconds = secondsLeft % 1
-
-            Nextscene2 ()
-        end
-
-        SceneChangeTimer = timer.performWithDelay( 1010, updateTimeForScenechange, secondsTillchange )
-
-        function Nextscene2()
-            if secondsTillchange <= 0 then
-                endgameCount = 0
-                composer.removeScene( "scenes..proto_spawn")
-                Dino = nil
-            end
-        end
-    end
-
-    ------------------------------------
+    -----------------------------------------------------------------------
     -- Color indicator, (Test Only)
-    ------------------------------------
+    -----------------------------------------------------------------------
     proto_rect = display.newRect( 100, 50, 100, 30 )
     proto_rect.color = {0,0,0}
     sceneGroup:insert( proto_rect )
