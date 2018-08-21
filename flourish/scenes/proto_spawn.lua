@@ -31,15 +31,15 @@ function scene:create( event )
     -- Set up for dinosaur animations
     -----------------------------------
 
-    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 } 
+    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 }
     local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
 
-    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
+    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 }
     local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
 
     local sequenceDinoData = {
     {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
-    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0} 
+    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
     }
 
     -----------------------------------------
@@ -150,15 +150,15 @@ function scene:create( event )
 
           -- Decrement the number of seconds
           Eattimeseconds = Eattimeseconds - 1
-     
+
           -- Time is tracked in seconds; convert it to minutes and seconds
           local minutes = math.floor( Eattimeseconds / 2 )
           local seconds = Eattimeseconds % 2
-     
+
           Eattimeup ()
-     
+
         end
-     
+
       eatingtimer = timer.performWithDelay( 1000, EatTimer, Eattimeseconds )
 
         function Eattimeup ()
@@ -178,7 +178,7 @@ function scene:create( event )
                 end
             end
         end
-     
+
     end
 
    goLeft()
@@ -212,7 +212,7 @@ function scene:create( event )
     end
 
     local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    
+
     local function resetTimer( )
       timer.cancel(countDownTimer)
       secondsLeft = 25
@@ -220,7 +220,7 @@ function scene:create( event )
     end
 
     sceneGroup:insert( clockText )
-    
+
     ------------------------
     -- Colouring functions
     ------------------------
@@ -228,11 +228,11 @@ function scene:create( event )
       proto_rect:setFillColor(unpack(event.target.color))
       proto_rect.color = event.target.color
       print(unpack(proto_rect.color))
-  
+
       local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
 
       local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-  
+
       resetTimer( )
     end
 
@@ -263,23 +263,23 @@ function scene:create( event )
 
       local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
     end
-    
+
     ----------------------------------------------
-    -- Splashscreen and endgame screen triggers 
+    -- Splashscreen and endgame screen triggers
     ----------------------------------------------
     local endgameCount = 0
 
     function endgametrigger ()
-  
+
         local endoptions = {
             effect = "fade",
             time = 1200
         }
-    
+
         if endgameCount >= 3
             then composer.gotoScene( "scenes..endgame", endoptions )
             display.remove( Sensor )
-            scenechange2 ()        
+            scenechange2 ()
         end
 
     end
@@ -290,7 +290,7 @@ function scene:create( event )
             effect = "fade",
             time = 600
         }
-   
+
         if secondsLeft <= 0
             then composer.gotoScene( "scenes..splashscreen", splashoptions)
             scenechange1 ()
@@ -327,21 +327,21 @@ function scene:create( event )
     function scenechange2 ()
 
         local secondsTillchange = 1  -- 10 minutes = 600 seconds
-  
+
         local function updateTimeForScenechange( event )
-  
+
             -- Decrement the number of seconds
             secondsTillchange = secondsTillchange - 1
-  
+
             -- Time is tracked in seconds; convert it to minutes and seconds
             local minutes = math.floor( secondsTillchange / 1 )
             local seconds = secondsLeft % 1
-  
+
             Nextscene2 ()
         end
-  
+
         SceneChangeTimer = timer.performWithDelay( 1010, updateTimeForScenechange, secondsTillchange )
-  
+
         function Nextscene2()
             if secondsTillchange <= 0 then
                 endgameCount = 0
@@ -397,11 +397,11 @@ function scene:create( event )
 
     Dino.collision = DinoPlantCollision
     Dino:addEventListener( "collision", Dino )
- 
+
     -------------------------------------------------------------
     -- Color palette Buttons (Set to insivisble on game start)
     -------------------------------------------------------------
-    
+
     -- Palette For Player 1
 
     local btn_new1 = display.newCircle( 40, 500, 20 )
@@ -493,6 +493,14 @@ function scene:create( event )
     --Creates Spawn functions for buttons
     ---------------------------------------
 
+    -- set flax masks
+    local flaxMask1 = graphics.newMask( "images/plant1/flax1.png" )
+    local flaxMask2 = graphics.newMask( "images/plant2/flax2.png" )
+    local flaxMask3 = graphics.newMask( "images/plant3/flax3.png" )
+    local flaxMask4 = graphics.newMask( "images/plant4/flax4.png" )
+    local flaxMask5 = graphics.newMask( "images/plant5/flax5.png" )
+    local flaxMask6 = graphics.newMask( "images/plant6/flax6.png" )
+
     -- Spawn Flax
     local function btn_spawn_tapFlax ()
       toggleVisibility( donebtn_spawnFlax )
@@ -511,40 +519,42 @@ function scene:create( event )
       img_plant = createImage("images/plant1/plant1.png", 65, 37.5, display.contentCenterX-330, display.contentCenterY+115)
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.6)
+      img_plant:setMask( flax1 )
 
       sceneGroup:insert( img_plant )
 
       img_plant2 = createImage("images/plant1/plant2.png", 65, 49, display.contentCenterX-390, display.contentCenterY+115)
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.7)
+      img_plant2:setMask( flax2 )
 
       sceneGroup:insert( img_plant2 )
 
       img_plant3 = createImage("images/plant1/plant3.png", 75, 97.5, display.contentCenterX-330, display.contentCenterY+85)
       img_plant3:addEventListener( "tap", tintPlant )
       img_plant3:setFillColor(0.8)
+      img_plant3:setMask( flax3 )
 
       sceneGroup:insert( img_plant3 )
 
       img_plant4 = createImage("images/plant1/plant4.png", 90, 67, display.contentCenterX-400, display.contentCenterY+85)
       img_plant4:addEventListener( "tap", tintPlant )
       img_plant4:setFillColor(0.6)
-
+      img_plant4:setMask( flax4 )
 
       sceneGroup:insert( img_plant4 )
 
       img_plant5 = createImage("images/plant1/plant5.png", 51.5, 92.5, display.contentCenterX-380, display.contentCenterY+85)
       img_plant5:addEventListener( "tap", tintPlant )
       img_plant5:setFillColor(0.7)
-
-
+      img_plant5:setMask( flax5 )
 
       sceneGroup:insert( img_plant5 )
 
       img_plant6 = createImage("images/plant1/plant6.png", 64, 83.5, display.contentCenterX-330, display.contentCenterY+85)
       img_plant6:addEventListener( "tap", tintPlant )
       img_plant6:setFillColor(0.7)
-
+      img_plant6:setMask( flax6 )
 
       sceneGroup:insert( img_plant6 )
 
@@ -575,26 +585,17 @@ function scene:create( event )
       img_plant:addEventListener( "tap", tintPlant )
       img_plant:setFillColor(0.7)
 
-
-      img_plant:setMask( mask )
-
       sceneGroup:insert( img_plant )
 
       img_plant2 = createImage("images/plant2/plant2.png", 80, 40, display.contentCenterX-400, display.contentCenterY+42)
       img_plant2:addEventListener( "tap", tintPlant )
       img_plant2:setFillColor(0.6)
 
-
-      img_plant2:setMask( mask2 )
-
       sceneGroup:insert( img_plant2 )
 
       img_plant3 = createImage("images/plant2/plant1.png", 80, 40, display.contentCenterX-330, display.contentCenterY+37)
       img_plant3:addEventListener( "tap", tintPlant )
       img_plant3:setFillColor(0.5)
-
-
-      img_plant3:setMask( mask3 )
 
       sceneGroup:insert( img_plant3 )
 
@@ -622,8 +623,6 @@ function scene:create( event )
         img_plant = createImage("images/plant4/plant1.png", 20, 200, display.contentCenterX-360, display.contentCenterY+35)
         img_plant:addEventListener( "tap", tintPlant )
         img_plant:setFillColor(0.6)
-
-
 
         sceneGroup:insert( img_plant )
 

@@ -7,8 +7,8 @@ application =
 {
 	content =
 	{
-		width = 540,
-		height = 960, 
+		width = 2160,---540
+		height = 3840,---960 
 		scale = "letterbox",
 		fps = 60,
 		audioPlayFrequency = 192000,
