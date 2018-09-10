@@ -1,9 +1,10 @@
 local composer = require( "composer" )
-local name = require( "libraries.proto_utilities" )
+local utilities = require( "libraries.proto_utilities" )
+local backgroundComponents = require( "libraries.background_setup" )
+local soundEffects = require( "libraries.sound_functions" )
+local playerOne = require( "libraries.playerOne_utilities" )
 
 local scene = composer.newScene()
-local proto_rect
-local proto_dest
 
 local physics = require( "physics" )
 --physics.start()
@@ -13,8 +14,7 @@ local physics = require( "physics" )
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-
-
+background()
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -26,6 +26,10 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     physics.start()
+
+    ecosystem_P1 = display.newGroup()
+    sceneGroup:insert( ecosystem_P1 )
+    ecosystem_P1:toBack(sceneGroup)
 
     -----------------------------------
     -- Set up for dinosaur animations
@@ -47,7 +51,7 @@ function scene:create( event )
     -----------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
     Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
-    Dino:scale(0.2, 0.2)
+    Dino:scale(1, 1)
     Dino:play()
 
 
@@ -65,12 +69,12 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = 0.2
+            Dino.xScale = 1
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=(75) } )
+      transition.to( Dino, { time=6000, x=math.random(75, 450) } )
 
       local rightsecondsTillcomplete = 7
 
@@ -104,12 +108,12 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = -0.2
+            Dino.xScale = -1
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=(875) } )
+      transition.to( Dino, { time=6000, x=math.random(550, 875) } )
 
       local rightsecondsTillcomplete = 7
 
@@ -182,190 +186,49 @@ function scene:create( event )
     end
 
    goLeft()
-
-    -------------------------------------------------------------------------------------------------------------------
-    -- create timer for splashscreen (Clock Text will not be part of the final game. It is just for testing purposes)
-    -------------------------------------------------------------------------------------------------------------------
-
-    local secondsLeft = 25  -- 10 minutes = 600 seconds
-
-    local clockText = display.newText( "00:25", display.contentCenterX, 80, native.systemFont, 42 )
-    clockText:setFillColor( 0.7, 0.7, 1 )
-
-    local function updateTime( event )
-
-      -- Decrement the number of seconds
-      secondsLeft = secondsLeft - 1
-
-      -- Time is tracked in seconds; convert it to minutes and seconds
-      local minutes = math.floor( secondsLeft / 25 )
-      local seconds = secondsLeft % 25
-
-      -- Make it a formatted string
-      local timeDisplay = string.format( "%02d:%02d", minutes, seconds )
-
-      -- Update the text object
-      clockText.text = timeDisplay
-
-      timeup ()
-
-    end
-
-    local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    
-    local function resetTimer( )
-      timer.cancel(countDownTimer)
-      secondsLeft = 25
-      countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    end
-
-    sceneGroup:insert( clockText )
-    
+  
     ------------------------
     -- Colouring functions
     ------------------------
-    local function btn_swatch_tap ( event, color )
-      proto_rect:setFillColor(unpack(event.target.color))
-      proto_rect.color = event.target.color
-      print(unpack(proto_rect.color))
+    local function btn_swatch_tapP1 ( event, color )
+      proto_rectP1:setFillColor(unpack(event.target.color))
+      proto_rectP1.color = event.target.color
+      print(unpack(proto_rectP1.color))
   
       local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
 
       local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
   
-      resetTimer( )
     end
 
-    local function tintPlant ( event )
-      event.target:setFillColor(unpack(proto_rect.color))
+    local function tintPlantP1 ( event )
+      event.target:setFillColor(unpack(proto_rectP1.color))
 
       local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
 
       local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
-      resetTimer( )
     end
 
-    local function tintDest ( event )
-      proto_dest:setFillColor(unpack(proto_rect.color))
-    end
-
-    -----------------------------
-    -- Sound effects for buttons
-    -----------------------------
-    local function clicksound ()
-      local Clickselect = audio.loadSound( "sounds/buttons/Click Sound.mp3" )
-
-      local Clickselectchannel = audio.play( Clickselect, { channel=3, loops=0 } )
-    end
-
-    local function donesound ()
-      local Clickdone = audio.loadSound( "sounds/buttons/Done Plant.mp3" )
-
-      local Clickdonechannel = audio.play( Clickdone, { channel=4, loops=0 } )
-    end
     
-    ----------------------------------------------
-    -- Splashscreen and endgame screen triggers 
-    ----------------------------------------------
-    local endgameCount = 0
-
-    function endgametrigger ()
-  
-        local endoptions = {
-            effect = "fade",
-            time = 1200
-        }
-    
-        if endgameCount >= 3
-            then composer.gotoScene( "scenes..endgame", endoptions )
-            display.remove( Sensor )
-            scenechange2 ()        
-        end
-
-    end
-
-    function timeup ()
-
-        local splashoptions = {
-            effect = "fade",
-            time = 600
-        }
-   
-        if secondsLeft <= 0
-            then composer.gotoScene( "scenes..splashscreen", splashoptions)
-            scenechange1 ()
-            Dino = nil
-        end
-
-    end
-
-    function scenechange1 ()
-
-      local secondsTillchange = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForScenechange( event )
-
-          -- Decrement the number of seconds
-          secondsTillchange = secondsTillchange - 1
-
-          -- Time is tracked in seconds; convert it to minutes and seconds
-          local minutes = math.floor( secondsTillchange / 1 )
-          local seconds = secondsLeft % 1
-
-          Nextscene1 ()
-        end
-
-      SceneChangeTimer = timer.performWithDelay( 600, updateTimeForScenechange, secondsTillchange )
-
-       function Nextscene1()
-            if secondsTillchange <= 0 then
-              composer.removeScene( "scenes..proto_spawn")
-            end
-        end
-    end
-
-    function scenechange2 ()
-
-        local secondsTillchange = 1  -- 10 minutes = 600 seconds
-  
-        local function updateTimeForScenechange( event )
-  
-            -- Decrement the number of seconds
-            secondsTillchange = secondsTillchange - 1
-  
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillchange / 1 )
-            local seconds = secondsLeft % 1
-  
-            Nextscene2 ()
-        end
-  
-        SceneChangeTimer = timer.performWithDelay( 1010, updateTimeForScenechange, secondsTillchange )
-  
-        function Nextscene2()
-            if secondsTillchange <= 0 then
-                endgameCount = 0
-                composer.removeScene( "scenes..proto_spawn")
-                Dino = nil
-            end
-        end
-    end
-
     ------------------------------------
     -- Color indicator, (Test Only)
     ------------------------------------
-    proto_rect = display.newRect( 100, 50, 100, 30 )
-    proto_rect.color = {0,0,0}
-    sceneGroup:insert( proto_rect )
+    proto_rectP1 = display.newRect( 100, 50, 100, 30 )
+    proto_rectP1.color = {0,0,0}
+    sceneGroup:insert( proto_rectP1 )
 
     --------------------------------------------------------------------------
     -- Counts the number of finished plants (Text won't be in the final game)
     --------------------------------------------------------------------------
-    local FinishedPlantCount = 0
+    local FinishedPlantCountP1 = 0
 
-    local FinishedPlantText = display.newText( FinishedPlantCount, display.contentCenterX, 20, native.systemFont, 40 )
-    FinishedPlantText:setFillColor( 0, 0, 0 )
-    sceneGroup:insert( FinishedPlantText )
+    local FinishedPlantTextP1 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
+    FinishedPlantTextP1:setFillColor( 0, 0, 0 )
+    sceneGroup:insert( FinishedPlantTextP1 )
+
+    local SmallPlantCountP1 = 0
+    local MediumPlantCountP1 = 0
+    local LargePlantCountP1 = 0
 
     -----------------------------------------------------------------
     -- Early collision test for Dino Eating Plants (Lines 316 to 342)
@@ -377,19 +240,18 @@ function scene:create( event )
 
               DinoEat ()
 
+              eatnoise ()
+
               transition.fadeOut( event.target.parent, {time = 1000} )
 
               display.remove( event.target )
               print("Yummy!")
 
-              endgameCount = endgameCount + 1
-
-              FinishedPlantCount = 0
-              FinishedPlantText.text = FinishedPlantCount
+              FinishedPlantCountP1 = 0
+              FinishedPlantTextP1.text = FinishedPlantCountP1
 
               physics.pause( Sensor )
 
-              endgametrigger ()
 
             end
         end
@@ -403,751 +265,381 @@ function scene:create( event )
     -------------------------------------------------------------
     
     -- Palette For Player 1
+    colouringSetupP1()
+    btn_new1:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_new2:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_new3:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_new4:addEventListener( "tap", btn_swatch_tapP1 )
 
-    local btn_new1 = display.newCircle( 40, 500, 20 )
-    btn_new1.color = { 0.3, 0.5, 0.3 }
-    btn_new1.strokeWidth = 3
-    btn_new1:setStrokeColor( 0.3, 0.5, 0.3 )
-    btn_new1:setFillColor( 0.3, 0.5, 0.3 )
-    btn_new1:addEventListener( "tap", btn_swatch_tap )
-    sceneGroup:insert( btn_new1 )
-    toggleVisibility( btn_new1 )
-
-    local btn_new2 = display.newCircle( 90, 500, 20 )
-    btn_new2.color = { 0.3, 0.5, 0.1 }
-    btn_new2.strokeWidth = 3
-    btn_new2:setStrokeColor( 0.3, 0.5, 0.1 )
-    btn_new2:setFillColor( 0.3, 0.5, 0.1 )
-    btn_new2:addEventListener( "tap", btn_swatch_tap )
-    sceneGroup:insert( btn_new2 )
-    toggleVisibility( btn_new2 )
-
-    local btn_new3 = display.newCircle( 140, 500, 20 )
-    btn_new3.color = { 0.1, 0.4, 0.2 }
-    btn_new3.strokeWidth = 3
-    btn_new3:setStrokeColor( 0.1, 0.4, 0.2 )
-    btn_new3:setFillColor( 0.1, 0.4, 0.2 )
-    btn_new3:addEventListener( "tap", btn_swatch_tap )
-    sceneGroup:insert( btn_new3 )
-    toggleVisibility( btn_new3 )
-
-    local btn_new4 = display.newCircle( 190, 500, 20 )
-    btn_new4.color = { 0.4, 0.2, 0.1 }
-    btn_new4.strokeWidth = 3
-    btn_new4:setStrokeColor( 0.4, 0.2, 0.1 )
-    btn_new4:setFillColor( 0.4, 0.2, 0.1 )
-    btn_new4:addEventListener( "tap", btn_swatch_tap )
-    sceneGroup:insert( btn_new4 )
-    toggleVisibility( btn_new4 )
-
-
-    ---------------------------------------------------------------------------------------------
-    -- creates done buttons for when you're finished colouring, set to invisible on level start.
-    ---------------------------------------------------------------------------------------------
-    local donebtn_spawnFlax = display.newImageRect( "images/Done Button Template.png", 150, 55)
-    donebtn_spawnFlax.x = display.contentCenterX-360
-    donebtn_spawnFlax.y = display.contentCenterY+180
-    toggleVisibility( donebtn_spawnFlax )
-    sceneGroup:insert( donebtn_spawnFlax )
-
-    local donebtn_spawnPalm = display.newImageRect( "images/Done Button Template.png", 150, 55)
-    donebtn_spawnPalm.x = display.contentCenterX-360
-    donebtn_spawnPalm.y = display.contentCenterY+180
-    toggleVisibility( donebtn_spawnPalm )
-    sceneGroup:insert( donebtn_spawnPalm )
-
-    local donebtn_spawnPine = display.newImageRect( "images/Done Button Template.png", 150, 55)
-    donebtn_spawnPine.x = display.contentCenterX-360
-    donebtn_spawnPine.y = display.contentCenterY+180
-    toggleVisibility( donebtn_spawnPine )
-    sceneGroup:insert( donebtn_spawnPine )
-
-    local donebtn_spawnFern = display.newImageRect( "images/Done Button Template.png", 150, 55)
-    donebtn_spawnFern.x = display.contentCenterX-360
-    donebtn_spawnFern.y = display.contentCenterY+180
-    toggleVisibility( donebtn_spawnFern )
-    sceneGroup:insert( donebtn_spawnFern )
-
+    sceneGroup:insert( P1Colouring )
+    
+    ---------------------------------------
     --Creates Buttons for spawning Plants
-    local btn_spawnFlax = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 50, 50)
-    btn_spawnFlax.x = display.contentCenterX-443
-    btn_spawnFlax.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnFlax )
-
-    local btn_spawnPalm = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 50, 50)
-    btn_spawnPalm.x = display.contentCenterX-387
-    btn_spawnPalm.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnPalm )
-
-    local btn_spawnPine = display.newImageRect( "images/selectbuttons/Select Pine Button.png", 50, 50)
-    btn_spawnPine.x = display.contentCenterX-333
-    btn_spawnPine.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnPine )
-
-    local btn_spawnFern = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 50, 50)
-    btn_spawnFern.x = display.contentCenterX-277
-    btn_spawnFern.y = display.contentCenterY+230
-    sceneGroup:insert( btn_spawnFern )
+    ---------------------------------------
+    
+    -- Buttons for Player 1
+    selectionSetupP1 ()
+    sceneGroup:insert( P1Select )
 
     ---------------------------------------
     --Creates Spawn functions for buttons
     ---------------------------------------
 
     -- Spawn Flax
-    local function btn_spawn_tapFlax ()
-      toggleVisibility( donebtn_spawnFlax )
-      toggleVisibility( btn_spawnPalm )
-      toggleVisibility( btn_spawnFlax )
-      toggleVisibility( btn_spawnPine )
-      toggleVisibility( btn_spawnFern )
+    local function btn_spawn_tapFlax_P1 ()
+      toggleVisibility( donebtn_spawnFlaxP1 )
+      toggleVisibility( compostButtonFlaxP1 )
 
-      toggleVisibility( btn_new1 )
-      toggleVisibility( btn_new2 )
-      toggleVisibility( btn_new3 )
-      toggleVisibility( btn_new4 )
+      transition.to( P1Select, { time=500, y=(500) } )
+
+      transition.to( P1Colouring, { time=500, y=(-500) } )
 
       clicksound ()
 
-      img_plant = createImage("images/plant1/plant1.png", 65, 37.5, display.contentCenterX-330, display.contentCenterY+115)
-      img_plant:addEventListener( "tap", tintPlant )
-      img_plant:setFillColor(0.6)
+      createFlaxP1 ()
 
-      sceneGroup:insert( img_plant )
+      flax_P1:addEventListener( "tap", tintPlantP1 )
+      flax_P1_2:addEventListener( "tap", tintPlantP1 )
+      flax_P1_3:addEventListener( "tap", tintPlantP1 )
+      flax_P1_4:addEventListener( "tap", tintPlantP1 )
+      flax_P1_5:addEventListener( "tap", tintPlantP1 )
+      flax_P1_6:addEventListener( "tap", tintPlantP1 )
 
-      img_plant2 = createImage("images/plant1/plant2.png", 65, 49, display.contentCenterX-390, display.contentCenterY+115)
-      img_plant2:addEventListener( "tap", tintPlant )
-      img_plant2:setFillColor(0.7)
+      sceneGroup:insert( P1Flax )
 
-      sceneGroup:insert( img_plant2 )
-
-      img_plant3 = createImage("images/plant1/plant3.png", 75, 97.5, display.contentCenterX-330, display.contentCenterY+85)
-      img_plant3:addEventListener( "tap", tintPlant )
-      img_plant3:setFillColor(0.8)
-
-      sceneGroup:insert( img_plant3 )
-
-      img_plant4 = createImage("images/plant1/plant4.png", 90, 67, display.contentCenterX-400, display.contentCenterY+85)
-      img_plant4:addEventListener( "tap", tintPlant )
-      img_plant4:setFillColor(0.6)
-
-
-      sceneGroup:insert( img_plant4 )
-
-      img_plant5 = createImage("images/plant1/plant5.png", 51.5, 92.5, display.contentCenterX-380, display.contentCenterY+85)
-      img_plant5:addEventListener( "tap", tintPlant )
-      img_plant5:setFillColor(0.7)
-
-
-
-      sceneGroup:insert( img_plant5 )
-
-      img_plant6 = createImage("images/plant1/plant6.png", 64, 83.5, display.contentCenterX-330, display.contentCenterY+85)
-      img_plant6:addEventListener( "tap", tintPlant )
-      img_plant6:setFillColor(0.7)
-
-
-      sceneGroup:insert( img_plant6 )
-
-
-      resetTimer(  )
 
     end
-    btn_spawnFlax:addEventListener( "tap", btn_spawn_tapFlax )
-
-
+    btn_spawnFlaxP1:addEventListener( "tap", btn_spawn_tapFlax_P1 )
 
     -- Spawn Palm
-    local function btn_spawn_tapPalm ()
-      toggleVisibility( donebtn_spawnPalm )
-      toggleVisibility( btn_spawnPalm )
-      toggleVisibility( btn_spawnFlax )
-      toggleVisibility( btn_spawnPine )
-      toggleVisibility( btn_spawnFern )
+    local function btn_spawn_tapPalm_P1 ()
+      toggleVisibility( donebtn_spawnPalmP1 )
+      toggleVisibility( compostButtonPalmP1 )
 
-      toggleVisibility( btn_new1 )
-      toggleVisibility( btn_new2 )
-      toggleVisibility( btn_new3 )
-      toggleVisibility( btn_new4 )
+      transition.to( P1Select, { time=500, y=(500) } )
+
+      transition.to( P1Colouring, { time=500, y=(-500) } )
 
       clicksound ()
 
-      img_plant = createImage("images/plant2/plant3.png", 50, 110, display.contentCenterX-350, display.contentCenterY+77)
-      img_plant:addEventListener( "tap", tintPlant )
-      img_plant:setFillColor(0.7)
+      createPalmP1 ()
 
+      palm_P1:addEventListener( "tap", tintPlantP1 )
+      palm_P1_2:addEventListener( "tap", tintPlantP1 )
+      palm_P1_3:addEventListener( "tap", tintPlantP1 )
 
-      img_plant:setMask( mask )
+      sceneGroup:insert( P1Palm )
 
-      sceneGroup:insert( img_plant )
-
-      img_plant2 = createImage("images/plant2/plant2.png", 80, 40, display.contentCenterX-400, display.contentCenterY+42)
-      img_plant2:addEventListener( "tap", tintPlant )
-      img_plant2:setFillColor(0.6)
-
-
-      img_plant2:setMask( mask2 )
-
-      sceneGroup:insert( img_plant2 )
-
-      img_plant3 = createImage("images/plant2/plant1.png", 80, 40, display.contentCenterX-330, display.contentCenterY+37)
-      img_plant3:addEventListener( "tap", tintPlant )
-      img_plant3:setFillColor(0.5)
-
-
-      img_plant3:setMask( mask3 )
-
-      sceneGroup:insert( img_plant3 )
-
-
-      resetTimer(  )
 
     end
-    btn_spawnPalm:addEventListener( "tap", btn_spawn_tapPalm )
+    btn_spawnPalmP1:addEventListener( "tap", btn_spawn_tapPalm_P1 )
 
     -- Spawn Pine
-    local function btn_spawn_tapPine ()
-        toggleVisibility( donebtn_spawnPine )
-        toggleVisibility( btn_spawnPalm )
-        toggleVisibility( btn_spawnFlax )
-        toggleVisibility( btn_spawnPine )
-        toggleVisibility( btn_spawnFern )
+    local function btn_spawn_tapPine_P1 ()
+        toggleVisibility( donebtn_spawnPineP1 )
+        toggleVisibility( compostButtonPineP1 )
 
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Select, { time=500, y=(500) } )
+
+        transition.to( P1Colouring, { time=500, y=(-500) } )
 
         clicksound ()
 
-        img_plant = createImage("images/plant4/plant1.png", 20, 200, display.contentCenterX-360, display.contentCenterY+35)
-        img_plant:addEventListener( "tap", tintPlant )
-        img_plant:setFillColor(0.6)
+        createPineP1 ()
 
+        pine_P1:addEventListener( "tap", tintPlantP1 )
+        pine_P1_2:addEventListener( "tap", tintPlantP1 )
+        pine_P1_3:addEventListener( "tap", tintPlantP1 )
+        pine_P1_4:addEventListener( "tap", tintPlantP1 )
+        pine_P1_5:addEventListener( "tap", tintPlantP1 )
+        pine_P1_6:addEventListener( "tap", tintPlantP1 )
+        pine_P1_7:addEventListener( "tap", tintPlantP1 )
 
-
-        sceneGroup:insert( img_plant )
-
-        img_plant2 = createImage("images/plant4/plant2.png", 65, 35, display.contentCenterX-360, display.contentCenterY-35)
-        img_plant2:addEventListener( "tap", tintPlant )
-        img_plant2:setFillColor(0.7)
-
-        sceneGroup:insert( img_plant2 )
-
-        img_plant3 = createImage("images/plant4/plant3.png", 75, 35, display.contentCenterX-360, display.contentCenterY-15)
-        img_plant3:addEventListener( "tap", tintPlant )
-        img_plant3:setFillColor(0.8)
-
-        sceneGroup:insert( img_plant3 )
-
-        img_plant4 = createImage("images/plant4/plant4.png", 25, 25, display.contentCenterX-360, display.contentCenterY-70)
-        img_plant4:addEventListener( "tap", tintPlant )
-        img_plant4:setFillColor(0.6)
-
-
-        sceneGroup:insert( img_plant4 )
-
-        img_plant5 = createImage("images/plant4/plant5.png", 85, 35, display.contentCenterX-360, display.contentCenterY+10)
-        img_plant5:addEventListener( "tap", tintPlant )
-        img_plant5:setFillColor(0.7)
-
-
-
-        sceneGroup:insert( img_plant5 )
-
-        img_plant6 = createImage("images/plant4/plant6.png", 115, 35, display.contentCenterX-360, display.contentCenterY+35)
-        img_plant6:addEventListener( "tap", tintPlant )
-        img_plant6:setFillColor(0.7)
-
-
-        sceneGroup:insert( img_plant6 )
-
-        img_plant7 = createImage("images/plant4/plant7.png", 145, 45, display.contentCenterX-360, display.contentCenterY+65)
-        img_plant7:addEventListener( "tap", tintPlant )
-        img_plant7:setFillColor(0.7)
-
-
-        sceneGroup:insert( img_plant7 )
-
-
-        resetTimer(  )
+        sceneGroup:insert( P1Pine )
 
     end
-    btn_spawnPine:addEventListener( "tap", btn_spawn_tapPine )
-
+    btn_spawnPineP1:addEventListener( "tap", btn_spawn_tapPine_P1 )
 
     -- Spawn Fern
-    local function btn_spawn_tapFern ()
-        toggleVisibility( donebtn_spawnFern )
-        toggleVisibility( btn_spawnPalm )
-        toggleVisibility( btn_spawnFlax )
-        toggleVisibility( btn_spawnPine )
-        toggleVisibility( btn_spawnFern )
+    local function btn_spawn_tapFern_P1 ()
+        toggleVisibility( donebtn_spawnFernP1 )
+        toggleVisibility( compostButtonFernP1 )
 
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Select, { time=500, y=(500) } )
+
+        transition.to( P1Colouring, { time=500, y=(-500) } )
 
         clicksound ()
 
-        img_plant = createImage("images/plant3/plant1.png", 101.25, 93.75, display.contentCenterX-350, display.contentCenterY+75)
-        img_plant:addEventListener( "tap", tintPlant )
-        img_plant:setFillColor(0.6)
+        createFernP1 ()
 
+        fern_P1:addEventListener( "tap", tintPlantP1 )
+        fern_P1_2:addEventListener( "tap", tintPlantP1 )
+        fern_P1_3:addEventListener( "tap", tintPlantP1 )
+        fern_P1_4:addEventListener( "tap", tintPlantP1 )
 
-
-        sceneGroup:insert( img_plant )
-
-        img_plant2 = createImage("images/plant3/plant2.png", 67.5, 48.75, display.contentCenterX-323, display.contentCenterY+94)
-        img_plant2:addEventListener( "tap", tintPlant )
-        img_plant2:setFillColor(0.7)
-
-        sceneGroup:insert( img_plant2 )
-
-        img_plant3 = createImage("images/plant3/plant3.png", 60, 33.75, display.contentCenterX-382, display.contentCenterY+107)
-        img_plant3:addEventListener( "tap", tintPlant )
-        img_plant3:setFillColor(0.8)
-
-        sceneGroup:insert( img_plant3 )
-
-        img_plant4 = createImage("images/plant3/plant4.png", 67.5, 26.25, display.contentCenterX-325, display.contentCenterY+112)
-        img_plant4:addEventListener( "tap", tintPlant )
-        img_plant4:setFillColor(0.6)
-
-
-        sceneGroup:insert( img_plant4 )
-
-
-        resetTimer(  )
+        sceneGroup:insert( P1Fern )
 
     end
-    btn_spawnFern:addEventListener( "tap", btn_spawn_tapFern )
+    btn_spawnFernP1:addEventListener( "tap", btn_spawn_tapFern_P1 )
 
-    -----------------------------------------------------------------------------------------------------------------------------
-    -- sends plant to background, makes them non-interactable and resets the level back to original start up (WORK IN PROGRESS)
-    -----------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------
+    -- sends plant to background, makes them non-interactable (WORK IN PROGRESS)
+    ------------------------------------------------------------------------------
 
     -- Done Flax
-    local function donebtn_spawn_tapFlax ()
+    local function donebtn_spawn_tapFlaxP1 ()
 
-        toggleVisibility( donebtn_spawnFlax )
-
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Colouring, { time=500, y=(120) } )
 
         clicksound ()
         donesound ()
 
-        FinishedPlantCount = FinishedPlantCount + 1
-        FinishedPlantText.text = FinishedPlantCount
+        FinishedPlantCountP1 = FinishedPlantCountP1 + 1
+        FinishedPlantTextP1.text = FinishedPlantCountP1
 
+        SmallPlantCountP1 = SmallPlantCountP1 + 1
 
-        finishedPlant = display.newGroup();
+        if SmallPlantCountP1 == 1 then
 
+         toggleVisibility( btn_spawnPalmP1 )
+        end  
 
-        finishedPlant:insert(img_plant)
-        finishedPlant:insert(img_plant)
-        finishedPlant:insert(img_plant2)
-        finishedPlant:insert(img_plant3)
-        finishedPlant:insert(img_plant4)
-        finishedPlant:insert(img_plant5)
-        finishedPlant:insert(img_plant6)
-
-
-        transition.to(finishedPlant, {
-            x= math.random(-60, 700 ),
-            y= math.random(-30, -20),
+        transition.to(P1Flax, {
+            x= math.random(-200, 400 ),
+            y= math.random(-190, -185),
             time=1000})
-        img_plant:scale(0.95, 0.95)
-        img_plant:removeEventListener( "tap", tintPlant )
-        img_plant2:scale(0.95, 0.95)
-        img_plant2:removeEventListener( "tap", tintPlant )
-        img_plant3:scale(0.95, 0.95)
-        img_plant3:removeEventListener( "tap", tintPlant )
-        img_plant4:scale(0.95, 0.95)
-        img_plant4:removeEventListener( "tap", tintPlant )
-        img_plant5:scale(0.95, 0.95)
-        img_plant5:removeEventListener( "tap", tintPlant )
-        img_plant6:scale(0.95, 0.95)
-        img_plant6:removeEventListener( "tap", tintPlant )
+        flax_P1:scale(1.35, 1.35)
+        flax_P1:removeEventListener( "tap", tintPlantP1 )
+        flax_P1_2:scale(1.35, 1.35)
+        flax_P1_2:removeEventListener( "tap", tintPlantP1 )
+        flax_P1_3:scale(1.35, 1.35)
+        flax_P1_3:removeEventListener( "tap", tintPlantP1 )
+        flax_P1_4:scale(1.35, 1.35)
+        flax_P1_4:removeEventListener( "tap", tintPlantP1 )
+        flax_P1_5:scale(1.35, 1.35)
+        flax_P1_5:removeEventListener( "tap", tintPlantP1 )
+        flax_P1_6:scale(1.35, 1.35)
+        flax_P1_6:removeEventListener( "tap", tintPlantP1 )
 
-        if FinishedPlantCount >= 4 then
-            physics.start( Sensor )
-            physics.start( Dino )
+
+        ecosystem_P1:insert( P1Flax )
+
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnFlaxP1 )
+        toggleVisibility( compostButtonFlaxP1 )
+
+        physics.pause( Dino )
+
+        if FinishedPlantCountP1 == 1 then
+            local SensorP1 = display.newCircle( 500, 1500, 100 )
+            SensorP1.strokeWidth = 3
+            SensorP1:setStrokeColor( 0.1, 0.4, 0.2 )
+            SensorP1:setFillColor( 0.1, 0.4, 0.2 )
+            physics.addBody(SensorP1, "Dynamic", {density=5, friction=5, radius=1})
+            physics.setGravity(0,0)
+            SensorP1.myName = "FinishedPlant"
+            physics.pause( SensorP1 )
+            SensorP1.collision = DinoPlantCollision
+            SensorP1:addEventListener( "collision", SensorP1 )
+            ecosystem_P1:insert( SensorP1 )
+            toggleVisibility( SensorP1 )
+            
         end
-
-        resetTimer(  )
-
-        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForDone( event )
-
-            -- Decrement the number of seconds
-            secondsTillcomplete = secondsTillcomplete - 1
-
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillcomplete / 1 )
-            local seconds = secondsLeft % 1
-
-            Donetimeup ()
-
-        end
-
-        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
-
-        function Donetimeup ()
-
-            if secondsTillcomplete <= 0
-             then
-
-              local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
-              print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-
-              local Sensor = display.newCircle( sqCenterX, sqCenterY-190, 20 )
-              Sensor.strokeWidth = 3
-              Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
-              Sensor:setFillColor( 0.1, 0.4, 0.2 )
-              physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
-              physics.setGravity(0,0)
-              Sensor.myName = "FinishedPlant"
-              physics.pause( Sensor )
-              Sensor.collision = DinoPlantCollision
-              Sensor:addEventListener( "collision", Sensor )
-              toggleVisibility( Sensor )
-
-              newestPlant = display.newGroup();
-              newestPlant:insert( finishedPlant )
-              newestPlant:insert( Sensor )
-              sceneGroup:insert( newestPlant )
-
-
-              toggleVisibility( btn_spawnPalm )
-              toggleVisibility( btn_spawnFlax )
-              toggleVisibility( btn_spawnPine )
-              toggleVisibility( btn_spawnFern )
-
-              physics.pause( Dino )
-
-            end
-        end
-
 
     end
-    donebtn_spawnFlax:addEventListener( "tap", donebtn_spawn_tapFlax )
+    donebtn_spawnFlaxP1:addEventListener( "tap", donebtn_spawn_tapFlaxP1 )
 
 
     -- Done Palm
-    local function donebtn_spawn_tapPalm ()
+    local function donebtn_spawn_tapPalmP1 ()
 
-        toggleVisibility( donebtn_spawnPalm )
-
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Colouring, { time=500, y=(120) } )
 
         clicksound ()
         donesound ()
 
-        FinishedPlantCount = FinishedPlantCount + 1
-        FinishedPlantText.text = FinishedPlantCount
+        FinishedPlantCountP1 = FinishedPlantCountP1 + 1
+        FinishedPlantTextP1.text = FinishedPlantCountP1
 
-        finishedPlant = display.newGroup();
+        MediumPlantCountP1 = MediumPlantCountP1 + 1
 
-        finishedPlant:insert(img_plant)
-        finishedPlant:insert(img_plant2)
-        finishedPlant:insert(img_plant3)
+        if MediumPlantCountP1 == 2 then
 
-        transition.to(finishedPlant, {
-            x= math.random(-60, 700 ),
-            y= math.random(-40, -33),
+         toggleVisibility( btn_spawnPineP1 )
+        end  
+
+        transition.to(P1Palm, {
+            x= math.random(-300, 500 ),
+            y= math.random(-230, -185),
             time=1000})
-        img_plant:scale(0.95, 0.95)
-        img_plant:removeEventListener( "tap", tintPlant )
-        img_plant2:scale(0.95, 0.95)
-        img_plant2:removeEventListener( "tap", tintPlant )
-        img_plant3:scale(0.95, 0.95)
-        img_plant3:removeEventListener( "tap", tintPlant )
+        palm_P1:scale(2.35, 2.35)
+        palm_P1:removeEventListener( "tap", tintPlantP1 )
+        palm_P1_2:scale(2.35, 2.35)
+        palm_P1_2:removeEventListener( "tap", tintPlantP1 )
+        palm_P1_3:scale(2.35, 2.35)
+        palm_P1_3:removeEventListener( "tap", tintPlantP1 )
 
-        if FinishedPlantCount >= 4 then
-            physics.start( Sensor )
-            physics.start( Dino )
-        end
+        ecosystem_P1:insert( P1Palm )
 
-        resetTimer(  )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnPalmP1 )
+        toggleVisibility( compostButtonPalmP1 )
 
-        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForDone( event )
-
-            -- Decrement the number of seconds
-            secondsTillcomplete = secondsTillcomplete - 1
-
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillcomplete / 1 )
-            local seconds = secondsLeft % 1
-
-            Donetimeup ()
-
-        end
-
-        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
-
-        function Donetimeup ()
-
-            if secondsTillcomplete <= 0
-             then
-
-                local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
-                print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-
-                local Sensor = display.newCircle( sqCenterX, sqCenterY-160, 20 )
-                Sensor.strokeWidth = 3
-                Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
-                Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
-                physics.setGravity(0,0)
-                Sensor.myName = "FinishedPlant"
-                physics.pause( Sensor )
-                Sensor.collision = DinoPlantCollision
-                Sensor:addEventListener( "collision", Sensor )
-                toggleVisibility( Sensor )
-
-                newestPlant = display.newGroup();
-                newestPlant:insert( finishedPlant )
-                newestPlant:insert( Sensor )
-                sceneGroup:insert( newestPlant )
-
-
-                toggleVisibility( btn_spawnPalm )
-                toggleVisibility( btn_spawnFlax )
-                toggleVisibility( btn_spawnPine )
-                toggleVisibility( btn_spawnFern )
-
-                physics.pause( Dino )
-
-            end
-        end
+        physics.pause( Dino )
 
 
     end
-    donebtn_spawnPalm:addEventListener( "tap", donebtn_spawn_tapPalm )
+    donebtn_spawnPalmP1:addEventListener( "tap", donebtn_spawn_tapPalmP1 )
 
 
     -- Done Pine
-     local function donebtn_spawn_tapPine ()
+     local function donebtn_spawn_tapPineP1 ()
 
-        toggleVisibility( donebtn_spawnPine )
-
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Colouring, { time=500, y=(120) } )
 
         clicksound ()
         donesound ()
 
-        FinishedPlantCount = FinishedPlantCount + 1
-        FinishedPlantText.text = FinishedPlantCount
+        FinishedPlantCountP1 = FinishedPlantCountP1 + 1
+        FinishedPlantTextP1.text = FinishedPlantCountP1
 
-
-        finishedPlant = display.newGroup();
-
-        finishedPlant:insert(img_plant)
-        finishedPlant:insert(img_plant2)
-        finishedPlant:insert(img_plant3)
-        finishedPlant:insert(img_plant4)
-        finishedPlant:insert(img_plant5)
-        finishedPlant:insert(img_plant6)
-        finishedPlant:insert(img_plant7)
-
-        transition.to(finishedPlant, {
-            x= math.random(-60, 700 ),
-            y= math.random(-40, -35),
+        transition.to(P1Pine, {
+            x= math.random(-300, 500 ),
+            y= math.random(-580, -490),
             time=1000})
-        img_plant:scale(0.95, 0.95)
-        img_plant:removeEventListener( "tap", tintPlant )
-        img_plant2:scale(0.95, 0.95)
-        img_plant2:removeEventListener( "tap", tintPlant )
-        img_plant3:scale(0.95, 0.95)
-        img_plant3:removeEventListener( "tap", tintPlant )
-        img_plant4:scale(0.95, 0.95)
-        img_plant4:removeEventListener( "tap", tintPlant )
-        img_plant5:scale(0.95, 0.95)
-        img_plant5:removeEventListener( "tap", tintPlant )
-        img_plant6:scale(0.95, 0.95)
-        img_plant6:removeEventListener( "tap", tintPlant )
-        img_plant7:scale(0.95, 0.95)
-        img_plant7:removeEventListener( "tap", tintPlant )
+        pine_P1:scale(2, 2.95)
+        pine_P1:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_2:scale(2, 2.95)
+        pine_P1_2:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_3:scale(2, 2.95)
+        pine_P1_3:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_4:scale(2, 2.95)
+        pine_P1_4:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_5:scale(2, 2.95)
+        pine_P1_5:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_6:scale(2, 2.95)
+        pine_P1_6:removeEventListener( "tap", tintPlantP1 )
+        pine_P1_7:scale(2, 2.95)
+        pine_P1_7:removeEventListener( "tap", tintPlantP1 )
 
-        if FinishedPlantCount >= 4 then
-            physics.start( Sensor )
-            physics.start( Dino )
-        end
+        ecosystem_P1:insert( P1Pine)
 
-        resetTimer(  )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnPineP1 )
+        toggleVisibility( compostButtonPineP1 )
 
-        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForDone( event )
-
-            -- Decrement the number of seconds
-            secondsTillcomplete = secondsTillcomplete - 1
-
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillcomplete / 1 )
-            local seconds = secondsLeft % 1
-
-            Donetimeup ()
-
-        end
-
-        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
-
-        function Donetimeup ()
-
-            if secondsTillcomplete <= 0
-             then
-
-                local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
-                print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-
-                local Sensor = display.newCircle( sqCenterX, sqCenterY-120, 20 )
-                Sensor.strokeWidth = 3
-                Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
-                Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
-                physics.setGravity(0,0)
-                Sensor.myName = "FinishedPlant"
-                physics.pause( Sensor )
-                Sensor.collision = DinoPlantCollision
-                Sensor:addEventListener( "collision", Sensor )
-                toggleVisibility( Sensor )
-
-                newestPlant = display.newGroup();
-                newestPlant:insert( finishedPlant )
-                newestPlant:insert( Sensor )
-                sceneGroup:insert( newestPlant )
-
-
-                toggleVisibility( btn_spawnPalm )
-                toggleVisibility( btn_spawnFlax )
-                toggleVisibility( btn_spawnPine )
-                toggleVisibility( btn_spawnFern )
-
-                physics.pause( Dino )
-
-            end
-        end
-
+        physics.pause( Dino )
 
     end
-    donebtn_spawnPine:addEventListener( "tap", donebtn_spawn_tapPine )
+    donebtn_spawnPineP1:addEventListener( "tap", donebtn_spawn_tapPineP1 )
 
 
     -- Done Fern
-    local function donebtn_spawn_tapFern ()
+    local function donebtn_spawn_tapFernP1 ()
 
-        toggleVisibility( donebtn_spawnFern )
-
-        toggleVisibility( btn_new1 )
-        toggleVisibility( btn_new2 )
-        toggleVisibility( btn_new3 )
-        toggleVisibility( btn_new4 )
+        transition.to( P1Colouring, { time=500, y=(120) } )
 
         clicksound ()
         donesound ()
 
-        FinishedPlantCount = FinishedPlantCount + 1
-        FinishedPlantText.text = FinishedPlantCount
+        FinishedPlantCountP1 = FinishedPlantCountP1 + 1
+        FinishedPlantTextP1.text = FinishedPlantCountP1
 
+        SmallPlantCountP1 = SmallPlantCountP1 + 1
 
-        finishedPlant = display.newGroup();
+        if SmallPlantCountP1 == 1 then
 
-        finishedPlant:insert(img_plant)
-        finishedPlant:insert(img_plant2)
-        finishedPlant:insert(img_plant3)
-        finishedPlant:insert(img_plant4)
+         toggleVisibility( btn_spawnPalmP1 )
+        end  
 
-        transition.to(finishedPlant, {
-            x= math.random(-60, 700 ),
-            y= math.random(-30, -20),
+        transition.to(P1Fern, {
+            x= math.random(-200, 600 ),
+            y= math.random(-190, -185),
             time=1000})
-        img_plant:scale(0.95, 0.95)
-        img_plant:removeEventListener( "tap", tintPlant )
-        img_plant2:scale(0.95, 0.95)
-        img_plant2:removeEventListener( "tap", tintPlant )
-        img_plant3:scale(0.95, 0.95)
-        img_plant3:removeEventListener( "tap", tintPlant )
-        img_plant4:scale(0.95, 0.95)
-        img_plant4:removeEventListener( "tap", tintPlant )
+        fern_P1:scale(1.35, 1.35)
+        fern_P1:removeEventListener( "tap", tintPlantP1 )
+        fern_P1_2:scale(1.35, 1.35)
+        fern_P1_2:removeEventListener( "tap", tintPlantP1 )
+        fern_P1_3:scale(1.35, 1.35)
+        fern_P1_3:removeEventListener( "tap", tintPlantP1 )
+        fern_P1_4:scale(1.35, 1.35)
+        fern_P1_4:removeEventListener( "tap", tintPlantP1 )
 
-        if FinishedPlantCount >= 4 then
-            physics.start( Sensor )
-            physics.start( Dino )
+        ecosystem_P1:insert( P1Fern )
+
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnFernP1 )
+        toggleVisibility( compostButtonFernP1 )
+
+        physics.pause( Dino )
+
+        if FinishedPlantCountP1 == 1 then
+            local SensorP1 = display.newCircle( 500, 1500, 100 )
+            SensorP1.strokeWidth = 3
+            SensorP1:setStrokeColor( 0.1, 0.4, 0.2 )
+            SensorP1:setFillColor( 0.1, 0.4, 0.2 )
+            physics.addBody(SensorP1, "Dynamic", {density=5, friction=5, radius=1})
+            physics.setGravity(0,0)
+            SensorP1.myName = "FinishedPlant"
+            physics.pause( SensorP1 )
+            SensorP1.collision = DinoPlantCollision
+            SensorP1:addEventListener( "collision", SensorP1 )
+            ecosystem_P1:insert( SensorP1 )
+            toggleVisibility( SensorP1 )
+            
         end
-
-        resetTimer(  )
-
-        local secondsTillcomplete = 1  -- 10 minutes = 600 seconds
-
-        local function updateTimeForDone( event )
-
-            -- Decrement the number of seconds
-            secondsTillcomplete = secondsTillcomplete - 1
-
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( secondsTillcomplete / 1 )
-            local seconds = secondsLeft % 1
-
-            Donetimeup ()
-
-        end
-
-        DonebuttonTimer = timer.performWithDelay( 1000, updateTimeForDone, secondsTillcomplete )
-
-        function Donetimeup ()
-
-            if secondsTillcomplete <= 0
-             then
-
-                local sqCenterX, sqCenterY = img_plant:localToContent( 0, 0 )
-                print( "finishedPlant position in screen coordinates: ", sqCenterX, sqCenterY )
-
-                local Sensor = display.newCircle( sqCenterX, sqCenterY-180, 20 )
-                Sensor.strokeWidth = 3
-                Sensor:setStrokeColor( 0.1, 0.4, 0.2 )
-                Sensor:setFillColor( 0.1, 0.4, 0.2 )
-                physics.addBody(Sensor, "Dynamic", {density=5, friction=5, radius=1})
-                physics.setGravity(0,0)
-                Sensor.myName = "FinishedPlant"
-                physics.pause( Sensor )
-                Sensor.collision = DinoPlantCollision
-                Sensor:addEventListener( "collision", Sensor )
-                toggleVisibility( Sensor )
-
-                newestPlant = display.newGroup();
-                newestPlant:insert( finishedPlant )
-                newestPlant:insert( Sensor )
-                sceneGroup:insert( newestPlant )
-
-
-                toggleVisibility( btn_spawnPalm )
-                toggleVisibility( btn_spawnFlax )
-                toggleVisibility( btn_spawnPine )
-                toggleVisibility( btn_spawnFern )
-
-                physics.pause( Dino )
-
-            end
-        end
-
 
     end
-    donebtn_spawnFern:addEventListener( "tap", donebtn_spawn_tapFern )
+    donebtn_spawnFernP1:addEventListener( "tap", donebtn_spawn_tapFernP1 )
+
+    -----------------------------------
+    -- Functions for compost buttons
+    -----------------------------------
+
+    local function CompostP1Flax ()
+        clicksound ()
+        display.remove( P1Flax )
+        transition.to( P1Colouring, { time=500, y=(120) } )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnFlaxP1 )
+        toggleVisibility( compostButtonFlaxP1 )
+    end
+    compostButtonFlaxP1:addEventListener( "tap", CompostP1Flax )
+
+    local function CompostP1Palm ()
+        clicksound ()
+        display.remove( P1Palm )
+        transition.to( P1Colouring, { time=500, y=(120) } )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnPalmP1 )
+        toggleVisibility( compostButtonPalmP1 )
+    end
+    compostButtonPalmP1:addEventListener( "tap", CompostP1Palm )
+
+    local function CompostP1Pine ()
+        clicksound ()
+        display.remove( P1Pine )
+        transition.to( P1Colouring, { time=500, y=(120) } )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnPineP1 )
+        toggleVisibility( compostButtonPineP1 )
+    end
+    compostButtonPineP1:addEventListener( "tap", CompostP1Pine )
+
+    local function CompostP1Fern ()
+        clicksound ()
+        display.remove( P1Fern )
+        transition.to( P1Colouring, { time=500, y=(120) } )
+        transition.to( P1Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnFernP1 )
+        toggleVisibility( compostButtonFernP1 )
+    end
+    compostButtonFernP1:addEventListener( "tap", CompostP1Fern )
+
 end
+
+
 
 -- show()
 function scene:show( event )
