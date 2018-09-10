@@ -33,27 +33,26 @@ function scene:create( event )
 
     -----------------------------------
     -- Set up for dinosaur animations
-    -----------------------------------
+    ---------------------------------------------------------------------------------------------------------
 
-    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 } 
+    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 }
     local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
 
-    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
+    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 }
     local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
 
     local sequenceDinoData = {
     {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
-    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0} 
+    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
     }
 
-    -----------------------------------------
-    -- Dino Set up for movement and eating
-    -----------------------------------------
+    ---------------------------------------------------------------------------------------------------------------
+    -- Dino placement and set up for movement and eating
+    ---------------------------------------------------------------------------------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
     Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
     Dino:scale(1, 1)
     Dino:play()
-
 
     Dino.x = display.contentCenterX+400
     Dino.y = display.contentCenterY-110
@@ -64,7 +63,9 @@ function scene:create( event )
     sceneGroup:insert( Dino )
     physics.pause( Dino )
 
-
+    ---------------------------------------------------------------------------------------------------------
+    -- move the dino left
+    ---------------------------------------------------------------------------------------------------------
     function goLeft()
         if Dino == nil then
             do return end
@@ -103,7 +104,9 @@ function scene:create( event )
 
     end
 
-
+    ---------------------------------------------------------------------------------------------------------
+    -- move the dino right
+    ---------------------------------------------------------------------------------------------------------
     function goRight()
         if Dino == nil then
             do return end
@@ -141,12 +144,14 @@ function scene:create( event )
         end
     end
 
+    ---------------------------------------------------------------------------------------------------------
     -- function for stoping the dino and making it eat (Work in Progress)
+    ---------------------------------------------------------------------------------------------------------
     function DinoEat ()
       transition.pause(Dino)
       Dino:setSequence( "normalEat" )
       Dino:play()
-      rightsecondsTillcomplete = 11
+      --rightsecondsTillcomplete = 11 -- maybe remove -------------------------------------------------------------------------------------
 
       local Eattimeseconds = 2
 
@@ -154,15 +159,15 @@ function scene:create( event )
 
           -- Decrement the number of seconds
           Eattimeseconds = Eattimeseconds - 1
-     
+
           -- Time is tracked in seconds; convert it to minutes and seconds
           local minutes = math.floor( Eattimeseconds / 2 )
           local seconds = Eattimeseconds % 2
-     
+
           Eattimeup ()
-     
+
         end
-     
+
       eatingtimer = timer.performWithDelay( 1000, EatTimer, Eattimeseconds )
 
         function Eattimeup ()
@@ -182,9 +187,11 @@ function scene:create( event )
                 end
             end
         end
-     
     end
 
+   ---------------------------------------------------------------------------------------------------------
+   --start the dinos movement
+   ---------------------------------------------------------------------------------------------------------
    goLeft()
   
     ------------------------
@@ -230,9 +237,9 @@ function scene:create( event )
     local MediumPlantCountP1 = 0
     local LargePlantCountP1 = 0
 
-    -----------------------------------------------------------------
-    -- Early collision test for Dino Eating Plants (Lines 316 to 342)
-    -----------------------------------------------------------------
+    -------------------------------------------------
+    -- Early collision test for Dino Eating Plants
+    -------------------------------------------------
    local function DinoPlantCollision( self, event )
     if event.phase == "began" then
            if event.target.myName == "FinishedPlant" and event.other.myName == "Dino" then
@@ -259,11 +266,11 @@ function scene:create( event )
 
     Dino.collision = DinoPlantCollision
     Dino:addEventListener( "collision", Dino )
- 
+
     -------------------------------------------------------------
     -- Color palette Buttons (Set to insivisble on game start)
     -------------------------------------------------------------
-    
+
     -- Palette For Player 1
     colouringSetupP1()
     btn_new1:addEventListener( "tap", btn_swatch_tapP1 )
@@ -284,6 +291,14 @@ function scene:create( event )
     ---------------------------------------
     --Creates Spawn functions for buttons
     ---------------------------------------
+
+    -- set flax masks
+    local flaxMask1 = graphics.newMask( "images/plant1/flax1.png" )
+    local flaxMask2 = graphics.newMask( "images/plant2/flax2.png" )
+    local flaxMask3 = graphics.newMask( "images/plant3/flax3.png" )
+    local flaxMask4 = graphics.newMask( "images/plant4/flax4.png" )
+    local flaxMask5 = graphics.newMask( "images/plant5/flax5.png" )
+    local flaxMask6 = graphics.newMask( "images/plant6/flax6.png" )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P1 ()
