@@ -6,9 +6,9 @@ function selectionSetupP1 ()
 
   P1Select = display.newGroup();
 
-  RockSelectP1 = display.newImageRect( "images/Rock Display Select.png", 890, 900)
+  RockSelectP1 = display.newImageRect( "images/Rock Display Select.png", 890, 1200)
   RockSelectP1.x = display.contentCenterX-1440
-  RockSelectP1.y = display.contentCenterY+640
+  RockSelectP1.y = display.contentCenterY+540
   P1Select:insert( RockSelectP1 )
 
   btn_spawnFlaxP1 = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 130, 130)
@@ -223,7 +223,7 @@ function colouringSetupP1()
   --------------------------------------
   -- creates colour selection buttons.
   --------------------------------------
-  local RockColourP1 = display.newImageRect( "images/Rock Display.png", 890, 920)
+  local RockColourP1 = display.newImageRect( "images/Rock Display.png", 890, 1320)
   RockColourP1.x = display.contentCenterX-1440
   RockColourP1.y = display.contentCenterY+1130
   P1Colouring:insert( RockColourP1 )
@@ -231,25 +231,25 @@ function colouringSetupP1()
   btn_new1 = display.newImageRect( "images/paintbuttons/paletteButton1.png", 130, 130)
   btn_new1.color = { 0.3, 0.5, 0.3 }
   btn_new1.x = display.contentCenterX-1680
-  btn_new1.y = display.contentCenterY+1320
+  btn_new1.y = display.contentCenterY+1420
   P1Colouring:insert( btn_new1 )
 
   btn_new2 = display.newImageRect( "images/paintbuttons/paletteButton2.png", 130, 130)
   btn_new2.color = { 0.3, 0.5, 0.1 }
   btn_new2.x = display.contentCenterX-1530
-  btn_new2.y = display.contentCenterY+1330
+  btn_new2.y = display.contentCenterY+1430
   P1Colouring:insert( btn_new2 )
 
   btn_new3 = display.newImageRect( "images/paintbuttons/paletteButton3.png", 130, 130)
   btn_new3.color = { 0.1, 0.4, 0.2 }
   btn_new3.x = display.contentCenterX-1380
-  btn_new3.y = display.contentCenterY+1330
+  btn_new3.y = display.contentCenterY+1430
   P1Colouring:insert( btn_new3 )
 
   btn_new4 = display.newImageRect( "images/paintbuttons/paletteButton4.png", 130, 130)
   btn_new4.color = { 0.4, 0.2, 0.1 }
   btn_new4.x = display.contentCenterX-1230
-  btn_new4.y = display.contentCenterY+1320
+  btn_new4.y = display.contentCenterY+1420
   P1Colouring:insert( btn_new4 )
 
   ---------------------------------------------------------------------------------------------
@@ -257,25 +257,25 @@ function colouringSetupP1()
   ---------------------------------------------------------------------------------------------
   donebtn_spawnFlaxP1 = display.newImageRect( "images/Done Button Template.png", 350, 150)
   donebtn_spawnFlaxP1.x = display.contentCenterX-1540
-  donebtn_spawnFlaxP1.y = display.contentCenterY+1460
+  donebtn_spawnFlaxP1.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnFlaxP1 )
   P1Colouring:insert( donebtn_spawnFlaxP1 )
 
   donebtn_spawnPalmP1 = display.newImageRect( "images/Done Button Template.png", 350, 150)
   donebtn_spawnPalmP1.x = display.contentCenterX-1540
-  donebtn_spawnPalmP1.y = display.contentCenterY+1460
+  donebtn_spawnPalmP1.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnPalmP1 )
   P1Colouring:insert( donebtn_spawnPalmP1 )
 
   donebtn_spawnPineP1 = display.newImageRect( "images/Done Button Template.png", 350, 150)
   donebtn_spawnPineP1.x = display.contentCenterX-1540
-  donebtn_spawnPineP1.y = display.contentCenterY+1460
+  donebtn_spawnPineP1.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnPineP1 )
   P1Colouring:insert( donebtn_spawnPineP1 )
 
   donebtn_spawnFernP1 = display.newImageRect( "images/Done Button Template.png", 350, 150)
   donebtn_spawnFernP1.x = display.contentCenterX-1540
-  donebtn_spawnFernP1.y = display.contentCenterY+1460
+  donebtn_spawnFernP1.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnFernP1 )
   P1Colouring:insert( donebtn_spawnFernP1 )
 
@@ -284,25 +284,25 @@ function colouringSetupP1()
   -----------------------------------------------------------------------------------------------
   compostButtonFlaxP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonFlaxP1.x = display.contentCenterX-1300
-  compostButtonFlaxP1.y = display.contentCenterY+1460
+  compostButtonFlaxP1.y = display.contentCenterY+1560
   toggleVisibility( compostButtonFlaxP1 )
   P1Colouring:insert( compostButtonFlaxP1 )
 
   compostButtonPalmP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonPalmP1.x = display.contentCenterX-1300
-  compostButtonPalmP1.y = display.contentCenterY+1460
+  compostButtonPalmP1.y = display.contentCenterY+1560
   toggleVisibility( compostButtonPalmP1 )
   P1Colouring:insert( compostButtonPalmP1 )
 
   compostButtonPineP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonPineP1.x = display.contentCenterX-1300
-  compostButtonPineP1.y = display.contentCenterY+1460
+  compostButtonPineP1.y = display.contentCenterY+1560
   toggleVisibility( compostButtonPineP1 )
   P1Colouring:insert( compostButtonPineP1 )
 
   compostButtonFernP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonFernP1.x = display.contentCenterX-1300
-  compostButtonFernP1.y = display.contentCenterY+1460
+  compostButtonFernP1.y = display.contentCenterY+1560
   toggleVisibility( compostButtonFernP1 )
   P1Colouring:insert( compostButtonFernP1 )
 

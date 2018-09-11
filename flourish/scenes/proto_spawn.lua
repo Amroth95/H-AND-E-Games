@@ -1,6 +1,7 @@
 local composer = require( "composer" )
 local utilities = require( "libraries.proto_utilities" )
 local backgroundComponents = require( "libraries.background_setup" )
+local backgroundAmbient = require( "libraries.background_ambience" )
 local soundEffects = require( "libraries.sound_functions" )
 local playerOne = require( "libraries.playerOne_utilities" )
 
@@ -15,6 +16,7 @@ local physics = require( "physics" )
 -- -----------------------------------------------------------------------------------
 
 background()
+birds ()
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -31,18 +33,18 @@ function scene:create( event )
     sceneGroup:insert( ecosystem_P1 )
     ecosystem_P1:toBack(sceneGroup)
 
-    -----------------------------------
+    ---------------------------------------------------------------------------------------------------------
     -- Set up for dinosaur animations
     ---------------------------------------------------------------------------------------------------------
 
-    local DinosheetData1 = { width =659.111111111, height =1399, numFrames=9, sheetContentWidth=5932, sheetContentHeight=1399 }
-    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk fix.png", DinosheetData1)
+    local DinosheetData1 = { width =126.212765957, height =199, numFrames=47, sheetContentWidth=5932, sheetContentHeight=199 } 
+    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk Test2.png", DinosheetData1)
 
-    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 }
+    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
     local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
 
     local sequenceDinoData = {
-    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=9, time=750},
+    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=47, time=2000},
     {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
     }
 
@@ -51,11 +53,11 @@ function scene:create( event )
     ---------------------------------------------------------------------------------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
     Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
-    Dino:scale(1, 1)
+    Dino:scale(5, 5)
     Dino:play()
 
-    Dino.x = display.contentCenterX+400
-    Dino.y = display.contentCenterY-110
+    Dino.x = display.contentCenterX+1500
+    Dino.y = display.contentCenterY+420
     physics.addBody(Dino, {density=1000, friction=100, radius=30})
     physics.setGravity(0,0)
     Dino.myName = "Dino"
@@ -75,7 +77,7 @@ function scene:create( event )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=math.random(75, 450) } )
+      transition.to( Dino, { time=6000, x=math.random(200, 900) } )
 
       local rightsecondsTillcomplete = 7
 
@@ -116,7 +118,7 @@ function scene:create( event )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=math.random(550, 875) } )
+      transition.to( Dino, { time=6000, x=math.random(2800, 3100) } )
 
       local rightsecondsTillcomplete = 7
 
@@ -176,14 +178,11 @@ function scene:create( event )
               do return end
             else
                 if Eattimeseconds <= 0 then
-                  if Dino.xScale >= 0.2 then
-                     goLeft()
-                     print("Going Left")
-                    else
-                     goRight()
-                     print("Going Right")
-                    end
-                   timer.cancel( eatingtimer )
+                  
+                  Dino:setSequence( "normalWalk" )
+                  Dino:play()
+                  timer.cancel( eatingtimer )
+                    
                 end
             end
         end
@@ -240,6 +239,22 @@ function scene:create( event )
     -------------------------------------------------
     -- Early collision test for Dino Eating Plants
     -------------------------------------------------
+
+
+   local function GoToEcosystemP1 ()
+      transition.cancel( Dino )
+      transition.to( Dino, { time=2000, x=500, y=1500 } )
+      Dino.xScale = 1
+
+      toggleVisibility( btn_spawnPalmP1 )
+      toggleVisibility( btn_spawnPineP1 )
+
+      physics.start( SensorP1 )
+      physics.start( Dino )
+
+    end
+
+
    local function DinoPlantCollision( self, event )
     if event.phase == "began" then
            if event.target.myName == "FinishedPlant" and event.other.myName == "Dino" then
@@ -256,8 +271,15 @@ function scene:create( event )
 
               FinishedPlantCountP1 = 0
               FinishedPlantTextP1.text = FinishedPlantCountP1
+              SmallPlantCountP1 = 0
+              MediumPlantCountP1 = 0
+              LargePlantCountP1 = 0
 
-              physics.pause( Sensor )
+              physics.pause( Dino )
+
+              ecosystem_P1 = display.newGroup()
+              sceneGroup:insert( ecosystem_P1 )
+              ecosystem_P1:toBack(sceneGroup)
 
 
             end
@@ -292,22 +314,14 @@ function scene:create( event )
     --Creates Spawn functions for buttons
     ---------------------------------------
 
-    -- set flax masks
-    local flaxMask1 = graphics.newMask( "images/plant1/flax1.png" )
-    local flaxMask2 = graphics.newMask( "images/plant2/flax2.png" )
-    local flaxMask3 = graphics.newMask( "images/plant3/flax3.png" )
-    local flaxMask4 = graphics.newMask( "images/plant4/flax4.png" )
-    local flaxMask5 = graphics.newMask( "images/plant5/flax5.png" )
-    local flaxMask6 = graphics.newMask( "images/plant6/flax6.png" )
-
     -- Spawn Flax
     local function btn_spawn_tapFlax_P1 ()
       toggleVisibility( donebtn_spawnFlaxP1 )
       toggleVisibility( compostButtonFlaxP1 )
 
-      transition.to( P1Select, { time=500, y=(500) } )
+      transition.to( P1Select, { time=500, y=(800) } )
 
-      transition.to( P1Colouring, { time=500, y=(-500) } )
+      transition.to( P1Colouring, { time=600, y=(-600) } )
 
       clicksound ()
 
@@ -331,9 +345,9 @@ function scene:create( event )
       toggleVisibility( donebtn_spawnPalmP1 )
       toggleVisibility( compostButtonPalmP1 )
 
-      transition.to( P1Select, { time=500, y=(500) } )
+      transition.to( P1Select, { time=500, y=(800) } )
 
-      transition.to( P1Colouring, { time=500, y=(-500) } )
+      transition.to( P1Colouring, { time=600, y=(-600) } )
 
       clicksound ()
 
@@ -354,9 +368,9 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnPineP1 )
         toggleVisibility( compostButtonPineP1 )
 
-        transition.to( P1Select, { time=500, y=(500) } )
+        transition.to( P1Select, { time=500, y=(800) } )
 
-        transition.to( P1Colouring, { time=500, y=(-500) } )
+        transition.to( P1Colouring, { time=600, y=(-600) } )
 
         clicksound ()
 
@@ -380,9 +394,9 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnFernP1 )
         toggleVisibility( compostButtonFernP1 )
 
-        transition.to( P1Select, { time=500, y=(500) } )
+        transition.to( P1Select, { time=500, y=(800) } )
 
-        transition.to( P1Colouring, { time=500, y=(-500) } )
+        transition.to( P1Colouring, { time=600, y=(-600) } )
 
         clicksound ()
 
@@ -418,6 +432,10 @@ function scene:create( event )
         if SmallPlantCountP1 == 1 then
 
          toggleVisibility( btn_spawnPalmP1 )
+        end
+        
+        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+            GoToEcosystemP1()
         end  
 
         transition.to(P1Flax, {
@@ -444,7 +462,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnFlaxP1 )
         toggleVisibility( compostButtonFlaxP1 )
 
-        physics.pause( Dino )
 
         if FinishedPlantCountP1 == 1 then
             local SensorP1 = display.newCircle( 500, 1500, 100 )
@@ -484,6 +501,10 @@ function scene:create( event )
          toggleVisibility( btn_spawnPineP1 )
         end  
 
+        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+            GoToEcosystemP1()
+        end 
+
         transition.to(P1Palm, {
             x= math.random(-300, 500 ),
             y= math.random(-230, -185),
@@ -501,8 +522,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnPalmP1 )
         toggleVisibility( compostButtonPalmP1 )
 
-        physics.pause( Dino )
-
 
     end
     donebtn_spawnPalmP1:addEventListener( "tap", donebtn_spawn_tapPalmP1 )
@@ -518,6 +537,12 @@ function scene:create( event )
 
         FinishedPlantCountP1 = FinishedPlantCountP1 + 1
         FinishedPlantTextP1.text = FinishedPlantCountP1
+
+        LargePlantCountP1 = LargePlantCountP1 + 1
+
+        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+            GoToEcosystemP1()
+        end 
 
         transition.to(P1Pine, {
             x= math.random(-300, 500 ),
@@ -544,7 +569,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnPineP1 )
         toggleVisibility( compostButtonPineP1 )
 
-        physics.pause( Dino )
 
     end
     donebtn_spawnPineP1:addEventListener( "tap", donebtn_spawn_tapPineP1 )
@@ -568,6 +592,10 @@ function scene:create( event )
          toggleVisibility( btn_spawnPalmP1 )
         end  
 
+        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+            GoToEcosystemP1()
+        end 
+
         transition.to(P1Fern, {
             x= math.random(-200, 600 ),
             y= math.random(-190, -185),
@@ -587,7 +615,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnFernP1 )
         toggleVisibility( compostButtonFernP1 )
 
-        physics.pause( Dino )
 
         if FinishedPlantCountP1 == 1 then
             local SensorP1 = display.newCircle( 500, 1500, 100 )
