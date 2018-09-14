@@ -17,6 +17,7 @@ local physics = require( "physics" )
 
 background()
 birds ()
+clouds ()
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -37,14 +38,14 @@ function scene:create( event )
     -- Set up for dinosaur animations
     ---------------------------------------------------------------------------------------------------------
 
-    local DinosheetData1 = { width =126.212765957, height =199, numFrames=47, sheetContentWidth=5932, sheetContentHeight=199 } 
-    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk Test2.png", DinosheetData1)
+    local DinosheetData1 = { width =159.864864865, height =199, numFrames=37, sheetContentWidth=5932, sheetContentHeight=199 } 
+    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk Test3.png", DinosheetData1)
 
     local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
     local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
 
     local sequenceDinoData = {
-    {name="normalWalk", sheet=DinoImageSheet1, start=1, count=47, time=2000},
+    {name="normalWalk", sheet=DinoImageSheet1, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1500},
     {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
     }
 
@@ -52,8 +53,9 @@ function scene:create( event )
     -- Dino placement and set up for movement and eating
     ---------------------------------------------------------------------------------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
+    local Dinoscale = 10
     Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
-    Dino:scale(5, 5)
+    Dino:scale(Dinoscale, Dinoscale)
     Dino:play()
 
     Dino.x = display.contentCenterX+1500
@@ -72,7 +74,7 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = 1
+            Dino.xScale = 10
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
@@ -113,7 +115,7 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = -1
+            Dino.xScale = -10
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
@@ -215,14 +217,6 @@ function scene:create( event )
       local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
     end
 
-    
-    ------------------------------------
-    -- Color indicator, (Test Only)
-    ------------------------------------
-    proto_rectP1 = display.newRect( 100, 50, 100, 30 )
-    proto_rectP1.color = {0,0,0}
-    sceneGroup:insert( proto_rectP1 )
-
     --------------------------------------------------------------------------
     -- Counts the number of finished plants (Text won't be in the final game)
     --------------------------------------------------------------------------
@@ -244,7 +238,7 @@ function scene:create( event )
    local function GoToEcosystemP1 ()
       transition.cancel( Dino )
       transition.to( Dino, { time=2000, x=500, y=1500 } )
-      Dino.xScale = 1
+      Dino.xScale = 10
 
       toggleVisibility( btn_spawnPalmP1 )
       toggleVisibility( btn_spawnPineP1 )
@@ -299,8 +293,19 @@ function scene:create( event )
     btn_new2:addEventListener( "tap", btn_swatch_tapP1 )
     btn_new3:addEventListener( "tap", btn_swatch_tapP1 )
     btn_new4:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow1:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow2:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow3:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow4:addEventListener( "tap", btn_swatch_tapP1 )
 
     sceneGroup:insert( P1Colouring )
+
+    ------------------------------------
+    -- Color indicators
+    ------------------------------------
+    proto_rectP1 = display.newRect( 260, 2540, 100, 30 )
+    proto_rectP1.color = {0,0,0}
+    P1Colouring:insert( proto_rectP1 )
     
     ---------------------------------------
     --Creates Buttons for spawning Plants
@@ -319,10 +324,6 @@ function scene:create( event )
       toggleVisibility( donebtn_spawnFlaxP1 )
       toggleVisibility( compostButtonFlaxP1 )
 
-      transition.to( P1Select, { time=500, y=(800) } )
-
-      transition.to( P1Colouring, { time=600, y=(-600) } )
-
       clicksound ()
 
       createFlaxP1 ()
@@ -334,7 +335,11 @@ function scene:create( event )
       flax_P1_5:addEventListener( "tap", tintPlantP1 )
       flax_P1_6:addEventListener( "tap", tintPlantP1 )
 
-      sceneGroup:insert( P1Flax )
+      P1Colouring:insert( P1Flax )
+
+      transition.to( P1Select, { time=500, y=(800) } )
+
+      transition.to( P1Colouring, { time=600, y=(-600) } )
 
 
     end
@@ -345,10 +350,6 @@ function scene:create( event )
       toggleVisibility( donebtn_spawnPalmP1 )
       toggleVisibility( compostButtonPalmP1 )
 
-      transition.to( P1Select, { time=500, y=(800) } )
-
-      transition.to( P1Colouring, { time=600, y=(-600) } )
-
       clicksound ()
 
       createPalmP1 ()
@@ -357,7 +358,11 @@ function scene:create( event )
       palm_P1_2:addEventListener( "tap", tintPlantP1 )
       palm_P1_3:addEventListener( "tap", tintPlantP1 )
 
-      sceneGroup:insert( P1Palm )
+      P1Colouring:insert( P1Palm )
+
+      transition.to( P1Select, { time=500, y=(800) } )
+
+      transition.to( P1Colouring, { time=600, y=(-600) } )
 
 
     end
@@ -367,10 +372,6 @@ function scene:create( event )
     local function btn_spawn_tapPine_P1 ()
         toggleVisibility( donebtn_spawnPineP1 )
         toggleVisibility( compostButtonPineP1 )
-
-        transition.to( P1Select, { time=500, y=(800) } )
-
-        transition.to( P1Colouring, { time=600, y=(-600) } )
 
         clicksound ()
 
@@ -384,7 +385,11 @@ function scene:create( event )
         pine_P1_6:addEventListener( "tap", tintPlantP1 )
         pine_P1_7:addEventListener( "tap", tintPlantP1 )
 
-        sceneGroup:insert( P1Pine )
+        P1Colouring:insert( P1Pine )
+
+        transition.to( P1Select, { time=500, y=(800) } )
+
+        transition.to( P1Colouring, { time=600, y=(-600) } )
 
     end
     btn_spawnPineP1:addEventListener( "tap", btn_spawn_tapPine_P1 )
@@ -393,10 +398,6 @@ function scene:create( event )
     local function btn_spawn_tapFern_P1 ()
         toggleVisibility( donebtn_spawnFernP1 )
         toggleVisibility( compostButtonFernP1 )
-
-        transition.to( P1Select, { time=500, y=(800) } )
-
-        transition.to( P1Colouring, { time=600, y=(-600) } )
 
         clicksound ()
 
@@ -407,7 +408,11 @@ function scene:create( event )
         fern_P1_3:addEventListener( "tap", tintPlantP1 )
         fern_P1_4:addEventListener( "tap", tintPlantP1 )
 
-        sceneGroup:insert( P1Fern )
+        P1Colouring:insert( P1Fern )
+
+        transition.to( P1Select, { time=500, y=(800) } )
+
+        transition.to( P1Colouring, { time=600, y=(-600) } )
 
     end
     btn_spawnFernP1:addEventListener( "tap", btn_spawn_tapFern_P1 )
@@ -440,7 +445,7 @@ function scene:create( event )
 
         transition.to(P1Flax, {
             x= math.random(-200, 400 ),
-            y= math.random(-190, -185),
+            y= math.random(-790, -785),
             time=1000})
         flax_P1:scale(1.35, 1.35)
         flax_P1:removeEventListener( "tap", tintPlantP1 )
@@ -507,7 +512,7 @@ function scene:create( event )
 
         transition.to(P1Palm, {
             x= math.random(-300, 500 ),
-            y= math.random(-230, -185),
+            y= math.random(-830, -785),
             time=1000})
         palm_P1:scale(2.35, 2.35)
         palm_P1:removeEventListener( "tap", tintPlantP1 )
@@ -546,7 +551,7 @@ function scene:create( event )
 
         transition.to(P1Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-580, -490),
+            y= math.random(-1080, -990),
             time=1000})
         pine_P1:scale(2, 2.95)
         pine_P1:removeEventListener( "tap", tintPlantP1 )
@@ -598,7 +603,7 @@ function scene:create( event )
 
         transition.to(P1Fern, {
             x= math.random(-200, 600 ),
-            y= math.random(-190, -185),
+            y= math.random(-790, -785),
             time=1000})
         fern_P1:scale(1.35, 1.35)
         fern_P1:removeEventListener( "tap", tintPlantP1 )
@@ -678,6 +683,32 @@ function scene:create( event )
         toggleVisibility( compostButtonFernP1 )
     end
     compostButtonFernP1:addEventListener( "tap", CompostP1Fern )
+
+   -------------------------------------
+   -- Functions for palette selection
+   -------------------------------------
+
+    function chooseNormalP1 ()
+        clicksound ()
+        if P1normalPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P1rainbowPalette )
+           toggleVisibility( P1normalPalette )
+        end
+    end
+    P1NormalSelect:addEventListener( "tap", chooseNormalP1 )
+
+    function chooseRainbowP1 ()
+        clicksound ()
+        if P1rainbowPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P1rainbowPalette )
+           toggleVisibility( P1normalPalette )
+        end
+    end
+    P1RainbowSelect:addEventListener( "tap", chooseRainbowP1 )
 
 end
 

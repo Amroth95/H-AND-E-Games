@@ -17,8 +17,8 @@ function birds ()
     Bird2:scale(0.6, 0.5)
     Bird2:play()
 
-    transition.to( Bird, { time=2000, x=-300 } )
-    transition.to( Bird2, { time=2000, x=-200 } )
+    transition.to( Bird, { time=5000, x=-300 } )
+    transition.to( Bird2, { time=5000, x=-200 } )
         
     birdsecondsTillcomplete = 20
 
@@ -50,3 +50,45 @@ function birds ()
  
 end
 
+function clouds ()
+
+    local cloud1 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1200, 800 )
+    cloud1.x = -700 ; cloud1.y = 520
+    cloud1.alpha = 0.8
+
+    local cloud2 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1600, 1000 )
+    cloud2.x = -1400 ; cloud2.y = 620
+    cloud2.alpha = 0.8
+
+    local cloud3 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1800, 1200 )
+    cloud3.x = -2100 ; cloud3.y = 920
+    cloud3.alpha = 0.8
+
+    transition.to( cloud1, { time=150000, x=7500 } )
+    transition.to( cloud2, { time=150000, x=7350 } )
+    transition.to( cloud3, { time=150000, x=7450 } )
+
+    cloudDuplicateSeconds = 35
+
+    function cloudDuplicateTimer( event )
+
+        -- Decrement the number of seconds
+        cloudDuplicateSeconds = cloudDuplicateSeconds - 1
+
+        -- Time is tracked in seconds; convert it to minutes and seconds
+        local minutes = math.floor( cloudDuplicateSeconds / 35 )
+        local seconds = cloudDuplicateSeconds % 35
+
+        cloudDuplicate ()
+
+    end
+
+    cloudsDuplicationTimer = timer.performWithDelay( 1000, cloudDuplicateTimer, cloudDuplicateSeconds )
+
+    function cloudDuplicate ()
+        if cloudDuplicateSeconds <= 0 then
+            clouds ()
+        end
+    end
+
+end

@@ -26,14 +26,8 @@ function background()
  backgroundSky.x = display.contentCenterX
  backgroundSky.y = display.contentCenterY
 
- local backgroundClouds = display.newImageRect( "images/backgroundAssets/clouds.png", display.contentWidth, display.contentHeight )
- backgroundClouds.x = display.contentCenterX
- backgroundClouds.y = display.contentCenterY-30
- backgroundClouds.alpha = 0.8
-
  backgroundPlants:toBack()
  backgroundDirt:toBack()
- backgroundClouds:toBack()
  backgroundMountains:toBack()
  backgroundSky:toBack()
  backgroundImg:toBack()
