@@ -1,3 +1,6 @@
+local backgroundComponents = require( "libraries.background_setup" )
+local backgroundAmbient = require( "libraries.background_ambience" )
+
 -----------------------------------------------------------------------------------------
 --
 -- main.lua
@@ -15,6 +18,8 @@
 --local backgroundMusicChannel = audio.play( backgroundMusic, { channel=7, loops=-1, fadein=5000 } )
 
 audio.setVolume( 0.1 )
+
+background()
 
 -- the external library that allows us to jump scenes
 local composer = require( "composer" )

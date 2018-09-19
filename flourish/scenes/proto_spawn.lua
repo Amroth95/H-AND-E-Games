@@ -4,22 +4,21 @@ local backgroundComponents = require( "libraries.background_setup" )
 local backgroundAmbient = require( "libraries.background_ambience" )
 local soundEffects = require( "libraries.sound_functions" )
 local playerOne = require( "libraries.playerOne_utilities" )
+local playerTwo = require( "libraries.playerTwo_utilities" )
 
 local scene = composer.newScene()
 
 local physics = require( "physics" )
---physics.start()
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-background()
-birds ()
 clouds ()
+birds ()
 
--- -----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
@@ -30,42 +29,59 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
     physics.start()
 
+    butterfly1 ()
+
+    ----------------------
+    -- Ecosystem set up
+    ----------------------
+
     ecosystem_P1 = display.newGroup()
     sceneGroup:insert( ecosystem_P1 )
     ecosystem_P1:toBack(sceneGroup)
+
+    ecosystem_P2 = display.newGroup()
+    sceneGroup:insert( ecosystem_P2 )
+    ecosystem_P2:toBack(sceneGroup)
 
     ---------------------------------------------------------------------------------------------------------
     -- Set up for dinosaur animations
     ---------------------------------------------------------------------------------------------------------
 
-    local DinosheetData1 = { width =159.864864865, height =199, numFrames=37, sheetContentWidth=5932, sheetContentHeight=199 } 
-    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk Test3.png", DinosheetData1)
+    local DinosheetData1 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
+    local DinoImageSheet1 = graphics.newImageSheet("images/sprite sheet/Walk Test4.png", DinosheetData1)
 
-    local DinosheetData2 = { width =1284.125, height =1399, numFrames=8, sheetContentWidth=10273, sheetContentHeight=1399 } 
-    local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Eat fix.png", DinosheetData2)
+    local DinosheetData2 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
+    local DinoImageSheet2 = graphics.newImageSheet("images/sprite sheet/Idle Test2.png", DinosheetData2)
+
+    local DinosheetData3 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
+    local DinoImageSheet3 = graphics.newImageSheet("images/sprite sheet/Eat Test2.png", DinosheetData3)
+
+    local DinosheetData4 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
+    local DinoImageSheet4 = graphics.newImageSheet("images/sprite sheet/Stand Test2.png", DinosheetData4)
 
     local sequenceDinoData = {
     {name="normalWalk", sheet=DinoImageSheet1, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1500},
-    {name="normalEat", sheet=DinoImageSheet2, frames={ 8, 7, 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6, 7, 8, }, time=2000, loopCount=0}
+    {name="normalIdle", sheet=DinoImageSheet2, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000},
+    {name="normalStand", sheet=DinoImageSheet4, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000},
+    {name="normalEat", sheet=DinoImageSheet3, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000, loopCount=0}
     }
 
     ---------------------------------------------------------------------------------------------------------------
-    -- Dino placement and set up for movement and eating
+    -- Dino creation and placement
     ---------------------------------------------------------------------------------------------------------------
     local Dino = display.newSprite(DinoImageSheet1, sequenceDinoData)
-    local Dinoscale = 10
-    Dino.x = display.contentWidth/2 ; Dino.y = display.contentHeight/2
+    local Dinoscale = 5
     Dino:scale(Dinoscale, Dinoscale)
     Dino:play()
 
-    Dino.x = display.contentCenterX+1500
+    Dino.x = display.contentCenterX+1100
     Dino.y = display.contentCenterY+420
-    physics.addBody(Dino, {density=1000, friction=100, radius=30})
+    physics.addBody(Dino, {density=5000, friction=5000, radius=100})
     physics.setGravity(0,0)
     Dino.myName = "Dino"
 
     sceneGroup:insert( Dino )
-    physics.pause( Dino )
+    physics.start( Dino )
 
     ---------------------------------------------------------------------------------------------------------
     -- move the dino left
@@ -74,36 +90,51 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = 10
+            Dino.xScale = 5
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=math.random(200, 900) } )
+        local sqCenterX, sqCenterY = Dino:localToContent( 0, 0 )
+        print( "Dino position in screen coordinates: ", sqCenterX, sqCenterY )
 
-      local rightsecondsTillcomplete = 7
+      transition.to( Dino, { time=3000, x=sqCenterX-800} )
 
-      local function LeftTimer( event )
+      local rightsecondsTillcomplete = 12
+
+        local function LeftTimer( event )
 
          -- Decrement the number of seconds
          rightsecondsTillcomplete = rightsecondsTillcomplete - 1
 
          -- Time is tracked in seconds; convert it to minutes and seconds
-         local minutes = math.floor( rightsecondsTillcomplete / 7 )
-         local seconds = rightsecondsTillcomplete % 7
+         local minutes = math.floor( rightsecondsTillcomplete / 12 )
+         local seconds = rightsecondsTillcomplete % 12
 
          Lefttimeup ()
+         IdleTrigger()
 
         end
 
-      local gorightttimer = timer.performWithDelay( 1000, LeftTimer, rightsecondsTillcomplete )
+      gorighttimer = timer.performWithDelay( 1000, LeftTimer, rightsecondsTillcomplete )
 
       function Lefttimeup ()
         if rightsecondsTillcomplete <= 0
            then
              goRight()
            end
+        end
 
+        function IdleTrigger()
+            if Dino == nil then
+                do return end
+            else
+                if rightsecondsTillcomplete == 9
+                then
+                  Dino:setSequence( "normalIdle" )
+                  Dino:play()
+                end
+            end
         end
 
     end
@@ -115,48 +146,63 @@ function scene:create( event )
         if Dino == nil then
             do return end
         else
-            Dino.xScale = -10
+            Dino.xScale = -5
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
 
-      transition.to( Dino, { time=6000, x=math.random(2800, 3100) } )
+        local sqCenterX, sqCenterY = Dino:localToContent( 0, 0 )
+        print( "Dino position in screen coordinates: ", sqCenterX, sqCenterY )
 
-      local rightsecondsTillcomplete = 7
+      transition.to( Dino, { time=3000, x=sqCenterX+800 } )
 
-      local function RightTimer( event )
+      local rightsecondsTillcomplete = 12
+
+        local function RightTimer( event )
 
          -- Decrement the number of seconds
          rightsecondsTillcomplete = rightsecondsTillcomplete - 1
 
          -- Time is tracked in seconds; convert it to minutes and seconds
-         local minutes = math.floor( rightsecondsTillcomplete / 7 )
-         local seconds = rightsecondsTillcomplete % 7
+         local minutes = math.floor( rightsecondsTillcomplete / 12 )
+         local seconds = rightsecondsTillcomplete % 12
 
          Righttimeup ()
+         IdleTrigger()
 
         end
 
-      local gorighttimer = timer.performWithDelay( 1000, RightTimer, rightsecondsTillcomplete )
+      gorighttimer = timer.performWithDelay( 1000, RightTimer, rightsecondsTillcomplete )
 
        function Righttimeup ()
           if rightsecondsTillcomplete <= 0
             then
               goLeft()
             end
-
         end
+
+        function IdleTrigger()
+            if Dino == nil then
+                do return end
+            else
+                if rightsecondsTillcomplete == 9
+                then
+                  Dino:setSequence( "normalIdle" )
+                  Dino:play()
+                end
+            end
+        end
+
     end
 
-    ---------------------------------------------------------------------------------------------------------
-    -- function for stoping the dino and making it eat (Work in Progress)
-    ---------------------------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------
+    -- function for stoping the dino and making it eat
+    ----------------------------------------------------------------------
     function DinoEat ()
       transition.pause(Dino)
       Dino:setSequence( "normalEat" )
       Dino:play()
-      --rightsecondsTillcomplete = 11 -- maybe remove -------------------------------------------------------------------------------------
-
+      
       local Eattimeseconds = 2
 
         local function EatTimer( event )
@@ -180,13 +226,69 @@ function scene:create( event )
               do return end
             else
                 if Eattimeseconds <= 0 then
-                  
+                  physics.start( Dino )
                   Dino:setSequence( "normalWalk" )
                   Dino:play()
                   timer.cancel( eatingtimer )
-                    
+                    if Dino.xScale == 5 then
+                     goLeft()
+                    end
+                    if Dino.xScale == -5 then
+                     goRight()
+                    end  
                 end
             end
+        end
+    end
+
+    ----------------------------------------------------------------------
+    -- functions for dino rearing up
+    ----------------------------------------------------------------------
+
+    function DinoRear ()
+        if Dino == nil then
+            do return end
+        else
+         transition.cancel( Dino )
+         timer.cancel( gorighttimer )
+         Dino:setSequence( "normalStand" )
+         Dino:play()
+        end
+        
+        local Reartimeseconds = 2
+  
+        local function RearTimer( event )
+  
+            -- Decrement the number of seconds
+            Reartimeseconds = Reartimeseconds - 1
+  
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( Reartimeseconds / 2 )
+            local seconds = Reartimeseconds % 2
+  
+            Reartimeup ()
+  
+        end
+  
+        Rearingtimer = timer.performWithDelay( 1000, RearTimer, Reartimeseconds )
+  
+        function Reartimeup ()
+            if Dino == nil then
+                do return end
+            else
+                if Reartimeseconds <= 0 then    
+                  Dino:setSequence( "normalIdle" )
+                  Dino:play()
+                  timer.cancel( Rearingtimer )
+                    if Dino.xScale == 5 then
+                     goLeft()
+                    end
+                    if Dino.xScale == -5 then
+                      goRight()
+                    end   
+                end      
+            end
+            
         end
     end
 
@@ -198,6 +300,8 @@ function scene:create( event )
     ------------------------
     -- Colouring functions
     ------------------------
+
+    -- Player One
     local function btn_swatch_tapP1 ( event, color )
       proto_rectP1:setFillColor(unpack(event.target.color))
       proto_rectP1.color = event.target.color
@@ -206,7 +310,7 @@ function scene:create( event )
       local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
 
       local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-  
+
     end
 
     local function tintPlantP1 ( event )
@@ -215,11 +319,35 @@ function scene:create( event )
       local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
 
       local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+
+    end
+
+    -- Player Two
+    local function btn_swatch_tapP2 ( event, color )
+        proto_rectP2:setFillColor(unpack(event.target.color))
+        proto_rectP2.color = event.target.color
+        print(unpack(proto_rectP2.color))
+    
+        local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+  
+        local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+  
+    end
+  
+    local function tintPlantP2 ( event )
+        event.target:setFillColor(unpack(proto_rectP2.color))
+  
+        local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+  
+        local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+  
     end
 
     --------------------------------------------------------------------------
     -- Counts the number of finished plants (Text won't be in the final game)
     --------------------------------------------------------------------------
+
+    -- Player One
     local FinishedPlantCountP1 = 0
 
     local FinishedPlantTextP1 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
@@ -230,57 +358,246 @@ function scene:create( event )
     local MediumPlantCountP1 = 0
     local LargePlantCountP1 = 0
 
-    -------------------------------------------------
-    -- Early collision test for Dino Eating Plants
-    -------------------------------------------------
+    --Player Two
+    local FinishedPlantCountP2 = 0
 
+    local FinishedPlantTextP2 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
+    FinishedPlantTextP1:setFillColor( 0, 0, 0 )
+    sceneGroup:insert( FinishedPlantTextP1 )
 
-   local function GoToEcosystemP1 ()
-      transition.cancel( Dino )
-      transition.to( Dino, { time=2000, x=500, y=1500 } )
-      Dino.xScale = 10
+    local SmallPlantCountP2 = 0
+    local MediumPlantCountP2 = 0
+    local LargePlantCountP2 = 0
 
-      toggleVisibility( btn_spawnPalmP1 )
-      toggleVisibility( btn_spawnPineP1 )
+    -----------------------------------------------
+    -- creates timer and trigger for splashscreen
+    -----------------------------------------------
 
-      physics.start( SensorP1 )
-      physics.start( Dino )
+    local secondsLeft = 300  -- 10 minutes = 600 seconds
+
+    local function updateTime( event )
+
+      -- Decrement the number of seconds
+      secondsLeft = secondsLeft - 1
+
+      -- Time is tracked in seconds; convert it to minutes and seconds
+      local minutes = math.floor( secondsLeft / 300 )
+      local seconds = secondsLeft % 300
+
+      timeup ()
 
     end
 
+    local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+    
+    local function resetTimer()
+      timer.cancel(countDownTimer)
+      secondsLeft = 300
+      countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
+    end
 
-   local function DinoPlantCollision( self, event )
-    if event.phase == "began" then
-           if event.target.myName == "FinishedPlant" and event.other.myName == "Dino" then
-              print("Plant detected")
+    -- Resets Timer
+    function timeup ()
 
-              DinoEat ()
+        local splashoptions = {
+            effect = "fade",
+            time = 600
+        }
+   
+        if secondsLeft <= 0
+            then composer.gotoScene( "scenes..splashscreen", splashoptions)
+            scenechange ()
+            Dino = nil
+        end
 
-              eatnoise ()
+    end
 
-              transition.fadeOut( event.target.parent, {time = 1000} )
+    function scenechange ()
 
-              display.remove( event.target )
-              print("Yummy!")
+      local secondsTillchange = 1  -- 10 minutes = 600 seconds
 
-              FinishedPlantCountP1 = 0
-              FinishedPlantTextP1.text = FinishedPlantCountP1
-              SmallPlantCountP1 = 0
-              MediumPlantCountP1 = 0
-              LargePlantCountP1 = 0
+        local function updateTimeForScenechange( event )
 
-              physics.pause( Dino )
+          -- Decrement the number of seconds
+          secondsTillchange = secondsTillchange - 1
 
-              ecosystem_P1 = display.newGroup()
-              sceneGroup:insert( ecosystem_P1 )
-              ecosystem_P1:toBack(sceneGroup)
+          -- Time is tracked in seconds; convert it to minutes and seconds
+          local minutes = math.floor( secondsTillchange / 1 )
+          local seconds = secondsLeft % 1
 
+          Nextscene ()
+        end
 
+      SceneChangeTimer = timer.performWithDelay( 600, updateTimeForScenechange, secondsTillchange )
+
+       function Nextscene()
+            if secondsTillchange <= 0 then
+              composer.removeScene( "scenes..proto_spawn")
             end
         end
     end
 
-    Dino.collision = DinoPlantCollision
+
+    ---------------------------------------------------------------------------
+    -- Functions for handling ecosystem detection and reseting during eating
+    ---------------------------------------------------------------------------
+
+   -- Player One
+   local function GoToEcosystemP1 ()
+      transition.cancel( Dino )
+      timer.cancel( gorighttimer )
+      physics.pause( Dino )
+      Dino:setSequence( "normalWalk" )
+      Dino:play()
+      transition.to( Dino, { time=2000, x=500, y=1500 } )
+       if Dino.x >= 500 then
+         print("Moving left")
+         Dino.xScale = 5
+       elseif Dino.x <= 500 then
+         print("Moving right")
+         Dino.xScale = -5     
+       end
+
+        if btn_spawnPalmP1.isVisible == false then
+          do return end
+        else
+          toggleVisibility( btn_spawnPalmP1 )
+        end
+
+        if btn_spawnPineP1.isVisible == false then
+          do return end
+        else
+         toggleVisibility( btn_spawnPineP1 )
+        end
+        
+        local TimeTillEat1 = 2  -- 10 minutes = 600 seconds
+
+        function updateTimeTillEat1( event )
+
+         -- Decrement the number of seconds
+         TimeTillEat1 = TimeTillEat1 - 1
+
+         -- Time is tracked in seconds; convert it to minutes and seconds
+         local minutes = math.floor( TimeTillEat1 / 2 )
+         local seconds = TimeTillEat1 % 2
+
+         TimeToEatEcosystem1 ()
+        end
+
+       ReadyToEat1Timer = timer.performWithDelay( 1000, updateTimeTillEat1, TimeTillEat1 )
+
+     function TimeToEatEcosystem1()
+          if TimeTillEat1 <= 0 then
+           -- timer.cancel( ReadyToEat1Timer )
+            EatEcosystem1 ()      
+          end
+      end
+    end
+
+    function EatEcosystem1 ()
+        DinoEat ()
+              
+        eatnoise ()
+
+        transition.fadeOut( ecosystem_P1, {time = 1000, onComplete = display.remove} )
+        print("Yummy!")
+
+        FinishedPlantCountP1 = 0
+        FinishedPlantTextP1.text = FinishedPlantCountP1
+        SmallPlantCountP1 = 0
+        MediumPlantCountP1 = 0
+        LargePlantCountP1 = 0
+        ecosystem_P1 = display.newGroup()
+        sceneGroup:insert( ecosystem_P1 )
+        ecosystem_P1:toBack(sceneGroup)
+        print("New Ecosystem Ready")
+    end
+
+    -- Player Two
+    local function GoToEcosystemP2 ()
+        transition.cancel( Dino )
+        timer.cancel( gorighttimer )
+        physics.pause( Dino )
+        Dino:setSequence( "normalWalk" )
+        Dino:play()
+        transition.to( Dino, { time=2000, x=1300, y=1500 } )
+        if Dino.x >= 1300 then
+            print("Moving left")
+            Dino.xScale = 5
+        elseif Dino.x <= 1300 then
+            print("Moving right")
+            Dino.xScale = -5     
+        end
+  
+        if btn_spawnKaoriP2.isVisible == false then
+            do return end
+        else
+            toggleVisibility( btn_spawnKaoriP2 )
+        end
+  
+        if btn_spawnMagnoliaP2.isVisible == false then
+            do return end
+        else
+           toggleVisibility( btn_spawnMagnoliaP2 )
+        end
+          
+        local TimeTillEat2 = 2  -- 10 minutes = 600 seconds
+  
+        function updateTimeTillEat2( event )
+  
+           -- Decrement the number of seconds
+           TimeTillEat2 = TimeTillEat2 - 1
+  
+           -- Time is tracked in seconds; convert it to minutes and seconds
+           local minutes = math.floor( TimeTillEat2 / 2 )
+           local seconds = TimeTillEat2 % 2
+  
+           TimeToEatEcosystem2 ()
+        end
+  
+        ReadyToEat2Timer = timer.performWithDelay( 1000, updateTimeTillEat2, TimeTillEat2 )
+  
+       function TimeToEatEcosystem2()
+            if TimeTillEat2 <= 0 then
+              --timer.cancel( ReadyToEat2Timer )
+              EatEcosystem2 ()      
+            end
+        end
+    end
+
+    function EatEcosystem2 ()
+        DinoEat ()
+              
+        eatnoise ()
+
+        transition.fadeOut( ecosystem_P2, {time = 1000, onComplete = display.remove} )
+        print("Yummy!")
+
+        FinishedPlantCountP2 = 0
+        FinishedPlantTextP2.text = FinishedPlantCountP2
+        SmallPlantCountP2 = 0
+        MediumPlantCountP2 = 0
+        LargePlantCountP2 = 0
+        ecosystem_P2 = display.newGroup()
+        sceneGroup:insert( ecosystem_P2 )
+        ecosystem_P2:toBack(sceneGroup)
+        print("New Ecosystem Ready")
+    end
+
+   --------------------------------------
+   -- Handling for Butterfly collisions
+   --------------------------------------
+   local function DinoCollision( self, event )
+       if event.phase == "began" then
+            if event.target.myName == "Dino" and event.other.myName == "Butterflies!" then
+             transition.cancel( Dino )
+             DinoRear ()
+             print("Yay!")
+            end 
+        end
+    end
+
+    Dino.collision = DinoCollision
     Dino:addEventListener( "collision", Dino )
 
     -------------------------------------------------------------
@@ -297,15 +614,47 @@ function scene:create( event )
     btn_rainbow2:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow3:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow4:addEventListener( "tap", btn_swatch_tapP1 )
-
     sceneGroup:insert( P1Colouring )
+
+    -- Palette For Player 1
+    colouringSetupP2()
+    btn_new5:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new6:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new7:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new8:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow5:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow6:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow7:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow8:addEventListener( "tap", btn_swatch_tapP2 )
+    sceneGroup:insert( P2Colouring )
 
     ------------------------------------
     -- Color indicators
     ------------------------------------
-    proto_rectP1 = display.newRect( 260, 2540, 100, 30 )
-    proto_rectP1.color = {0,0,0}
+
+    -- Player One
+    BrushP1 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
+    BrushP1.x = display.contentCenterX-1780
+    BrushP1.y = display.contentCenterY+1100
+    proto_rectP1 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush2.png", 180, 180)
+    proto_rectP1.x = display.contentCenterX-1780
+    proto_rectP1.y = display.contentCenterY+1100
+    proto_rectP1:setFillColor(0.3, 0.5, 0.3)
+    proto_rectP1.color = {0.3, 0.5, 0.3}
     P1Colouring:insert( proto_rectP1 )
+    P1Colouring:insert( BrushP1 )
+
+    -- Player Two
+    BrushP2 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
+    BrushP2.x = display.contentCenterX-840
+    BrushP2.y = display.contentCenterY+1100
+    proto_rectP2 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush2.png", 180, 180)
+    proto_rectP2.x = display.contentCenterX-840
+    proto_rectP2.y = display.contentCenterY+1100
+    proto_rectP2:setFillColor(0.3, 0.5, 0.3)
+    proto_rectP2.color = {0.3, 0.5, 0.3}
+    P2Colouring:insert( proto_rectP2 )
+    P2Colouring:insert( BrushP2 )
     
     ---------------------------------------
     --Creates Buttons for spawning Plants
@@ -315,9 +664,17 @@ function scene:create( event )
     selectionSetupP1 ()
     sceneGroup:insert( P1Select )
 
+    -- Buttons for Player 2
+    selectionSetupP2 ()
+    sceneGroup:insert( P2Select )
+
     ---------------------------------------
     --Creates Spawn functions for buttons
     ---------------------------------------
+
+    ----------------------
+    -- Player One Spawns
+    ----------------------
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P1 ()
@@ -325,7 +682,7 @@ function scene:create( event )
       toggleVisibility( compostButtonFlaxP1 )
 
       clicksound ()
-
+      resetTimer()
       createFlaxP1 ()
 
       flax_P1:addEventListener( "tap", tintPlantP1 )
@@ -351,7 +708,7 @@ function scene:create( event )
       toggleVisibility( compostButtonPalmP1 )
 
       clicksound ()
-
+      resetTimer()
       createPalmP1 ()
 
       palm_P1:addEventListener( "tap", tintPlantP1 )
@@ -374,7 +731,7 @@ function scene:create( event )
         toggleVisibility( compostButtonPineP1 )
 
         clicksound ()
-
+        resetTimer()
         createPineP1 ()
 
         pine_P1:addEventListener( "tap", tintPlantP1 )
@@ -400,7 +757,7 @@ function scene:create( event )
         toggleVisibility( compostButtonFernP1 )
 
         clicksound ()
-
+        resetTimer()
         createFernP1 ()
 
         fern_P1:addEventListener( "tap", tintPlantP1 )
@@ -417,9 +774,95 @@ function scene:create( event )
     end
     btn_spawnFernP1:addEventListener( "tap", btn_spawn_tapFern_P1 )
 
+    ----------------------
+    -- Player Two Spawns
+    ----------------------
+
+    -- Spawn Horsetail
+    local function btn_spawn_tapHorsetail_P2 ()
+        toggleVisibility( donebtn_spawnHorsetailP2 )
+        toggleVisibility( compostButtonHorsetailP2 )
+          
+        clicksound ()
+        resetTimer()
+        createHorsetailP2 ()
+          
+        Horsetail_P2:addEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_2:addEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_3:addEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_4:addEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_5:addEventListener( "tap", tintPlantP2 )
+          
+        P2Colouring:insert( P2Horsetail )
+          
+        transition.to( P2Select, { time=500, y=(800) } )
+          
+        transition.to( P2Colouring, { time=600, y=(-600) } )
+          
+          
+    end
+    btn_spawnHorsetailP2:addEventListener( "tap", btn_spawn_tapHorsetail_P2 )
+
+    -- Spawn Kaori
+    local function btn_spawn_tapKaori_P2 ()
+        toggleVisibility( donebtn_spawnKaoriP2 )
+        toggleVisibility( compostButtonKaoriP2 )
+        
+        clicksound ()
+        resetTimer()
+        createKaoriP2 ()
+        
+        Kaori_P2:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_2:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_3:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_4:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_5:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_6:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_7:addEventListener( "tap", tintPlantP2 )
+        Kaori_P2_8:addEventListener( "tap", tintPlantP2 )
+        
+        P2Colouring:insert( P2Kaori )
+        
+        transition.to( P2Select, { time=500, y=(800) } )
+        
+        transition.to( P2Colouring, { time=600, y=(-600) } )
+        
+    end
+    btn_spawnKaoriP2:addEventListener( "tap", btn_spawn_tapKaori_P2 )
+
+    -- Spawn Magnolia
+    local function btn_spawn_tapMagnolia_P2 ()
+        toggleVisibility( donebtn_spawnMagnoliaP2 )
+        toggleVisibility( compostButtonMagnoliaP2 )
+    
+        clicksound ()
+        resetTimer()
+        createMagnoliaP2 ()
+    
+        Magnolia_P2:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_2:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_3:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_4:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_5:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_6:addEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_7:addEventListener( "tap", tintPlantP2 )
+    
+        P2Colouring:insert( P2Magnolia )
+    
+        transition.to( P2Select, { time=500, y=(800) } )
+    
+        transition.to( P2Colouring, { time=600, y=(-600) } )
+    
+    end
+    btn_spawnMagnoliaP2:addEventListener( "tap", btn_spawn_tapMagnolia_P2 )
+
     ------------------------------------------------------------------------------
     -- sends plant to background, makes them non-interactable (WORK IN PROGRESS)
     ------------------------------------------------------------------------------
+
+    ------------------------------
+    -- Player One done functions
+    ------------------------------
 
     -- Done Flax
     local function donebtn_spawn_tapFlaxP1 ()
@@ -428,6 +871,7 @@ function scene:create( event )
 
         clicksound ()
         donesound ()
+        resetTimer()
 
         FinishedPlantCountP1 = FinishedPlantCountP1 + 1
         FinishedPlantTextP1.text = FinishedPlantCountP1
@@ -439,7 +883,7 @@ function scene:create( event )
          toggleVisibility( btn_spawnPalmP1 )
         end
         
-        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+        if LargePlantCountP1 >=3 and FinishedPlantCountP1 >=6  then
             GoToEcosystemP1()
         end  
 
@@ -467,23 +911,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnFlaxP1 )
         toggleVisibility( compostButtonFlaxP1 )
 
-
-        if FinishedPlantCountP1 == 1 then
-            local SensorP1 = display.newCircle( 500, 1500, 100 )
-            SensorP1.strokeWidth = 3
-            SensorP1:setStrokeColor( 0.1, 0.4, 0.2 )
-            SensorP1:setFillColor( 0.1, 0.4, 0.2 )
-            physics.addBody(SensorP1, "Dynamic", {density=5, friction=5, radius=1})
-            physics.setGravity(0,0)
-            SensorP1.myName = "FinishedPlant"
-            physics.pause( SensorP1 )
-            SensorP1.collision = DinoPlantCollision
-            SensorP1:addEventListener( "collision", SensorP1 )
-            ecosystem_P1:insert( SensorP1 )
-            toggleVisibility( SensorP1 )
-            
-        end
-
     end
     donebtn_spawnFlaxP1:addEventListener( "tap", donebtn_spawn_tapFlaxP1 )
 
@@ -495,6 +922,7 @@ function scene:create( event )
 
         clicksound ()
         donesound ()
+        resetTimer()
 
         FinishedPlantCountP1 = FinishedPlantCountP1 + 1
         FinishedPlantTextP1.text = FinishedPlantCountP1
@@ -506,7 +934,7 @@ function scene:create( event )
          toggleVisibility( btn_spawnPineP1 )
         end  
 
-        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+        if LargePlantCountP1 >=3 and FinishedPlantCountP1 >=6  then
             GoToEcosystemP1()
         end 
 
@@ -527,7 +955,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnPalmP1 )
         toggleVisibility( compostButtonPalmP1 )
 
-
     end
     donebtn_spawnPalmP1:addEventListener( "tap", donebtn_spawn_tapPalmP1 )
 
@@ -539,13 +966,14 @@ function scene:create( event )
 
         clicksound ()
         donesound ()
+        resetTimer()
 
         FinishedPlantCountP1 = FinishedPlantCountP1 + 1
         FinishedPlantTextP1.text = FinishedPlantCountP1
 
         LargePlantCountP1 = LargePlantCountP1 + 1
 
-        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+        if LargePlantCountP1 >=3 and FinishedPlantCountP1 >=6  then
             GoToEcosystemP1()
         end 
 
@@ -574,7 +1002,6 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnPineP1 )
         toggleVisibility( compostButtonPineP1 )
 
-
     end
     donebtn_spawnPineP1:addEventListener( "tap", donebtn_spawn_tapPineP1 )
 
@@ -586,6 +1013,7 @@ function scene:create( event )
 
         clicksound ()
         donesound ()
+        resetTimer()
 
         FinishedPlantCountP1 = FinishedPlantCountP1 + 1
         FinishedPlantTextP1.text = FinishedPlantCountP1
@@ -597,7 +1025,7 @@ function scene:create( event )
          toggleVisibility( btn_spawnPalmP1 )
         end  
 
-        if LargePlantCountP1 ==3 and FinishedPlantCountP1 >=6  then
+        if LargePlantCountP1 >=3 and FinishedPlantCountP1 >=6  then
             GoToEcosystemP1()
         end 
 
@@ -620,31 +1048,167 @@ function scene:create( event )
         toggleVisibility( donebtn_spawnFernP1 )
         toggleVisibility( compostButtonFernP1 )
 
-
-        if FinishedPlantCountP1 == 1 then
-            local SensorP1 = display.newCircle( 500, 1500, 100 )
-            SensorP1.strokeWidth = 3
-            SensorP1:setStrokeColor( 0.1, 0.4, 0.2 )
-            SensorP1:setFillColor( 0.1, 0.4, 0.2 )
-            physics.addBody(SensorP1, "Dynamic", {density=5, friction=5, radius=1})
-            physics.setGravity(0,0)
-            SensorP1.myName = "FinishedPlant"
-            physics.pause( SensorP1 )
-            SensorP1.collision = DinoPlantCollision
-            SensorP1:addEventListener( "collision", SensorP1 )
-            ecosystem_P1:insert( SensorP1 )
-            toggleVisibility( SensorP1 )
-            
-        end
-
     end
     donebtn_spawnFernP1:addEventListener( "tap", donebtn_spawn_tapFernP1 )
+
+    ------------------------------
+    -- Player Two done functions
+    ------------------------------
+
+    -- Done Horsetail
+    local function donebtn_spawn_tapHorsetailP2 ()
+
+        transition.to( P2Colouring, { time=500, y=(120) } )
+    
+        clicksound ()
+        donesound ()
+        resetTimer()
+    
+        FinishedPlantCountP2 = FinishedPlantCountP2 + 1
+        FinishedPlantTextP2.text = FinishedPlantCountP2
+    
+        SmallPlantCountP2 = SmallPlantCountP2 + 1
+    
+        if SmallPlantCountP2 == 1 then
+    
+            toggleVisibility( btn_spawnKaoriP2 )
+        end
+            
+        if LargePlantCountP2 >=3 and FinishedPlantCountP2 >=6  then
+            GoToEcosystemP2()
+        end  
+    
+        transition.to(P2Horsetail, {
+            x= math.random(-200, 400 ),
+            y= math.random(-790, -785),
+            time=1000})
+        Horsetail_P2:scale(1.35, 1.35)
+        Horsetail_P2:removeEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_2:scale(1.35, 1.35)
+        Horsetail_P2_2:removeEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_3:scale(1.35, 1.35)
+        Horsetail_P2_3:removeEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_4:scale(1.35, 1.35)
+        Horsetail_P2_4:removeEventListener( "tap", tintPlantP2 )
+        Horsetail_P2_5:scale(1.35, 1.35)
+        Horsetail_P2_5:removeEventListener( "tap", tintPlantP2 )
+       
+        ecosystem_P2:insert( P2Horsetail )
+    
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnHorsetailP2 )
+        toggleVisibility( compostButtonHorsetailP2 )
+
+    end
+    donebtn_spawnHorsetailP2:addEventListener( "tap", donebtn_spawn_tapHorsetailP2 )
+
+    -- Done Kaori
+    local function donebtn_spawn_tapKaoriP2 ()
+
+        transition.to( P2Colouring, { time=500, y=(120) } )
+    
+        clicksound ()
+        donesound ()
+        resetTimer()
+    
+        FinishedPlantCountP2 = FinishedPlantCountP2 + 1
+        FinishedPlantTextP2.text = FinishedPlantCountP2
+    
+        MediumPlantCountP2 = MediumPlantCountP2 + 1
+    
+        if MediumPlantCountP2 == 2 then
+            toggleVisibility( btn_spawnMagnoliaP2 )
+        end  
+    
+        if LargePlantCountP2 >=3 and FinishedPlantCountP2 >=6  then
+            GoToEcosystemP2()
+        end 
+    
+        transition.to(P2Kaori, {
+            x= math.random(-300, 500 ),
+            y= math.random(-830, -785),
+            time=1000})
+        Kaori_P2:scale(2.35, 2.35)
+        Kaori_P2:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_2:scale(2.35, 2.35)
+        Kaori_P2_2:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_3:scale(2.35, 2.35)
+        Kaori_P2_3:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_4:scale(2.35, 2.35)
+        Kaori_P2_4:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_5:scale(2.35, 2.35)
+        Kaori_P2_5:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_6:scale(2.35, 2.35)
+        Kaori_P2_6:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_7:scale(2.35, 2.35)
+        Kaori_P2_7:removeEventListener( "tap", tintPlantP2 )
+        Kaori_P2_8:scale(2.35, 2.35)
+        Kaori_P2_8:removeEventListener( "tap", tintPlantP2 )
+           
+        ecosystem_P2:insert( P2Kaori )
+    
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnKaoriP2 )
+        toggleVisibility( compostButtonKaoriP2 )
+    
+    end
+    donebtn_spawnKaoriP2:addEventListener( "tap", donebtn_spawn_tapKaoriP2 )
+
+    -- Done Magnolia
+    local function donebtn_spawn_tapMagnoliaP2 ()
+
+        transition.to( P2Colouring, { time=500, y=(120) } )
+
+        clicksound ()
+        donesound ()
+        resetTimer()
+
+        FinishedPlantCountP2 = FinishedPlantCountP2 + 1
+        FinishedPlantTextP2.text = FinishedPlantCountP2
+
+        LargePlantCountP2 = LargePlantCountP2 + 1
+
+        if LargePlantCountP2 >=3 and FinishedPlantCountP2 >=6  then
+            GoToEcosystemP2()
+        end 
+
+        transition.to(P2Magnolia, {
+            x= math.random(-300, 500 ),
+            y= math.random(-1080, -990),
+            time=1000})
+        Magnolia_P2:scale(2, 2.95)
+        Magnolia_P2:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_2:scale(2, 2.95)
+        Magnolia_P2_2:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_3:scale(2, 2.95)
+        Magnolia_P2_3:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_4:scale(2, 2.95)
+        Magnolia_P2_4:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_5:scale(2, 2.95)
+        Magnolia_P2_5:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_6:scale(2, 2.95)
+        Magnolia_P2_6:removeEventListener( "tap", tintPlantP2 )
+        Magnolia_P2_7:scale(2, 2.95)
+        Magnolia_P2_7:removeEventListener( "tap", tintPlantP2 )
+
+        ecosystem_P2:insert( P2Magnolia)
+
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnMagnoliaP2 )
+        toggleVisibility( compostButtonMagnoliaP2 )
+
+    end
+    donebtn_spawnMagnoliaP2:addEventListener( "tap", donebtn_spawn_tapMagnoliaP2 )
 
     -----------------------------------
     -- Functions for compost buttons
     -----------------------------------
 
+    -----------------------
+    -- Player One Compost
+    -----------------------
     local function CompostP1Flax ()
+        resetTimer()
         clicksound ()
         display.remove( P1Flax )
         transition.to( P1Colouring, { time=500, y=(120) } )
@@ -655,6 +1219,7 @@ function scene:create( event )
     compostButtonFlaxP1:addEventListener( "tap", CompostP1Flax )
 
     local function CompostP1Palm ()
+        resetTimer()
         clicksound ()
         display.remove( P1Palm )
         transition.to( P1Colouring, { time=500, y=(120) } )
@@ -665,6 +1230,7 @@ function scene:create( event )
     compostButtonPalmP1:addEventListener( "tap", CompostP1Palm )
 
     local function CompostP1Pine ()
+        resetTimer()
         clicksound ()
         display.remove( P1Pine )
         transition.to( P1Colouring, { time=500, y=(120) } )
@@ -675,6 +1241,7 @@ function scene:create( event )
     compostButtonPineP1:addEventListener( "tap", CompostP1Pine )
 
     local function CompostP1Fern ()
+        resetTimer()
         clicksound ()
         display.remove( P1Fern )
         transition.to( P1Colouring, { time=500, y=(120) } )
@@ -684,12 +1251,52 @@ function scene:create( event )
     end
     compostButtonFernP1:addEventListener( "tap", CompostP1Fern )
 
+    -----------------------
+    -- Player two Compost
+    -----------------------
+    local function CompostP2Horsetail ()
+        resetTimer()
+        clicksound ()
+        display.remove( P2Horsetail )
+        transition.to( P2Colouring, { time=500, y=(120) } )
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnHorsetailP2 )
+        toggleVisibility( compostButtonHorsetailP2 )
+    end
+    compostButtonHorsetailP2:addEventListener( "tap", CompostP2Horsetail )
+
+    local function CompostP2Kaori ()
+        resetTimer()
+        clicksound ()
+        display.remove( P2Kaori )
+        transition.to( P2Colouring, { time=500, y=(120) } )
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnKaoriP2 )
+        toggleVisibility( compostButtonKaoriP2 )
+    end
+    compostButtonKaoriP2:addEventListener( "tap", CompostP2Kaori )
+
+    local function CompostP2Magnolia ()
+        resetTimer()
+        clicksound ()
+        display.remove( P2Magnolia )
+        transition.to( P2Colouring, { time=500, y=(120) } )
+        transition.to( P2Select, { time=500, y=(-3) } )
+        toggleVisibility( donebtn_spawnMagnoliaP2 )
+        toggleVisibility( compostButtonMagnoliaP2 )
+    end
+    compostButtonMagnoliaP2:addEventListener( "tap", CompostP2Magnolia )
+
    -------------------------------------
    -- Functions for palette selection
    -------------------------------------
-
+    
+    ---------------
+    -- Player One
+    ---------------
     function chooseNormalP1 ()
         clicksound ()
+        resetTimer()
         if P1normalPalette.isVisible == true then
             do return end
         else
@@ -701,6 +1308,7 @@ function scene:create( event )
 
     function chooseRainbowP1 ()
         clicksound ()
+        resetTimer()
         if P1rainbowPalette.isVisible == true then
             do return end
         else
@@ -709,6 +1317,33 @@ function scene:create( event )
         end
     end
     P1RainbowSelect:addEventListener( "tap", chooseRainbowP1 )
+
+    ---------------
+    -- Player Two
+    ---------------
+    function chooseNormalP2 ()
+        clicksound ()
+        resetTimer()
+        if P2normalPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P2rainbowPalette )
+           toggleVisibility( P2normalPalette )
+        end
+    end
+    P2NormalSelect:addEventListener( "tap", chooseNormalP2 )
+
+    function chooseRainbowP2 ()
+        clicksound ()
+        resetTimer()
+        if P2rainbowPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P2rainbowPalette )
+           toggleVisibility( P2normalPalette )
+        end
+    end
+    P2RainbowSelect:addEventListener( "tap", chooseRainbowP2 )
 
 end
 

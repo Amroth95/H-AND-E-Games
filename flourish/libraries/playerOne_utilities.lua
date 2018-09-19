@@ -6,32 +6,32 @@ function selectionSetupP1 ()
 
   P1Select = display.newGroup();
 
-  RockSelectP1 = display.newImageRect( "images/Wood Display Select.png", 890, 1200)
-  RockSelectP1.x = display.contentCenterX-1440
-  RockSelectP1.y = display.contentCenterY+750
-  P1Select:insert( RockSelectP1 )
+  --RockSelectP1 = display.newImageRect( "images/Wood Display Select.png", 890, 1200)
+  --RockSelectP1.x = display.contentCenterX-1440
+  --RockSelectP1.y = display.contentCenterY+750
+  --P1Select:insert( RockSelectP1 )
 
   btn_spawnFlaxP1 = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 130, 130)
   btn_spawnFlaxP1.x = display.contentCenterX-1732
   btn_spawnFlaxP1.y = display.contentCenterY+875
   P1Select:insert( btn_spawnFlaxP1 )
 
+  btn_spawnFernP1 = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 130, 130)
+  btn_spawnFernP1.x = display.contentCenterX-1538
+  btn_spawnFernP1.y = display.contentCenterY+875
+  P1Select:insert( btn_spawnFernP1 )
+
   btn_spawnPalmP1 = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 130, 130)
-  btn_spawnPalmP1.x = display.contentCenterX-1538
+  btn_spawnPalmP1.x = display.contentCenterX-1342
   btn_spawnPalmP1.y = display.contentCenterY+875
   P1Select:insert( btn_spawnPalmP1 )
   toggleVisibility( btn_spawnPalmP1 )
 
   btn_spawnPineP1 = display.newImageRect( "images/selectbuttons/Select Pine Button.png", 130, 130)
-  btn_spawnPineP1.x = display.contentCenterX-1342
+  btn_spawnPineP1.x = display.contentCenterX-1148
   btn_spawnPineP1.y = display.contentCenterY+875
   P1Select:insert( btn_spawnPineP1 )
   toggleVisibility( btn_spawnPineP1 )
-
-  btn_spawnFernP1 = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 130, 130)
-  btn_spawnFernP1.x = display.contentCenterX-1148
-  btn_spawnFernP1.y = display.contentCenterY+875
-  P1Select:insert( btn_spawnFernP1 )
 
 end
 
@@ -229,14 +229,14 @@ function colouringSetupP1()
   -- Creates palette option buttons
   -----------------------------------
 
-  P1NormalSelect = display.newImageRect( "images/paintbuttons/paletteButton1.png", 100, 100)
-  P1NormalSelect.x = display.contentCenterX-1330
-  P1NormalSelect.y = display.contentCenterY+1070
+  P1NormalSelect = display.newImageRect( "images/paintbuttons/NormalButton.png", 100, 100)
+  P1NormalSelect.x = display.contentCenterX-1430
+  P1NormalSelect.y = display.contentCenterY+1090
   P1Colouring:insert( P1NormalSelect )
 
-  P1RainbowSelect = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton2.png", 100, 100)
-  P1RainbowSelect.x = display.contentCenterX-1230
-  P1RainbowSelect.y = display.contentCenterY+1070
+  P1RainbowSelect = display.newImageRect( "images/paintbuttons/Rainbow/RainbowButton.png", 100, 100)
+  P1RainbowSelect.x = display.contentCenterX-1280
+  P1RainbowSelect.y = display.contentCenterY+1090
   P1Colouring:insert( P1RainbowSelect )
 
   --------------------------------------
