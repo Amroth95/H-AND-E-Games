@@ -6,38 +6,80 @@ function selectionSetupP1 ()
 
   P1Select = display.newGroup();
 
-  --RockSelectP1 = display.newImageRect( "images/Wood Display Select.png", 890, 1200)
-  --RockSelectP1.x = display.contentCenterX-1440
-  --RockSelectP1.y = display.contentCenterY+750
-  --P1Select:insert( RockSelectP1 )
+  RockSelectP1 = display.newImageRect( "images/Wood Display Select.png", 890, 1200)
+  RockSelectP1.x = display.contentCenterX-1440
+  RockSelectP1.y = display.contentCenterY+720
+  P1Select:insert( RockSelectP1 )
 
-  btn_spawnFlaxP1 = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 130, 130)
+  -- Small Plant Buttons
+  btn_spawnFlaxP1 = display.newImageRect( "images/selectbuttons/Select Flax Button.png", 100, 100)
   btn_spawnFlaxP1.x = display.contentCenterX-1732
-  btn_spawnFlaxP1.y = display.contentCenterY+875
+  btn_spawnFlaxP1.y = display.contentCenterY+995
   P1Select:insert( btn_spawnFlaxP1 )
 
-  btn_spawnFernP1 = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 130, 130)
-  btn_spawnFernP1.x = display.contentCenterX-1538
-  btn_spawnFernP1.y = display.contentCenterY+875
+  btn_spawnFernP1 = display.newImageRect( "images/selectbuttons/Select Fern Button.png", 100, 100)
+  btn_spawnFernP1.x = display.contentCenterX-1432
+  btn_spawnFernP1.y = display.contentCenterY+995
   P1Select:insert( btn_spawnFernP1 )
 
-  btn_spawnPalmP1 = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 130, 130)
-  btn_spawnPalmP1.x = display.contentCenterX-1342
-  btn_spawnPalmP1.y = display.contentCenterY+875
-  P1Select:insert( btn_spawnPalmP1 )
-  toggleVisibility( btn_spawnPalmP1 )
+  btn_spawnHorsetailP1 = display.newImageRect( "images/horsetail/horsegrassseed.png", 130, 130)
+  btn_spawnHorsetailP1.x = display.contentCenterX-1132
+  btn_spawnHorsetailP1.y = display.contentCenterY+995
+  P1Select:insert( btn_spawnHorsetailP1 )
 
-  btn_spawnPineP1 = display.newImageRect( "images/selectbuttons/Select Pine Button.png", 130, 130)
-  btn_spawnPineP1.x = display.contentCenterX-1148
-  btn_spawnPineP1.y = display.contentCenterY+875
-  P1Select:insert( btn_spawnPineP1 )
-  toggleVisibility( btn_spawnPineP1 )
+  -- Meduim Plant Buttons
+  P1MediumPlants = display.newGroup();
+
+  btn_spawnPalmP1 = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 100, 100)
+  btn_spawnPalmP1.x = display.contentCenterX-1732
+  btn_spawnPalmP1.y = display.contentCenterY+895
+  P1MediumPlants:insert( btn_spawnPalmP1 )
+
+  btn_spawnCycadP1 = display.newImageRect( "images/cycad/cycad seed.png", 100, 100)
+  btn_spawnCycadP1.x = display.contentCenterX-1432
+  btn_spawnCycadP1.y = display.contentCenterY+895
+  P1MediumPlants:insert( btn_spawnCycadP1 )
+
+  btn_spawnTreeFernP1 = display.newImageRect( "images/selectbuttons/Select Palm Button.png", 100, 100)
+  btn_spawnTreeFernP1.x = display.contentCenterX-1132
+  btn_spawnTreeFernP1.y = display.contentCenterY+895
+  P1MediumPlants:insert( btn_spawnTreeFernP1 )
+
+  P1Select:insert( P1MediumPlants )
+  toggleVisibility( P1MediumPlants )
+
+  -- Large Plant Buttons
+  P1LargePlants = display.newGroup();
+
+  btn_spawnPineP1 = display.newImageRect( "images/selectbuttons/Select Pine Button.png", 100, 100)
+  btn_spawnPineP1.x = display.contentCenterX-1732
+  btn_spawnPineP1.y = display.contentCenterY+795
+  P1LargePlants:insert( btn_spawnPineP1 )
+
+  btn_spawnKaoriP1 = display.newImageRect( "images/kaori/kaoriseed-forest.png", 130, 130)
+  btn_spawnKaoriP1.x = display.contentCenterX-1432
+  btn_spawnKaoriP1.y = display.contentCenterY+795
+  P1LargePlants:insert( btn_spawnKaoriP1 )
+
+  btn_spawnMagnoliaP1 = display.newImageRect( "images/magnolia/magseed.png", 130, 130)
+  btn_spawnMagnoliaP1.x = display.contentCenterX-1132
+  btn_spawnMagnoliaP1.y = display.contentCenterY+795
+  P1LargePlants:insert( btn_spawnMagnoliaP1 )
+
+  P1Select:insert( P1LargePlants )
+  toggleVisibility( P1LargePlants )
 
 end
 
 ---------------------------------
---functions for Spawning Plants.
+-- functions for Spawning Plants.
 ---------------------------------
+
+-----------------
+-- Small Plants
+-----------------
+
+-- Spawn Flax
 function createFlaxP1 ()  
 
   P1Flax = display.newGroup();
@@ -88,6 +130,91 @@ function createFlaxP1 ()
 
 end
 
+-- Spawn Fern
+function createFernP1 ()
+
+  P1Fern = display.newGroup();
+  
+  fern_P1 = createImage("images/plant3/plant1.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  fern_P1:setFillColor(0.6)
+  P1Fern:insert( fern_P1 )
+  fern_P1:scale(0.60, 0.60)
+  mask = graphics.newMask( "images/plant3/fern1.png" )
+  fern_P1:setMask( mask )
+
+  fern_P1_2 = createImage("images/plant3/plant2.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  fern_P1_2:setFillColor(0.7)
+  P1Fern:insert( fern_P1_2 )
+  fern_P1_2:scale(0.60, 0.60)
+  mask2 = graphics.newMask( "images/plant3/fern2.png" )
+  fern_P1_2:setMask( mask2 )
+
+  fern_P1_3 = createImage("images/plant3/plant3.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  fern_P1_3:setFillColor(0.8)
+  P1Fern:insert( fern_P1_3 )
+  fern_P1_3:scale(0.60, 0.60)
+  mask3 = graphics.newMask( "images/plant3/fern3.png" )
+  fern_P1_3:setMask( mask3 )
+
+  fern_P1_4 = createImage("images/plant3/plant4.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  fern_P1_4:setFillColor(0.6)
+  P1Fern:insert( fern_P1_4 )
+  fern_P1_4:scale(0.60, 0.60)
+  mask4 = graphics.newMask( "images/plant3/fern4.png" )
+  fern_P1_4:setMask( mask4 )
+
+  return createFernP1
+
+end
+
+-- Create Horsetail
+function createHorsetailP1 ()  
+
+  P1Horsetail = display.newGroup();
+
+  Horsetail_P1 = createImage("images/horsetail/horsetailstalk 1.png", 400, 700, display.contentCenterX-1650, display.contentCenterY+1295)
+  Horsetail_P1:setFillColor(0.6)
+  P1Horsetail:insert( Horsetail_P1 )
+  Horsetail_P1:scale(0.70, 0.70)
+  mask = graphics.newMask( "images/horsetail/horsetailstalk 1 MASK.png" )
+  Horsetail_P1:setMask( mask )
+
+  Horsetail_P1_2 = createImage("images/horsetail/horsetailstalk 2.png", 400, 700, display.contentCenterX-1650, display.contentCenterY+1295)
+  Horsetail_P1_2:setFillColor(0.7)
+  P1Horsetail:insert( Horsetail_P1_2 )
+  Horsetail_P1_2:scale(0.70, 0.70)
+  mask2 = graphics.newMask( "images/horsetail/horsetailstalk 2 MASK.png" )
+  Horsetail_P1_2:setMask( mask2 )
+
+  Horsetail_P1_3 = createImage("images/horsetail/horsetailstalk 3.png", 400, 700, display.contentCenterX-1650, display.contentCenterY+1295)
+  Horsetail_P1_3:setFillColor(0.8)
+  P1Horsetail:insert( Horsetail_P1_3 )
+  Horsetail_P1_3:scale(0.70, 0.70)
+  mask3 = graphics.newMask( "images/horsetail/horsetailstalk 3 MASK.png" )
+  Horsetail_P1_3:setMask( mask3 )
+
+  Horsetail_P1_4 = createImage("images/horsetail/horsetailstalk 4.png", 400, 700, display.contentCenterX-1650, display.contentCenterY+1295)
+  Horsetail_P1_4:setFillColor(0.6)
+  P1Horsetail:insert( Horsetail_P1_4 )
+  Horsetail_P1_4:scale(0.70, 0.70)
+  mask4 = graphics.newMask( "images/horsetail/horsetailstalk 4 MASK.png" )
+  Horsetail_P1_4:setMask( mask4 )
+
+  Horsetail_P1_5 = createImage("images/horsetail/horsetailstalk 5.png", 400, 700, display.contentCenterX-1650, display.contentCenterY+1295)
+  Horsetail_P1_5:setFillColor(0.7)
+  P1Horsetail:insert( Horsetail_P1_5 )
+  Horsetail_P1_5:scale(0.70, 0.70)
+  mask5 = graphics.newMask( "images/horsetail/horsetailstalk 5 MASK.png" )
+  Horsetail_P1_5:setMask( mask5 )
+
+  return createHorsetailP1
+
+end
+
+------------------
+-- Medium Plants
+------------------
+
 -- Spawn Palm
 function createPalmP1 ()
 
@@ -117,6 +244,126 @@ function createPalmP1 ()
   return createPalmP1
 
 end
+
+-- Spawn Cycad
+function createCycadP1 ()
+
+  P1Cycad = display.newGroup();
+
+  Cycad_P1 = createImage("images/cycad/cycad trunk.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Cycad_P1:setFillColor(0.7)
+  P1Cycad:insert( Cycad_P1 )
+  Cycad_P1:scale(0.60, 0.60)
+  mask = graphics.newMask( "images/cycad/cycad trunk Mask.png" )
+  Cycad_P1:setMask( mask )
+
+  Cycad_P1_2 = createImage("images/cycad/left leaf.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Cycad_P1_2:setFillColor(0.6)
+  P1Cycad:insert( Cycad_P1_2 )
+  Cycad_P1_2:scale(0.60, 0.60)
+  mask2 = graphics.newMask( "images/cycad/left leaf Mask.png" )
+  Cycad_P1_2:setMask( mask2 )
+
+  Cycad_P1_3 = createImage("images/cycad/right leaf.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Cycad_P1_3:setFillColor(0.5)
+  P1Cycad:insert( Cycad_P1_3 )
+  Cycad_P1_3:scale(0.60, 0.60)
+  mask3 = graphics.newMask( "images/cycad/right leaf Mask.png" )
+  Cycad_P1_3:setMask( mask3 )
+
+  Cycad_P1_4 = createImage("images/cycad/cycad mid left leaf.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Cycad_P1_4:setFillColor(0.6)
+  P1Cycad:insert( Cycad_P1_4 )
+  Cycad_P1_4:scale(0.60, 0.60)
+  mask4 = graphics.newMask( "images/cycad/cycad mid left leaf Mask.png" )
+  Cycad_P1_4:setMask( mask4 )
+
+  Cycad_P1_5 = createImage("images/cycad/cycad mid right leaf.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Cycad_P1_5:setFillColor(0.5)
+  P1Cycad:insert( Cycad_P1_5 )
+  Cycad_P1_5:scale(0.60, 0.60)
+  mask5 = graphics.newMask( "images/cycad/cycad mid right leaf Mask.png" )
+  Cycad_P1_5:setMask( mask5 )
+
+  return createCycadP1
+
+end
+
+-- Spawn Tree Fern
+function createTreeFernP1 ()
+
+  P1TreeFern = display.newGroup();
+
+  TreeFern_P1 = createImage("images/tree fern/tree fern trunk.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1:setFillColor(0.7)
+  P1TreeFern:insert( TreeFern_P1 )
+  TreeFern_P1:scale(0.90, 0.90)
+  mask = graphics.newMask( "images/tree fern/TreeFern trunk Mask.png" )
+  TreeFern_P1:setMask( mask )
+
+  TreeFern_P1_2 = createImage("images/tree fern/tree fern dead top of trunk leaves.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_2:setFillColor(0.6)
+  P1TreeFern:insert( TreeFern_P1_2 )
+  TreeFern_P1_2:scale(0.90, 0.90)
+  mask2 = graphics.newMask( "images/tree fern/tree fern dead top of trunk leaves Mask.png" )
+  TreeFern_P1_2:setMask( mask2 )
+
+  TreeFern_P1_3 = createImage("images/tree fern/tree fern right leaf 1.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_3:setFillColor(0.5)
+  P1TreeFern:insert( TreeFern_P1_3 )
+  TreeFern_P1_3:scale(0.90, 0.90)
+  mask3 = graphics.newMask( "images/tree fern/tree fern right leaf 1 Mask.png" )
+  TreeFern_P1_3:setMask( mask3 )
+
+  TreeFern_P1_4 = createImage("images/tree fern/tree fern right leaf 2.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_4:setFillColor(0.6)
+  P1TreeFern:insert( TreeFern_P1_4 )
+  TreeFern_P1_4:scale(0.90, 0.90)
+  mask4 = graphics.newMask( "images/tree fern/tree fern right leaf 2 Mask.png" )
+  TreeFern_P1_4:setMask( mask4 )
+
+  TreeFern_P1_5 = createImage("images/tree fern/tree fern right leaf 3.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_5:setFillColor(0.5)
+  P1TreeFern:insert( TreeFern_P1_5 )
+  TreeFern_P1_5:scale(0.90, 0.90)
+  mask5 = graphics.newMask( "images/tree fern/tree fern right leaf 3 Mask.png" )
+  TreeFern_P1_5:setMask( mask5 )
+
+  TreeFern_P1_6 = createImage("images/tree fern/tree fern left leaf 1.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_6:setFillColor(0.5)
+  P1TreeFern:insert( TreeFern_P1_6 )
+  TreeFern_P1_6:scale(0.90, 0.90)
+  mask6 = graphics.newMask( "images/tree fern/tree fern left leaf 1 Mask.png" )
+  TreeFern_P1_6:setMask( mask6 )
+
+  TreeFern_P1_7 = createImage("images/tree fern/tree fern left leaf 2.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_7:setFillColor(0.6)
+  P1TreeFern:insert( TreeFern_P1_7 )
+  TreeFern_P1_7:scale(0.90, 0.90)
+  mask7 = graphics.newMask( "images/tree fern/tree fern left leaf 2 Mask.png" )
+  TreeFern_P1_7:setMask( mask7 )
+
+  TreeFern_P1_8 = createImage("images/tree fern/tree fern left leaf 3.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_8:setFillColor(0.5)
+  P1TreeFern:insert( TreeFern_P1_8 )
+  TreeFern_P1_8:scale(0.90, 0.90)
+  mask8 = graphics.newMask( "images/tree fern/tree fern left leaf 3 Mask.png" )
+  TreeFern_P1_8:setMask( mask8 )
+
+  TreeFern_P1_9 = createImage("images/tree fern/tree fern mid leaf.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  TreeFern_P1_9:setFillColor(0.5)
+  P1TreeFern:insert( TreeFern_P1_9 )
+  TreeFern_P1_9:scale(0.90, 0.90)
+  mask9 = graphics.newMask( "images/tree fern/tree fern mid leaf Mask.png" )
+  TreeFern_P1_9:setMask( mask9 )
+
+  return createTreeFernP1
+
+end
+
+----------------
+-- Large Plants
+----------------
 
 -- Spawn Pine
 function createPineP1 ()
@@ -176,40 +423,127 @@ function createPineP1 ()
 
 end
 
--- Spawn Fern
-function createFernP1 ()
+-- Spawn Kaori
+function createKaoriP1 ()
 
-  P1Fern = display.newGroup();
-  
-  fern_P1 = createImage("images/plant3/plant1.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
-  fern_P1:setFillColor(0.6)
-  P1Fern:insert( fern_P1 )
-  fern_P1:scale(0.60, 0.60)
-  mask = graphics.newMask( "images/plant3/fern1.png" )
-  fern_P1:setMask( mask )
+  P1Kaori = display.newGroup();
 
-  fern_P1_2 = createImage("images/plant3/plant2.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
-  fern_P1_2:setFillColor(0.7)
-  P1Fern:insert( fern_P1_2 )
-  fern_P1_2:scale(0.60, 0.60)
-  mask2 = graphics.newMask( "images/plant3/fern2.png" )
-  fern_P1_2:setMask( mask2 )
+  Kaori_P1 = createImage("images/kaori/treetrunk.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1:setFillColor(0.7)
+  P1Kaori:insert( Kaori_P1 )
+  Kaori_P1:scale(0.60, 0.60)
+  mask = graphics.newMask( "images/kaori/treetrunkMASK.png" )
+  Kaori_P1:setMask( mask )
 
-  fern_P1_3 = createImage("images/plant3/plant3.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
-  fern_P1_3:setFillColor(0.8)
-  P1Fern:insert( fern_P1_3 )
-  fern_P1_3:scale(0.60, 0.60)
-  mask3 = graphics.newMask( "images/plant3/fern3.png" )
-  fern_P1_3:setMask( mask3 )
+  Kaori_P1_2 = createImage("images/kaori/kaori-bottomleftleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_2:setFillColor(0.6)
+  P1Kaori:insert( Kaori_P1_2 )
+  Kaori_P1_2:scale(0.60, 0.60)
+  mask2 = graphics.newMask( "images/kaori/kaori-bottomleftleafclusterMask.png" )
+  Kaori_P1_2:setMask( mask2 )
 
-  fern_P1_4 = createImage("images/plant3/plant4.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
-  fern_P1_4:setFillColor(0.6)
-  P1Fern:insert( fern_P1_4 )
-  fern_P1_4:scale(0.60, 0.60)
-  mask4 = graphics.newMask( "images/plant3/fern4.png" )
-  fern_P1_4:setMask( mask4 )
+  Kaori_P1_3 = createImage("images/kaori/kaori-bottomrightleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_3:setFillColor(0.5)
+  P1Kaori:insert( Kaori_P1_3 )
+  Kaori_P1_3:scale(0.60, 0.60)
+  mask3 = graphics.newMask( "images/kaori/kaori-bottomrightleafclusterMASK.png" )
+  Kaori_P1_3:setMask( mask3 )
 
-  return createFernP1
+  Kaori_P1_4 = createImage("images/kaori/kaori-smalltoprightleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_4:setFillColor(0.4)
+  P1Kaori:insert( Kaori_P1_4 )
+  Kaori_P1_4:scale(0.60, 0.60)
+  mask4 = graphics.newMask( "images/kaori/kaori-smalltoprightleafclusterMASK.png" )
+  Kaori_P1_4:setMask( mask4 )
+
+  Kaori_P1_5 = createImage("images/kaori/kaori-topleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_5:setFillColor(0.7)
+  P1Kaori:insert( Kaori_P1_5 )
+  Kaori_P1_5:scale(0.60, 0.60)
+  mask5 = graphics.newMask( "images/kaori/kaori-topleafclusterMASK.png" )
+  Kaori_P1_5:setMask( mask5 )
+
+  Kaori_P1_6 = createImage("images/kaori/kaori-topleftleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_6:setFillColor(0.6)
+  P1Kaori:insert( Kaori_P1_6 )
+  Kaori_P1_6:scale(0.60, 0.60)
+  mask6 = graphics.newMask( "images/kaori/kaori-topleftleafclusterMask.png" )
+  Kaori_P1_6:setMask( mask6 )
+
+  Kaori_P1_7 = createImage("images/kaori/kaori-toprightleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_7:setFillColor(0.4)
+  P1Kaori:insert( Kaori_P1_7 )
+  Kaori_P1_7:scale(0.60, 0.60)
+  mask7 = graphics.newMask( "images/kaori/kaori-toprightleafclusterMask.png" )
+  Kaori_P1_7:setMask( mask7 )
+
+  Kaori_P1_8 = createImage("images/kaori/kaori-verybottomleftleafcluster.png", 400, 400, display.contentCenterX-1650, display.contentCenterY+1295)
+  Kaori_P1_8:setFillColor(0.6)
+  P1Kaori:insert( Kaori_P1_8 )
+  Kaori_P1_8:scale(0.60, 0.60)
+  mask8 = graphics.newMask( "images/kaori/kaori-verybottomleftleafclusterMASK.png" )
+  Kaori_P1_8:setMask( mask8 )
+
+  return createKaoriP1
+
+end
+
+-- Spawn Magnolia
+function createMagnoliaP1 ()
+
+  P1Magnolia = display.newGroup();
+
+  Magnolia_P1 = createImage("images/magnolia/mag trunk.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1:setFillColor(0.6)
+  P1Magnolia:insert( Magnolia_P1 )
+  Magnolia_P1:scale(1, 1)
+  mask = graphics.newMask( "images/magnolia/mag trunkMASK.png" )
+  Magnolia_P1:setMask( mask )
+  Magnolia_P1:scale(0.70, 0.70)
+
+  Magnolia_P1_2 = createImage("images/magnolia/mag leafchunk1.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_2:setFillColor(0.7)
+  P1Magnolia:insert( Magnolia_P1_2 )
+  Magnolia_P1_2:scale(0.70, 0.70)
+  mask2 = graphics.newMask( "images/magnolia/mag leafchunk1MASK.png" )
+  Magnolia_P1_2:setMask( mask2 )
+
+  Magnolia_P1_3 = createImage("images/magnolia/mag leafchunk2.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_3:setFillColor(0.8)
+  P1Magnolia:insert( Magnolia_P1_3 )
+  Magnolia_P1_3:scale(0.70, 0.70)
+  mask3 = graphics.newMask( "images/magnolia/mag leafchunk2MASK.png" )
+  Magnolia_P1_3:setMask( mask3 )
+
+  Magnolia_P1_4 = createImage("images/magnolia/mag leafchunk3.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_4:setFillColor(0.6)
+  P1Magnolia:insert( Magnolia_P1_4 )
+  Magnolia_P1_4:scale(0.70, 0.70)
+  mask4 = graphics.newMask( "images/magnolia/mag leafchunk3MASK.png" )
+  Magnolia_P1_4:setMask( mask4 )
+
+  Magnolia_P1_5 = createImage("images/magnolia/mag leafchunk4.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_5:setFillColor(0.7)
+  P1Magnolia:insert( Magnolia_P1_5 )
+  Magnolia_P1_5:scale(0.70, 0.70)
+  mask5 = graphics.newMask( "images/magnolia/mag leafchunk4MASK.png" )
+  Magnolia_P1_5:setMask( mask5 )
+
+  Magnolia_P1_6 = createImage("images/magnolia/mag leafchunk5.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_6:setFillColor(0.7)
+  P1Magnolia:insert( Magnolia_P1_6 )
+  Magnolia_P1_6:scale(0.70, 0.70)
+  mask6 = graphics.newMask( "images/magnolia/mag leafchunk5MASK.png" )
+  Magnolia_P1_6:setMask( mask6 )
+
+  Magnolia_P1_7 = createImage("images/magnolia/mag leafchunk6.png", 400, 700, display.contentCenterX-1625, display.contentCenterY+1245)
+  Magnolia_P1_7:setFillColor(0.7)
+  P1Magnolia:insert( Magnolia_P1_7 )
+  Magnolia_P1_7:scale(0.70, 0.70)
+  mask7 = graphics.newMask( "images/magnolia/mag leafchunk6MASK.png" )
+  Magnolia_P1_7:setMask( mask7 )
+
+  return createMagnoliaP1
 
 end
 
@@ -311,11 +645,35 @@ function colouringSetupP1()
   toggleVisibility( donebtn_spawnFlaxP1 )
   P1Colouring:insert( donebtn_spawnFlaxP1 )
 
+  donebtn_spawnFernP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnFernP1.x = display.contentCenterX-1300
+  donebtn_spawnFernP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnFernP1 )
+  P1Colouring:insert( donebtn_spawnFernP1 )
+
+  donebtn_spawnHorsetailP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnHorsetailP1.x = display.contentCenterX-1300
+  donebtn_spawnHorsetailP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnHorsetailP1 )
+  P1Colouring:insert( donebtn_spawnHorsetailP1 )
+
   donebtn_spawnPalmP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
   donebtn_spawnPalmP1.x = display.contentCenterX-1300
   donebtn_spawnPalmP1.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnPalmP1 )
   P1Colouring:insert( donebtn_spawnPalmP1 )
+
+  donebtn_spawnCycadP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnCycadP1.x = display.contentCenterX-1300
+  donebtn_spawnCycadP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnCycadP1 )
+  P1Colouring:insert( donebtn_spawnCycadP1 )
+
+  donebtn_spawnTreeFernP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnTreeFernP1.x = display.contentCenterX-1300
+  donebtn_spawnTreeFernP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnTreeFernP1 )
+  P1Colouring:insert( donebtn_spawnTreeFernP1 )
 
   donebtn_spawnPineP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
   donebtn_spawnPineP1.x = display.contentCenterX-1300
@@ -323,11 +681,17 @@ function colouringSetupP1()
   toggleVisibility( donebtn_spawnPineP1 )
   P1Colouring:insert( donebtn_spawnPineP1 )
 
-  donebtn_spawnFernP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
-  donebtn_spawnFernP1.x = display.contentCenterX-1300
-  donebtn_spawnFernP1.y = display.contentCenterY+1560
-  toggleVisibility( donebtn_spawnFernP1 )
-  P1Colouring:insert( donebtn_spawnFernP1 )
+  donebtn_spawnKaoriP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnKaoriP1.x = display.contentCenterX-1300
+  donebtn_spawnKaoriP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnKaoriP1 )
+  P1Colouring:insert( donebtn_spawnKaoriP1 )
+
+  donebtn_spawnMagnoliaP1 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnMagnoliaP1.x = display.contentCenterX-1300
+  donebtn_spawnMagnoliaP1.y = display.contentCenterY+1560
+  toggleVisibility( donebtn_spawnMagnoliaP1 )
+  P1Colouring:insert( donebtn_spawnMagnoliaP1 )
 
   -----------------------------------------------------------------------------------------------
   -- creates compost buttons for if you want to change plants, set to invisible on level start.
@@ -338,11 +702,35 @@ function colouringSetupP1()
   toggleVisibility( compostButtonFlaxP1 )
   P1Colouring:insert( compostButtonFlaxP1 )
 
+  compostButtonFernP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonFernP1.x = display.contentCenterX-1560
+  compostButtonFernP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonFernP1 )
+  P1Colouring:insert( compostButtonFernP1 )
+
+  compostButtonHorsetailP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonHorsetailP1.x = display.contentCenterX-1560
+  compostButtonHorsetailP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonHorsetailP1 )
+  P1Colouring:insert( compostButtonHorsetailP1 )
+
   compostButtonPalmP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonPalmP1.x = display.contentCenterX-1560
   compostButtonPalmP1.y = display.contentCenterY+1560
   toggleVisibility( compostButtonPalmP1 )
   P1Colouring:insert( compostButtonPalmP1 )
+
+  compostButtonCycadP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonCycadP1.x = display.contentCenterX-1560
+  compostButtonCycadP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonCycadP1 )
+  P1Colouring:insert( compostButtonCycadP1 )
+
+  compostButtonTreeFernP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonTreeFernP1.x = display.contentCenterX-1560
+  compostButtonTreeFernP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonTreeFernP1 )
+  P1Colouring:insert( compostButtonTreeFernP1 )
 
   compostButtonPineP1 = display.newImageRect( "images/bush.png", 150, 130)
   compostButtonPineP1.x = display.contentCenterX-1560
@@ -350,11 +738,17 @@ function colouringSetupP1()
   toggleVisibility( compostButtonPineP1 )
   P1Colouring:insert( compostButtonPineP1 )
 
-  compostButtonFernP1 = display.newImageRect( "images/bush.png", 150, 130)
-  compostButtonFernP1.x = display.contentCenterX-1560
-  compostButtonFernP1.y = display.contentCenterY+1560
-  toggleVisibility( compostButtonFernP1 )
-  P1Colouring:insert( compostButtonFernP1 )
+  compostButtonKaoriP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonKaoriP1.x = display.contentCenterX-1560
+  compostButtonKaoriP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonKaoriP1 )
+  P1Colouring:insert( compostButtonKaoriP1 )
+
+  compostButtonMagnoliaP1 = display.newImageRect( "images/bush.png", 150, 130)
+  compostButtonMagnoliaP1.x = display.contentCenterX-1560
+  compostButtonMagnoliaP1.y = display.contentCenterY+1560
+  toggleVisibility( compostButtonMagnoliaP1 )
+  P1Colouring:insert( compostButtonMagnoliaP1 )
 
 end
 

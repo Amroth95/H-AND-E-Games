@@ -18,81 +18,25 @@ function birds ()
 
     transition.to( Bird, { time=5000, x=-300 } )
     transition.to( Bird2, { time=5000, x=-200 } )
-        
-    birdsecondsTillcomplete = 20
-
-    function birdTimer( event )
-
-        -- Decrement the number of seconds
-        birdsecondsTillcomplete = birdsecondsTillcomplete - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( birdsecondsTillcomplete / 20 )
-        local seconds = birdsecondsTillcomplete % 20
-
-        birdTimeup ()
-
-    end
-
-    flyingBirdTimer = timer.performWithDelay( 1000, birdTimer, birdsecondsTillcomplete )
-
-    function birdTimeup ()
-        if birdsecondsTillcomplete <= 0 then
-         display.remove( Bird )
-         Bird = nil
-         display.remove( Bird2 )
-         Bird2 = nil
-         birds ()   
-        end
-    end
-
- 
 end
 
 function clouds ()
 
-    local cloud1 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1200, 800 )
+    cloud1 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1200, 800 )
     cloud1.x = -700 ; cloud1.y = 520
     cloud1.alpha = 0.8
-    --cloud1:toBack(sceneGroup)
 
-    local cloud2 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1600, 1000 )
+    cloud2 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1600, 1000 )
     cloud2.x = -1400 ; cloud2.y = 620
     cloud2.alpha = 0.8
-    --cloud2:toBack(sceneGroup)
 
-    local cloud3 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1800, 1200 )
+    cloud3 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1800, 1200 )
     cloud3.x = -2100 ; cloud3.y = 920
     cloud3.alpha = 0.8
-    --cloud3:toBack(sceneGroup)
 
     transition.to( cloud1, { time=150000, x=7500 } )
     transition.to( cloud2, { time=150000, x=7350 } )
     transition.to( cloud3, { time=150000, x=7450 } )
-
-    cloudDuplicateSeconds = 35
-
-    function cloudDuplicateTimer( event )
-
-        -- Decrement the number of seconds
-        cloudDuplicateSeconds = cloudDuplicateSeconds - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( cloudDuplicateSeconds / 35 )
-        local seconds = cloudDuplicateSeconds % 35
-
-        cloudDuplicate ()
-
-    end
-
-    cloudsDuplicationTimer = timer.performWithDelay( 1000, cloudDuplicateTimer, cloudDuplicateSeconds )
-
-    function cloudDuplicate ()
-        if cloudDuplicateSeconds <= 0 then
-            clouds ()
-        end
-    end
-
 end
 
 --------------------------------------
@@ -106,7 +50,7 @@ function butterfly1 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = -100 ; Butterfly.y = 1220
+    Butterfly.x = -100 ; Butterfly.y = 1020
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
 
@@ -118,30 +62,6 @@ function butterfly1 ()
     Butterfly:addEventListener( "collision", Butterfly )
 
     transition.to( Butterfly, { time=17000, x=7500 } )
-
-    local ButterflyClockseconds = 60
-  
-    local function ButterflyClock( event )
-
-        -- Decrement the number of seconds
-        ButterflyClockseconds = ButterflyClockseconds - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( ButterflyClockseconds / 60 )
-        local seconds = ButterflyClockseconds % 60
-
-        ButterflySpawnCheck ()
-    end
-
-    ButterflyClocktimer = timer.performWithDelay( 1000, ButterflyClock, ButterflyClockseconds )
-
-    function ButterflySpawnCheck ()
-        if ButterflyClockseconds <= 0 then
-            timer.cancel( ButterflyClocktimer )
-            display.remove( Butterfly )
-            butterfly2 ()
-        end
-    end
 
     return butterfly1
 end
@@ -153,7 +73,7 @@ function butterfly2 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = 4600 ; Butterfly.y = 1220
+    Butterfly.x = 4600 ; Butterfly.y = 1020
     Butterfly.xScale = -1
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
@@ -167,29 +87,6 @@ function butterfly2 ()
 
     transition.to( Butterfly, { time=17000, x=-700 } )
 
-    local ButterflyClockseconds = 60
-  
-    local function ButterflyClock( event )
-
-        -- Decrement the number of seconds
-        ButterflyClockseconds = ButterflyClockseconds - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( ButterflyClockseconds / 60 )
-        local seconds = ButterflyClockseconds % 60
-
-        ButterflySpawnCheck ()
-    end
-
-    ButterflyClocktimer = timer.performWithDelay( 1000, ButterflyClock, ButterflyClockseconds )
-
-    function ButterflySpawnCheck ()
-        if ButterflyClockseconds <= 0 then
-            timer.cancel( ButterflyClocktimer )
-            display.remove( Butterfly )
-            butterfly3 ()
-        end
-    end
     return butterfly2
 end
 
@@ -200,7 +97,7 @@ function butterfly3 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = -100 ; Butterfly.y = 1220
+    Butterfly.x = -100 ; Butterfly.y = 1020
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
 
@@ -213,29 +110,6 @@ function butterfly3 ()
 
     transition.to( Butterfly, { time=17000, x=7500 } )
 
-    local ButterflyClockseconds = 60
-  
-    local function ButterflyClock( event )
-
-        -- Decrement the number of seconds
-        ButterflyClockseconds = ButterflyClockseconds - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( ButterflyClockseconds / 60 )
-        local seconds = ButterflyClockseconds % 60
-
-        ButterflySpawnCheck ()
-    end
-
-    ButterflyClocktimer = timer.performWithDelay( 1000, ButterflyClock, ButterflyClockseconds )
-
-    function ButterflySpawnCheck ()
-        if ButterflyClockseconds <= 0 then
-            timer.cancel( ButterflyClocktimer )
-            display.remove( Butterfly )
-            butterfly4 ()
-        end
-    end
     return butterfly3
 end
 
@@ -246,7 +120,7 @@ function butterfly4 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = 4600 ; Butterfly.y = 1220
+    Butterfly.x = 4600 ; Butterfly.y = 1020
     Butterfly.xScale = -1
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
@@ -260,29 +134,7 @@ function butterfly4 ()
 
     transition.to( Butterfly, { time=17000, x=-700 } )
 
-    local ButterflyClockseconds = 60
-  
-    local function ButterflyClock( event )
-
-        -- Decrement the number of seconds
-        ButterflyClockseconds = ButterflyClockseconds - 1
-
-        -- Time is tracked in seconds; convert it to minutes and seconds
-        local minutes = math.floor( ButterflyClockseconds / 60 )
-        local seconds = ButterflyClockseconds % 60
-
-        ButterflySpawnCheck ()
-    end
-
-    ButterflyClocktimer = timer.performWithDelay( 1000, ButterflyClock, ButterflyClockseconds )
-
-    function ButterflySpawnCheck ()
-        if ButterflyClockseconds <= 0 then
-            timer.cancel( ButterflyClocktimer )
-            display.remove( Butterfly )
-            butterfly1 ()
-        end
-    end
     return butterfly4
 end
+
 
