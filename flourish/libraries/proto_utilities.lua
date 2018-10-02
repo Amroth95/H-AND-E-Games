@@ -33,3 +33,107 @@ function toggleVisibility ( displayObject )
     displayObject.isVisible = true
   end
 end
+
+function buttonFlipOne ( )
+
+  if P1Select == nil then
+    do return end
+  else
+   P1Select:rotate( 0.1 )
+  end
+
+  if P2Select == nil then
+    do return end
+  else
+   P2Select:rotate( 0.1 )
+  end
+
+  if P3Select == nil then
+    do return end
+  else
+   P3Select:rotate( 0.1 )
+  end
+
+  if P4Select == nil then
+    do return end
+  else
+   P4Select:rotate( 0.1 )
+  end
+
+  local buttonFlipSeconds = 1
+
+  local function buttonFlipTimer( event )
+
+   -- Decrement the number of seconds
+   buttonFlipSeconds = buttonFlipSeconds - 1
+
+   -- Time is tracked in seconds; convert it to minutes and seconds
+   local minutes = math.floor( buttonFlipSeconds / 1 )
+   local seconds = buttonFlipSeconds % 1
+
+   buttonFliptimeup ()
+
+  end
+
+  buttonFliptimer = timer.performWithDelay( 1000, buttonFlipTimer, buttonFlipSeconds )
+
+  function buttonFliptimeup ()
+    if buttonFlipSeconds <= 0
+      then
+        timer.cancel( buttonFliptimer )
+        buttonFlipTwo()
+      end
+  end
+end
+
+function buttonFlipTwo ( )
+
+  if P1Select == nil then
+    do return end
+  else
+   P1Select:rotate( -0.1 )
+  end
+
+  if P2Select == nil then
+    do return end
+  else
+   P2Select:rotate( -0.1 )
+  end
+
+  if P3Select == nil then
+    do return end
+  else
+   P3Select:rotate( -0.1 )
+  end
+
+  if P4Select == nil then
+    do return end
+  else
+   P4Select:rotate( -0.1 )
+  end
+
+  local buttonFlipSeconds = 1
+
+  local function buttonFlipTimer( event )
+
+   -- Decrement the number of seconds
+   buttonFlipSeconds = buttonFlipSeconds - 1
+
+   -- Time is tracked in seconds; convert it to minutes and seconds
+   local minutes = math.floor( buttonFlipSeconds / 1 )
+   local seconds = buttonFlipSeconds % 1
+
+   buttonFliptimeup ()
+
+  end
+
+  buttonFliptimer = timer.performWithDelay( 1000, buttonFlipTimer, buttonFlipSeconds )
+
+  function buttonFliptimeup ()
+    if buttonFlipSeconds <= 0
+      then
+        timer.cancel( buttonFliptimer )
+        buttonFlipOne()
+      end
+  end
+end

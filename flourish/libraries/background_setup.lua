@@ -12,7 +12,7 @@ function background()
 
  local backgroundLakeGrass = display.newImageRect( "images/backgroundAssets/ground/lakegrass.png", display.contentWidth, display.contentHeight )
  backgroundLakeGrass.x = display.contentCenterX
- backgroundLakeGrass.y = display.contentCenterY
+ backgroundLakeGrass.y = display.contentCenterY-160
 
  local backgroundGrassBack = display.newImageRect( "images/backgroundAssets/ground/grassbackground.png", display.contentWidth, display.contentHeight )
  backgroundGrassBack.x = display.contentCenterX
@@ -32,13 +32,24 @@ function background()
  sequenceLakeData = {{name="Lake", sheet=LakeImageSheet1, start=1, count=5, time=1000}}
  Lake = display.newSprite(LakeImageSheet1, sequenceLakeData)
  Lake.x = display.contentCenterX
- Lake.y = display.contentCenterY
+ Lake.y = display.contentCenterY-180
  Lake:scale(2, 2)
  Lake:play()
+
+  -- Sun set up
+  SunsheetData1 = { width =667, height =664, numFrames=18, sheetContentWidth=12006, sheetContentHeight=664 } 
+  SunImageSheet1 = graphics.newImageSheet("images/backgroundAssets/sun sprite.png", SunsheetData1)
+  sequenceSunData = {{name="Sun", sheet=SunImageSheet1, start=1, count=18, time=4000}}
+  Sun = display.newSprite(SunImageSheet1, sequenceSunData)
+  Sun.x = display.contentCenterX-1570
+  Sun.y = display.contentCenterY-700
+  Sun:scale(0.8, 0.8)
+  Sun:play()
 
  -- Background asset layering
  backgroundLakeGrass:toBack()
  Lake:toBack()
+ Sun:toBack()
  backgroundGrassOverlay:toBack()
  backgroundDirt:toBack()
  backgroundGrassBack:toBack()

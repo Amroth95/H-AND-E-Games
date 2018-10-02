@@ -7,13 +7,13 @@ function birds ()
     sequenceBirdData = {{name="normalFly", sheet=BirdImageSheet1, start=1, count=21, time=750}}
 
     Bird = display.newSprite(BirdImageSheet1, sequenceBirdData)
-    Bird.x = 7500 ; Bird.y = 820
-    Bird:scale(1, 0.6)
+    Bird.x = 7500 ; Bird.y = 620
+    Bird:scale(1.4, 0.6)
     Bird:play()
 
     Bird2 = display.newSprite(BirdImageSheet1, sequenceBirdData)
-    Bird2.x = 7600 ; Bird2.y = 620
-    Bird2:scale(0.8, 0.4)
+    Bird2.x = 7600 ; Bird2.y = 420
+    Bird2:scale(1.2, 0.4)
     Bird2:play()
 
     transition.to( Bird, { time=5000, x=-300 } )
@@ -50,7 +50,7 @@ function butterfly1 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = -100 ; Butterfly.y = 1020
+    Butterfly.x = -100 ; Butterfly.y = 920
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
 
@@ -73,7 +73,7 @@ function butterfly2 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = 4600 ; Butterfly.y = 1020
+    Butterfly.x = 4600 ; Butterfly.y = 920
     Butterfly.xScale = -1
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
@@ -97,7 +97,7 @@ function butterfly3 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = -100 ; Butterfly.y = 1020
+    Butterfly.x = -100 ; Butterfly.y = 920
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
 
@@ -120,7 +120,7 @@ function butterfly4 ()
     ButterflyData = {{name="Flying1", sheet=ButterflySheet1, start=1, count=4, time=350}}
 
     Butterfly = display.newSprite(ButterflySheet1, ButterflyData)
-    Butterfly.x = 4600 ; Butterfly.y = 1020
+    Butterfly.x = 4600 ; Butterfly.y = 920
     Butterfly.xScale = -1
     Butterfly:scale(0.2, 0.2)
     Butterfly:play()
