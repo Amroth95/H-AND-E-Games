@@ -3,6 +3,7 @@ local utilities = require( "libraries.proto_utilities" )
 local backgroundComponents = require( "libraries.background_setup" )
 local backgroundAmbient = require( "libraries.background_ambience" )
 local soundEffects = require( "libraries.sound_functions" )
+local stampCreation = require( "libraries.stamps_functions" )
 local playerOne = require( "libraries.playerOne_utilities" )
 local playerTwo = require( "libraries.playerTwo_utilities" )
 local playerThree = require( "libraries.playerThree_utilities" )
@@ -135,6 +136,7 @@ function scene:create( event )
 
          Lefttimeup ()
          IdleTrigger()
+         LeftCheck ()
 
         end
 
@@ -155,6 +157,18 @@ function scene:create( event )
                 then
                   Dino:setSequence( "normalIdle" )
                   Dino:play()
+                end
+            end
+        end
+
+        function LeftCheck ()
+            if Dino == nil then
+                do return end
+            else
+                if Dino.x <= 916 then
+                 transition.cancel( Dino )
+                 timer.cancel( gorighttimer )
+                 goRight()
                 end
             end
         end
@@ -191,6 +205,7 @@ function scene:create( event )
 
          Righttimeup ()
          IdleTrigger()
+         RightCheck ()
 
         end
 
@@ -211,6 +226,18 @@ function scene:create( event )
                 then
                   Dino:setSequence( "normalIdle" )
                   Dino:play()
+                end
+            end
+        end
+
+        function RightCheck ()
+            if Dino == nil then
+                do return end
+            else
+                if Dino.x >= 2856 then
+                 transition.cancel( Dino )
+                 timer.cancel( gorighttimer )
+                 goLeft()
                 end
             end
         end
@@ -361,86 +388,162 @@ function scene:create( event )
 
     -- Player One
     local function btn_swatch_tapP1 ( event, color )
-      proto_rectP1:setFillColor(unpack(event.target.color))
-      proto_rectP1.color = event.target.color
-      print(unpack(proto_rectP1.color))
+      local P1btnCenterX, P1btnCenterY = event.target:localToContent( 0, 0 )
+      print( "P1 button position in screen coordinates: ", P1btnCenterX, P1btnCenterY )
+
+      display.remove( P1CurrentBtnGlow )
+      P1CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+      P1CurrentBtnGlow.x = P1btnCenterX
+      P1CurrentBtnGlow.y = P1btnCenterY+600
+      P1Colouring:insert( P1CurrentBtnGlow )
+
+        if P1Stamping == true then
+          P1chooseStamp ( event )
+          clicksound ()
+          do return end
+        else
+            proto_rectP1:setFillColor(unpack(event.target.color))
+            proto_rectP1.color = event.target.color
+            print(unpack(proto_rectP1.color))
   
-      local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
 
-      local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-
+            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+        end
     end
 
     local function tintPlantP1 ( event )
-      event.target:setFillColor(unpack(proto_rectP1.color))
+        if P1Stamping == true then
+            P1stamp ( event )
+            do return end
+        else
 
-      local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+         event.target:setFillColor(unpack(proto_rectP1.color))
 
-      local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+         local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
 
+         local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+        end
     end
 
     -- Player Two
     local function btn_swatch_tapP2 ( event, color )
-        proto_rectP2:setFillColor(unpack(event.target.color))
-        proto_rectP2.color = event.target.color
-        print(unpack(proto_rectP2.color))
+        local P2btnCenterX, P2btnCenterY = event.target:localToContent( 0, 0 )
+        print( "P2 button position in screen coordinates: ", P2btnCenterX, P2btnCenterY )
+  
+        display.remove( P2CurrentBtnGlow )
+        P2CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+        P2CurrentBtnGlow.x = P2btnCenterX
+        P2CurrentBtnGlow.y = P2btnCenterY+600
+        P2Colouring:insert( P2CurrentBtnGlow )
+  
+        if P2Stamping == true then
+            P2chooseStamp ( event )
+            clicksound ()
+            do return end
+        else
+            proto_rectP2:setFillColor(unpack(event.target.color))
+            proto_rectP2.color = event.target.color
+            print(unpack(proto_rectP2.color))
     
-        local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
   
-        local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-  
+            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+        end
     end
   
     local function tintPlantP2 ( event )
-        event.target:setFillColor(unpack(proto_rectP2.color))
-  
-        local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
-  
-        local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
-  
+        if P2Stamping == true then
+            P2stamp ( event )
+            do return end
+        else
+
+         event.target:setFillColor(unpack(proto_rectP2.color))
+
+         local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+
+         local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+        end
     end
 
     -- Player Three
     local function btn_swatch_tapP3 ( event, color )
-        proto_rectP3:setFillColor(unpack(event.target.color))
-        proto_rectP3.color = event.target.color
-        print(unpack(proto_rectP3.color))
-        
-        local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
-      
-        local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-      
+        local P3btnCenterX, P3btnCenterY = event.target:localToContent( 0, 0 )
+        print( "P3 button position in screen coordinates: ", P3btnCenterX, P3btnCenterY )
+  
+        display.remove( P3CurrentBtnGlow )
+        P3CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+        P3CurrentBtnGlow.x = P3btnCenterX
+        P3CurrentBtnGlow.y = P3btnCenterY+600
+        P3Colouring:insert( P3CurrentBtnGlow )
+  
+        if P3Stamping == true then
+            P3chooseStamp ( event )
+            clicksound ()
+            do return end
+        else
+            proto_rectP3:setFillColor(unpack(event.target.color))
+            proto_rectP3.color = event.target.color
+            print(unpack(proto_rectP3.color))
+    
+            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+  
+            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+        end
     end
       
     local function tintPlantP3 ( event )
-        event.target:setFillColor(unpack(proto_rectP3.color))
-      
-        local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
-      
-        local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
-      
+        if P3Stamping == true then
+            P3stamp ( event )
+            do return end
+        else
+
+         event.target:setFillColor(unpack(proto_rectP3.color))
+
+         local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+
+         local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+        end
     end
 
-    -- Player Three
+    -- Player Four
     local function btn_swatch_tapP4 ( event, color )
-        proto_rectP4:setFillColor(unpack(event.target.color))
-        proto_rectP4.color = event.target.color
-        print(unpack(proto_rectP4.color))
-        
-        local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
-      
-        local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
-      
+        local P4btnCenterX, P4btnCenterY = event.target:localToContent( 0, 0 )
+        print( "P4 button position in screen coordinates: ", P4btnCenterX, P4btnCenterY )
+  
+        display.remove( P4CurrentBtnGlow )
+        P4CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+        P4CurrentBtnGlow.x = P4btnCenterX
+        P4CurrentBtnGlow.y = P4btnCenterY+600
+        P4Colouring:insert( P4CurrentBtnGlow )
+  
+        if P4Stamping == true then
+            P4chooseStamp ( event )
+            clicksound ()
+            do return end
+        else
+            proto_rectP4:setFillColor(unpack(event.target.color))
+            proto_rectP4.color = event.target.color
+            print(unpack(proto_rectP4.color))
+    
+            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mP4" )
+  
+            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+        end
     end
       
     local function tintPlantP4 ( event )
-        event.target:setFillColor(unpack(proto_rectP4.color))
-      
-        local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
-      
-        local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
-      
+        if P4Stamping == true then
+            P4stamp ( event )
+            do return end
+        else
+
+         event.target:setFillColor(unpack(proto_rectP4.color))
+
+         local Paintplant = audio.loadSound( "sounds/buttons/Paint Plant.mp3" )
+
+         local Paintplantchannel = audio.play( Paintplant, { channel=2, loops=0 } )
+        end
     end
 
     --------------------------------------------------------------------------
@@ -579,11 +682,11 @@ function scene:create( event )
       physics.pause( Dino )
       Dino:setSequence( "normalWalk" )
       Dino:play()
-      transition.to( Dino, { time=2000, x=500 } )
-        if Dino.x >= 500 then
+      transition.to( Dino, { time=2000, x=936 } )
+        if Dino.x >= 936 then
          print("Moving left")
          Dino.xScale = 5
-        elseif Dino.x <= 500 then
+        elseif Dino.x <= 936 then
          print("Moving right")
          Dino.xScale = -5     
         end
@@ -661,11 +764,11 @@ function scene:create( event )
         physics.pause( Dino )
         Dino:setSequence( "normalWalk" )
         Dino:play()
-        transition.to( Dino, { time=2000, x=1300 } )
-        if Dino.x >= 1300 then
+        transition.to( Dino, { time=2000, x=1536 } )
+        if Dino.x >= 1536 then
             print("Moving left")
             Dino.xScale = 5
-        elseif Dino.x <= 1300 then
+        elseif Dino.x <= 1536 then
             print("Moving right")
             Dino.xScale = -5     
         end
@@ -742,11 +845,11 @@ function scene:create( event )
         physics.pause( Dino )
         Dino:setSequence( "normalWalk" )
         Dino:play()
-        transition.to( Dino, { time=2000, x=2500 } )
-        if Dino.x >= 2500 then
+        transition.to( Dino, { time=2000, x=2436 } )
+        if Dino.x >= 2436 then
             print("Moving left")
             Dino.xScale = 5
-        elseif Dino.x <= 2500 then
+        elseif Dino.x <= 2436 then
             print("Moving right")
             Dino.xScale = -5     
         end
@@ -823,11 +926,11 @@ function scene:create( event )
         physics.pause( Dino )
         Dino:setSequence( "normalWalk" )
         Dino:play()
-        transition.to( Dino, { time=2000, x=3100 } )
-        if Dino.x >= 3100 then
+        transition.to( Dino, { time=2000, x=2836 } )
+        if Dino.x >= 2836 then
             print("Moving left")
             Dino.xScale = 5
-        elseif Dino.x <= 3100 then
+        elseif Dino.x <= 2836 then
             print("Moving right")
             Dino.xScale = -5     
         end
@@ -1023,6 +1126,44 @@ function scene:create( event )
     end
     ButterflyAmbience ()
 
+    -- Rainbow
+    local function RainbowAmbience ()
+
+        local Rainbowseconds = 92
+  
+        local function RainbowClock( event )
+    
+            -- Decrement the number of seconds
+            Rainbowseconds = Rainbowseconds - 1
+    
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( Rainbowseconds / 240 )
+            local seconds = Rainbowseconds % 240
+    
+            RainbowSpawn ()
+            RainbowClockReset()
+        end
+
+        RainbowClocktimer = timer.performWithDelay( 1000, RainbowClock, Rainbowseconds )
+
+        function RainbowSpawn ()
+            if Rainbowseconds == 2 then
+                rainbow ()
+                sceneGroup:insert( Rainbow )
+                Rainbow:toFront(sceneGroup)
+            end
+        end
+
+        function RainbowClockReset ()
+            if Rainbowseconds <= 0 then
+                timer.cancel( RainbowClocktimer )
+                display.remove( Rainbow )
+                RainbowAmbience ()
+            end
+        end
+    end
+    RainbowAmbience ()
+
    --------------------------------------
    -- Handling for Butterfly collisions
    --------------------------------------
@@ -1049,49 +1190,73 @@ function scene:create( event )
     btn_new2:addEventListener( "tap", btn_swatch_tapP1 )
     btn_new3:addEventListener( "tap", btn_swatch_tapP1 )
     btn_new4:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_new5:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_new6:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow1:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow2:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow3:addEventListener( "tap", btn_swatch_tapP1 )
     btn_rainbow4:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow5:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_rainbow6:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_stamp1:addEventListener( "tap", btn_swatch_tapP1 )
+    btn_stamp2:addEventListener( "tap", btn_swatch_tapP1 )
     P1Colouring.y = display.contentCenterY+1
     sceneGroup:insert( P1Colouring )
 
     -- Palette For Player 2
     colouringSetupP2()
-    btn_new5:addEventListener( "tap", btn_swatch_tapP2 )
-    btn_new6:addEventListener( "tap", btn_swatch_tapP2 )
     btn_new7:addEventListener( "tap", btn_swatch_tapP2 )
     btn_new8:addEventListener( "tap", btn_swatch_tapP2 )
-    btn_rainbow5:addEventListener( "tap", btn_swatch_tapP2 )
-    btn_rainbow6:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new9:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new10:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new11:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_new12:addEventListener( "tap", btn_swatch_tapP2 )
     btn_rainbow7:addEventListener( "tap", btn_swatch_tapP2 )
     btn_rainbow8:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow9:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow10:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow11:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_rainbow12:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_stamp3:addEventListener( "tap", btn_swatch_tapP2 )
+    btn_stamp4:addEventListener( "tap", btn_swatch_tapP2 )
     P2Colouring.y = display.contentCenterY+1
     sceneGroup:insert( P2Colouring )
 
     -- Palette For Player 3
     colouringSetupP3()
-    btn_new9:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_new10:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_new11:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_new12:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_rainbow9:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_rainbow10:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_rainbow11:addEventListener( "tap", btn_swatch_tapP3 )
-    btn_rainbow12:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new13:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new14:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new15:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new16:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new17:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_new18:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow13:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow14:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow15:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow16:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow17:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_rainbow18:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_stamp5:addEventListener( "tap", btn_swatch_tapP3 )
+    btn_stamp6:addEventListener( "tap", btn_swatch_tapP3 )
     P3Colouring.y = display.contentCenterY+1
     sceneGroup:insert( P3Colouring )
 
     -- Palette For Player 3
     colouringSetupP4()
-    btn_new13:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_new14:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_new15:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_new16:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_rainbow13:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_rainbow14:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_rainbow15:addEventListener( "tap", btn_swatch_tapP4 )
-    btn_rainbow16:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new19:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new20:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new21:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new22:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new23:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_new24:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow19:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow20:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow21:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow22:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow23:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_rainbow24:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_stamp7:addEventListener( "tap", btn_swatch_tapP4 )
+    btn_stamp8:addEventListener( "tap", btn_swatch_tapP4 )
     P4Colouring.y = display.contentCenterY+1
     sceneGroup:insert( P4Colouring )
 
@@ -1184,7 +1349,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP1 ()
       createFlaxP1 ()
+      P1stampCounterReset()
+      P1stampCounter()
+      P1stampPalette:insert( P1stampsLeftText )
 
       flax_P1:addEventListener( "tap", tintPlantP1 )
       flax_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1211,7 +1380,11 @@ function scene:create( event )
     
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createFernP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
     
         fern_P1:addEventListener( "tap", tintPlantP1 )
         fern_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1235,7 +1408,11 @@ function scene:create( event )
               
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createHorsetailP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
               
         Horsetail_P1:addEventListener( "tap", tintPlantP1 )
         Horsetail_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1260,7 +1437,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP1 ()
       createPalmP1 ()
+      P1stampCounterReset()
+      P1stampCounter()
+      P1stampPalette:insert( P1stampsLeftText )
 
       palm_P1:addEventListener( "tap", tintPlantP1 )
       palm_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1290,13 +1471,18 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createCycadP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
   
         Cycad_P1:addEventListener( "tap", tintPlantP1 )
         Cycad_P1_2:addEventListener( "tap", tintPlantP1 )
         Cycad_P1_3:addEventListener( "tap", tintPlantP1 )
         Cycad_P1_4:addEventListener( "tap", tintPlantP1 )
         Cycad_P1_5:addEventListener( "tap", tintPlantP1 )
+        Cycad_P1_6:addEventListener( "tap", tintPlantP1 )
   
         P1Colouring:insert( P1Cycad )
   
@@ -1314,7 +1500,11 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createTreeFernP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
   
         TreeFern_P1:addEventListener( "tap", tintPlantP1 )
         TreeFern_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1342,7 +1532,11 @@ function scene:create( event )
 
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createPineP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
 
         pine_P1:addEventListener( "tap", tintPlantP1 )
         pine_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1368,7 +1562,11 @@ function scene:create( event )
             
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createKaoriP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
             
         Kaori_P1:addEventListener( "tap", tintPlantP1 )
         Kaori_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1395,7 +1593,11 @@ function scene:create( event )
         
         clicksound ()
         resetTimer()
+        chooseNormalP1 ()
         createMagnoliaP1 ()
+        P1stampCounterReset()
+        P1stampCounter()
+        P1stampPalette:insert( P1stampsLeftText )
         
         Magnolia_P1:addEventListener( "tap", tintPlantP1 )
         Magnolia_P1_2:addEventListener( "tap", tintPlantP1 )
@@ -1425,7 +1627,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP2 ()
       createFlaxP2 ()
+      P2stampCounterReset()
+      P2stampCounter()
+      P2stampPalette:insert( P2stampsLeftText )
 
       flax_P2:addEventListener( "tap", tintPlantP2 )
       flax_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1452,7 +1658,11 @@ function scene:create( event )
     
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createFernP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
     
         fern_P2:addEventListener( "tap", tintPlantP2 )
         fern_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1476,7 +1686,11 @@ function scene:create( event )
               
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createHorsetailP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
               
         Horsetail_P2:addEventListener( "tap", tintPlantP2 )
         Horsetail_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1501,7 +1715,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP2 ()
       createPalmP2 ()
+      P2stampCounterReset()
+      P2stampCounter()
+      P2stampPalette:insert( P2stampsLeftText )
 
       palm_P2:addEventListener( "tap", tintPlantP2 )
       palm_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1531,13 +1749,18 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createCycadP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
   
         Cycad_P2:addEventListener( "tap", tintPlantP2 )
         Cycad_P2_2:addEventListener( "tap", tintPlantP2 )
         Cycad_P2_3:addEventListener( "tap", tintPlantP2 )
         Cycad_P2_4:addEventListener( "tap", tintPlantP2 )
         Cycad_P2_5:addEventListener( "tap", tintPlantP2 )
+        Cycad_P2_6:addEventListener( "tap", tintPlantP2 )
   
         P2Colouring:insert( P2Cycad )
   
@@ -1555,7 +1778,11 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createTreeFernP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
   
         TreeFern_P2:addEventListener( "tap", tintPlantP2 )
         TreeFern_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1583,7 +1810,11 @@ function scene:create( event )
 
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createPineP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
 
         pine_P2:addEventListener( "tap", tintPlantP2 )
         pine_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1609,7 +1840,11 @@ function scene:create( event )
             
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createKaoriP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
             
         Kaori_P2:addEventListener( "tap", tintPlantP2 )
         Kaori_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1636,7 +1871,11 @@ function scene:create( event )
         
         clicksound ()
         resetTimer()
+        chooseNormalP2 ()
         createMagnoliaP2 ()
+        P2stampCounterReset()
+        P2stampCounter()
+        P2stampPalette:insert( P2stampsLeftText )
         
         Magnolia_P2:addEventListener( "tap", tintPlantP2 )
         Magnolia_P2_2:addEventListener( "tap", tintPlantP2 )
@@ -1666,7 +1905,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP3 ()
       createFlaxP3 ()
+      P3stampCounterReset()
+      P3stampCounter()
+      P3stampPalette:insert( P3stampsLeftText )
 
       flax_P3:addEventListener( "tap", tintPlantP3 )
       flax_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1693,7 +1936,11 @@ function scene:create( event )
     
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createFernP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
     
         fern_P3:addEventListener( "tap", tintPlantP3 )
         fern_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1717,7 +1964,11 @@ function scene:create( event )
               
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createHorsetailP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
               
         Horsetail_P3:addEventListener( "tap", tintPlantP3 )
         Horsetail_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1742,7 +1993,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP3 ()
       createPalmP3 ()
+      P3stampCounterReset()
+      P3stampCounter()
+      P3stampPalette:insert( P3stampsLeftText )
 
       palm_P3:addEventListener( "tap", tintPlantP3 )
       palm_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1772,13 +2027,18 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createCycadP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
   
         Cycad_P3:addEventListener( "tap", tintPlantP3 )
         Cycad_P3_2:addEventListener( "tap", tintPlantP3 )
         Cycad_P3_3:addEventListener( "tap", tintPlantP3 )
         Cycad_P3_4:addEventListener( "tap", tintPlantP3 )
         Cycad_P3_5:addEventListener( "tap", tintPlantP3 )
+        Cycad_P3_6:addEventListener( "tap", tintPlantP3 )
   
         P3Colouring:insert( P3Cycad )
   
@@ -1796,7 +2056,11 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createTreeFernP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
   
         TreeFern_P3:addEventListener( "tap", tintPlantP3 )
         TreeFern_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1824,7 +2088,11 @@ function scene:create( event )
 
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createPineP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
 
         pine_P3:addEventListener( "tap", tintPlantP3 )
         pine_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1850,7 +2118,11 @@ function scene:create( event )
             
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createKaoriP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
             
         Kaori_P3:addEventListener( "tap", tintPlantP3 )
         Kaori_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1877,7 +2149,11 @@ function scene:create( event )
         
         clicksound ()
         resetTimer()
+        chooseNormalP3 ()
         createMagnoliaP3 ()
+        P3stampCounterReset()
+        P3stampCounter()
+        P3stampPalette:insert( P3stampsLeftText )
         
         Magnolia_P3:addEventListener( "tap", tintPlantP3 )
         Magnolia_P3_2:addEventListener( "tap", tintPlantP3 )
@@ -1907,7 +2183,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP4 ()
       createFlaxP4 ()
+      P4stampCounterReset()
+      P4stampCounter()
+      P4stampPalette:insert( P4stampsLeftText )
 
       flax_P4:addEventListener( "tap", tintPlantP4 )
       flax_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -1934,7 +2214,11 @@ function scene:create( event )
     
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createFernP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
     
         fern_P4:addEventListener( "tap", tintPlantP4 )
         fern_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -1958,7 +2242,11 @@ function scene:create( event )
               
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createHorsetailP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
               
         Horsetail_P4:addEventListener( "tap", tintPlantP4 )
         Horsetail_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -1983,7 +2271,11 @@ function scene:create( event )
 
       clicksound ()
       resetTimer()
+      chooseNormalP4 ()
       createPalmP4 ()
+      P4stampCounterReset()
+      P4stampCounter()
+      P4stampPalette:insert( P4stampsLeftText )
 
       palm_P4:addEventListener( "tap", tintPlantP4 )
       palm_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -2013,13 +2305,18 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createCycadP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
   
         Cycad_P4:addEventListener( "tap", tintPlantP4 )
         Cycad_P4_2:addEventListener( "tap", tintPlantP4 )
         Cycad_P4_3:addEventListener( "tap", tintPlantP4 )
         Cycad_P4_4:addEventListener( "tap", tintPlantP4 )
         Cycad_P4_5:addEventListener( "tap", tintPlantP4 )
+        Cycad_P4_6:addEventListener( "tap", tintPlantP4 )
   
         P4Colouring:insert( P4Cycad )
   
@@ -2037,7 +2334,11 @@ function scene:create( event )
   
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createTreeFernP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
   
         TreeFern_P4:addEventListener( "tap", tintPlantP4 )
         TreeFern_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -2065,7 +2366,11 @@ function scene:create( event )
 
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createPineP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
 
         pine_P4:addEventListener( "tap", tintPlantP4 )
         pine_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -2091,7 +2396,11 @@ function scene:create( event )
             
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createKaoriP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
             
         Kaori_P4:addEventListener( "tap", tintPlantP4 )
         Kaori_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -2118,7 +2427,11 @@ function scene:create( event )
         
         clicksound ()
         resetTimer()
+        chooseNormalP4 ()
         createMagnoliaP4 ()
+        P4stampCounterReset()
+        P4stampCounter()
+        P4stampPalette:insert( P4stampsLeftText )
         
         Magnolia_P4:addEventListener( "tap", tintPlantP4 )
         Magnolia_P4_2:addEventListener( "tap", tintPlantP4 )
@@ -2173,20 +2486,23 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
-        flax_P1:scale(1.35, 1.35)
         flax_P1:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_2:scale(1.35, 1.35)
         flax_P1_2:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_3:scale(1.35, 1.35)
         flax_P1_3:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_4:scale(1.35, 1.35)
         flax_P1_4:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_5:scale(1.35, 1.35)
         flax_P1_5:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_6:scale(1.35, 1.35)
         flax_P1_6:removeEventListener( "tap", tintPlantP1 )
-        flax_P1_7:scale(1.35, 1.35)
         flax_P1_7:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Flax.numChildren do
+            local child = P1Flax[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P1Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
 
         ecosystem_P1:insert( P1Flax )
         P1Flax:toFront()
@@ -2225,17 +2541,22 @@ function scene:create( event )
             x= math.random(-200, 600 ),
             y= math.random(-1080, -1075),
             time=1000})
-        fern_P1:scale(1.35, 1.35)
         fern_P1:removeEventListener( "tap", tintPlantP1 )
-        fern_P1_2:scale(1.35, 1.35)
         fern_P1_2:removeEventListener( "tap", tintPlantP1 )
-        fern_P1_3:scale(1.35, 1.35)
         fern_P1_3:removeEventListener( "tap", tintPlantP1 )
-        fern_P1_4:scale(1.35, 1.35)
         fern_P1_4:removeEventListener( "tap", tintPlantP1 )
-        fern_P1_5:scale(1.35, 1.35)
         fern_P1_5:removeEventListener( "tap", tintPlantP1 )
-    
+
+        for i=1,P1Fern.numChildren do
+            local child = P1Fern[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P1Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
+ 
         ecosystem_P1:insert( P1Fern )
         P1Fern:toFront()
     
@@ -2274,16 +2595,21 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
-        Horsetail_P1:scale(1.35, 1.35)
         Horsetail_P1:removeEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_2:scale(1.35, 1.35)
         Horsetail_P1_2:removeEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_3:scale(1.35, 1.35)
         Horsetail_P1_3:removeEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_4:scale(1.35, 1.35)
         Horsetail_P1_4:removeEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_5:scale(1.35, 1.35)
         Horsetail_P1_5:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Horsetail.numChildren do
+            local child = P1Horsetail[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P1Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
        
         ecosystem_P1:insert( P1Horsetail )
         P1Horsetail:toFront()
@@ -2323,26 +2649,26 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1210, -1205),
             time=1000})
-        palm_P1:scale(2.35, 2.95)
         palm_P1:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_2:scale(2.35, 2.95)
         palm_P1_2:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_3:scale(2.35, 2.95)
         palm_P1_3:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_4:scale(2.35, 2.95)
         palm_P1_4:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_5:scale(2.35, 2.95)
         palm_P1_5:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_6:scale(2.35, 2.95)
         palm_P1_6:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_7:scale(2.35, 2.95)
         palm_P1_7:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_8:scale(2.35, 2.95)
         palm_P1_8:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_9:scale(2.35, 2.95)
         palm_P1_9:removeEventListener( "tap", tintPlantP1 )
-        palm_P1_10:scale(2.35, 2.95)
         palm_P1_10:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Palm.numChildren do
+            local child = P1Palm[i]
+            child:scale(2.35, 2.95)
+            if child.Name == "P1Stamp" then
+               child:scale(2.35, 2.35)
+               child.xScale = 2.35
+               child.yScale = 2.35
+            end
+        end
 
         ecosystem_P1:insert( P1Palm )
 
@@ -2380,16 +2706,22 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1230, -1225),
             time=1000})
-        Cycad_P1:scale(2.85, 2.85)
         Cycad_P1:removeEventListener( "tap", tintPlantP1 )
-        Cycad_P1_2:scale(2.85, 2.85)
         Cycad_P1_2:removeEventListener( "tap", tintPlantP1 )
-        Cycad_P1_3:scale(2.85, 2.85)
         Cycad_P1_3:removeEventListener( "tap", tintPlantP1 )
-        Cycad_P1_4:scale(2.85, 2.85)
         Cycad_P1_4:removeEventListener( "tap", tintPlantP1 )
-        Cycad_P1_5:scale(2.85, 2.85)
         Cycad_P1_5:removeEventListener( "tap", tintPlantP1 )
+        Cycad_P1_6:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Cycad.numChildren do
+            local child = P1Cycad[i]
+            child:scale(2.85, 2.85)
+            if child.Name == "P1Stamp" then
+               child:scale(2.85, 2.85)
+               child.xScale = 2.85
+               child.yScale = 2.85
+            end
+        end
 
         ecosystem_P1:insert( P1Cycad )
 
@@ -2427,24 +2759,25 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1290, -1285),
             time=1000})
-        TreeFern_P1:scale(2.55, 2.55)
         TreeFern_P1:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_2:scale(2.55, 2.55)
         TreeFern_P1_2:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_3:scale(2.55, 2.55)
         TreeFern_P1_3:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_4:scale(2.55, 2.55)
         TreeFern_P1_4:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_5:scale(2.55, 2.55)
         TreeFern_P1_5:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_6:scale(2.55, 2.55)
         TreeFern_P1_6:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_7:scale(2.55, 2.55)
         TreeFern_P1_7:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_8:scale(2.55, 2.55)
         TreeFern_P1_8:removeEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_9:scale(2.55, 2.55)
         TreeFern_P1_9:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1TreeFern.numChildren do
+            local child = P1TreeFern[i]
+            child:scale(2.55, 2.55)
+            if child.Name == "P1Stamp" then
+               child:scale(2.55, 2.55)
+               child.xScale = 2.55
+               child.yScale = 2.55
+            end
+        end
 
         ecosystem_P1:insert( P1TreeFern )
 
@@ -2476,22 +2809,25 @@ function scene:create( event )
 
         transition.to(P1Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1350, -1345),
+            y= math.random(-1425, -1420),
             time=1000})
-        pine_P1:scale(2.40, 2.95)
         pine_P1:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_2:scale(2.40, 2.95)
         pine_P1_2:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_3:scale(2.40, 2.95)
         pine_P1_3:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_4:scale(2.40, 2.95)
         pine_P1_4:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_5:scale(2.40, 2.95)
         pine_P1_5:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_6:scale(2.40, 2.95)
         pine_P1_6:removeEventListener( "tap", tintPlantP1 )
-        pine_P1_7:scale(2.40, 2.95)
         pine_P1_7:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Pine.numChildren do
+            local child = P1Pine[i]
+            child:scale(2.65, 3.20)
+            if child.Name == "P1Stamp" then
+               child:scale(2.65, 2.65)
+               child.xScale = 2.65
+               child.yScale = 2.65
+            end
+        end
 
         ecosystem_P1:insert( P1Pine)
         P1Pine:toBack()
@@ -2524,24 +2860,26 @@ function scene:create( event )
     
         transition.to(P1Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1355, -1350),
+            y= math.random(-1425, -1420),
             time=1000})
-        Kaori_P1:scale(2.35, 4.35)
         Kaori_P1:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_2:scale(2.35, 4.35)
         Kaori_P1_2:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_3:scale(2.35, 4.35)
         Kaori_P1_3:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_4:scale(2.35, 4.35)
         Kaori_P1_4:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_5:scale(2.35, 4.35)
         Kaori_P1_5:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_6:scale(2.35, 4.35)
         Kaori_P1_6:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_7:scale(2.35, 4.35)
         Kaori_P1_7:removeEventListener( "tap", tintPlantP1 )
-        Kaori_P1_8:scale(2.35, 4.35)
         Kaori_P1_8:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Kaori.numChildren do
+            local child = P1Kaori[i]
+            child:scale(2.95, 4.95)
+            if child.Name == "P1Stamp" then
+               child:scale(2.95, 2.95)
+               child.xScale = 2.95
+               child.yScale = 2.95
+            end
+        end
            
         ecosystem_P1:insert( P1Kaori )
         P1Kaori:toBack()
@@ -2574,22 +2912,25 @@ function scene:create( event )
 
         transition.to(P1Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1500, -1495),
+            y= math.random(-1620, -1615),
             time=1000})
-        Magnolia_P1:scale(2.5, 3.45)
         Magnolia_P1:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_2:scale(2.5, 3.45)
         Magnolia_P1_2:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_3:scale(2.5, 3.45)
         Magnolia_P1_3:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_4:scale(2.5, 3.45)
         Magnolia_P1_4:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_5:scale(2.5, 3.45)
         Magnolia_P1_5:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_6:scale(2.5, 3.45)
         Magnolia_P1_6:removeEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_7:scale(2.5, 3.45)
         Magnolia_P1_7:removeEventListener( "tap", tintPlantP1 )
+
+        for i=1,P1Magnolia.numChildren do
+            local child = P1Magnolia[i]
+            child:scale(3.2, 4.15)
+            if child.Name == "P1Stamp" then
+               child:scale(3.2, 3.2)
+               child.xScale = 3.2
+               child.yScale = 3.2
+            end
+        end
 
         ecosystem_P1:insert( P1Magnolia)
         P1Magnolia:toBack()
@@ -2633,20 +2974,23 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
-        flax_P2:scale(1.35, 1.35)
         flax_P2:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_2:scale(1.35, 1.35)
         flax_P2_2:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_3:scale(1.35, 1.35)
         flax_P2_3:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_4:scale(1.35, 1.35)
         flax_P2_4:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_5:scale(1.35, 1.35)
         flax_P2_5:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_6:scale(1.35, 1.35)
         flax_P2_6:removeEventListener( "tap", tintPlantP2 )
-        flax_P2_7:scale(1.35, 1.35)
         flax_P2_7:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Flax.numChildren do
+            local child = P2Flax[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P2Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
 
         ecosystem_P2:insert( P2Flax )
         P2Flax:toFront()
@@ -2685,17 +3029,22 @@ function scene:create( event )
             x= math.random(-200, 600 ),
             y= math.random(-1080, -1075),
             time=1000})
-        fern_P2:scale(1.35, 1.35)
         fern_P2:removeEventListener( "tap", tintPlantP2 )
-        fern_P2_2:scale(1.35, 1.35)
         fern_P2_2:removeEventListener( "tap", tintPlantP2 )
-        fern_P2_3:scale(1.35, 1.35)
         fern_P2_3:removeEventListener( "tap", tintPlantP2 )
-        fern_P2_4:scale(1.35, 1.35)
         fern_P2_4:removeEventListener( "tap", tintPlantP2 )
-        fern_P2_5:scale(1.35, 1.35)
         fern_P2_5:removeEventListener( "tap", tintPlantP2 )
-    
+
+        for i=1,P2Fern.numChildren do
+            local child = P2Fern[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P2Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
+ 
         ecosystem_P2:insert( P2Fern )
         P2Fern:toFront()
     
@@ -2734,16 +3083,21 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
-        Horsetail_P2:scale(1.35, 1.35)
         Horsetail_P2:removeEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_2:scale(1.35, 1.35)
         Horsetail_P2_2:removeEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_3:scale(1.35, 1.35)
         Horsetail_P2_3:removeEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_4:scale(1.35, 1.35)
         Horsetail_P2_4:removeEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_5:scale(1.35, 1.35)
         Horsetail_P2_5:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Horsetail.numChildren do
+            local child = P2Horsetail[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P2Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
        
         ecosystem_P2:insert( P2Horsetail )
         P2Horsetail:toFront()
@@ -2783,26 +3137,26 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1210, -1205),
             time=1000})
-        palm_P2:scale(2.35, 2.95)
         palm_P2:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_2:scale(2.35, 2.95)
         palm_P2_2:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_3:scale(2.35, 2.95)
         palm_P2_3:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_4:scale(2.35, 2.95)
         palm_P2_4:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_5:scale(2.35, 2.95)
         palm_P2_5:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_6:scale(2.35, 2.95)
         palm_P2_6:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_7:scale(2.35, 2.95)
         palm_P2_7:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_8:scale(2.35, 2.95)
         palm_P2_8:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_9:scale(2.35, 2.95)
         palm_P2_9:removeEventListener( "tap", tintPlantP2 )
-        palm_P2_10:scale(2.35, 2.95)
         palm_P2_10:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Palm.numChildren do
+            local child = P2Palm[i]
+            child:scale(2.35, 2.95)
+            if child.Name == "P2Stamp" then
+               child:scale(2.35, 2.35)
+               child.xScale = 2.35
+               child.yScale = 2.35
+            end
+        end
 
         ecosystem_P2:insert( P2Palm )
 
@@ -2840,16 +3194,22 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1230, -1225),
             time=1000})
-        Cycad_P2:scale(2.85, 2.85)
         Cycad_P2:removeEventListener( "tap", tintPlantP2 )
-        Cycad_P2_2:scale(2.85, 2.85)
         Cycad_P2_2:removeEventListener( "tap", tintPlantP2 )
-        Cycad_P2_3:scale(2.85, 2.85)
         Cycad_P2_3:removeEventListener( "tap", tintPlantP2 )
-        Cycad_P2_4:scale(2.85, 2.85)
         Cycad_P2_4:removeEventListener( "tap", tintPlantP2 )
-        Cycad_P2_5:scale(2.85, 2.85)
         Cycad_P2_5:removeEventListener( "tap", tintPlantP2 )
+        Cycad_P2_6:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Cycad.numChildren do
+            local child = P2Cycad[i]
+            child:scale(2.85, 2.85)
+            if child.Name == "P2Stamp" then
+               child:scale(2.85, 2.85)
+               child.xScale = 2.85
+               child.yScale = 2.85
+            end
+        end
 
         ecosystem_P2:insert( P2Cycad )
 
@@ -2887,24 +3247,25 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1290, -1285),
             time=1000})
-        TreeFern_P2:scale(2.55, 2.55)
         TreeFern_P2:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_2:scale(2.55, 2.55)
         TreeFern_P2_2:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_3:scale(2.55, 2.55)
         TreeFern_P2_3:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_4:scale(2.55, 2.55)
         TreeFern_P2_4:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_5:scale(2.55, 2.55)
         TreeFern_P2_5:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_6:scale(2.55, 2.55)
         TreeFern_P2_6:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_7:scale(2.55, 2.55)
         TreeFern_P2_7:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_8:scale(2.55, 2.55)
         TreeFern_P2_8:removeEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_9:scale(2.55, 2.55)
         TreeFern_P2_9:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2TreeFern.numChildren do
+            local child = P2TreeFern[i]
+            child:scale(2.55, 2.55)
+            if child.Name == "P2Stamp" then
+               child:scale(2.55, 2.55)
+               child.xScale = 2.55
+               child.yScale = 2.55
+            end
+        end
 
         ecosystem_P2:insert( P2TreeFern )
 
@@ -2936,22 +3297,25 @@ function scene:create( event )
 
         transition.to(P2Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1350, -1345),
+            y= math.random(-1425, -1420),
             time=1000})
-        pine_P2:scale(2.40, 2.95)
         pine_P2:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_2:scale(2.40, 2.95)
         pine_P2_2:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_3:scale(2.40, 2.95)
         pine_P2_3:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_4:scale(2.40, 2.95)
         pine_P2_4:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_5:scale(2.40, 2.95)
         pine_P2_5:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_6:scale(2.40, 2.95)
         pine_P2_6:removeEventListener( "tap", tintPlantP2 )
-        pine_P2_7:scale(2.40, 2.95)
         pine_P2_7:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Pine.numChildren do
+            local child = P2Pine[i]
+            child:scale(2.65, 3.20)
+            if child.Name == "P2Stamp" then
+               child:scale(2.65, 2.65)
+               child.xScale = 2.65
+               child.yScale = 2.65
+            end
+        end
 
         ecosystem_P2:insert( P2Pine)
         P2Pine:toBack()
@@ -2984,24 +3348,26 @@ function scene:create( event )
     
         transition.to(P2Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1355, -1350),
+            y= math.random(-1425, -1420),
             time=1000})
-        Kaori_P2:scale(2.35, 4.35)
         Kaori_P2:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_2:scale(2.35, 4.35)
         Kaori_P2_2:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_3:scale(2.35, 4.35)
         Kaori_P2_3:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_4:scale(2.35, 4.35)
         Kaori_P2_4:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_5:scale(2.35, 4.35)
         Kaori_P2_5:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_6:scale(2.35, 4.35)
         Kaori_P2_6:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_7:scale(2.35, 4.35)
         Kaori_P2_7:removeEventListener( "tap", tintPlantP2 )
-        Kaori_P2_8:scale(2.35, 4.35)
         Kaori_P2_8:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Kaori.numChildren do
+            local child = P2Kaori[i]
+            child:scale(2.95, 4.95)
+            if child.Name == "P2Stamp" then
+               child:scale(2.95, 2.95)
+               child.xScale = 2.95
+               child.yScale = 2.95
+            end
+        end
            
         ecosystem_P2:insert( P2Kaori )
         P2Kaori:toBack()
@@ -3034,22 +3400,25 @@ function scene:create( event )
 
         transition.to(P2Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1500, -1495),
+            y= math.random(-1620, -1615),
             time=1000})
-        Magnolia_P2:scale(2.5, 3.45)
         Magnolia_P2:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_2:scale(2.5, 3.45)
         Magnolia_P2_2:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_3:scale(2.5, 3.45)
         Magnolia_P2_3:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_4:scale(2.5, 3.45)
         Magnolia_P2_4:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_5:scale(2.5, 3.45)
         Magnolia_P2_5:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_6:scale(2.5, 3.45)
         Magnolia_P2_6:removeEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_7:scale(2.5, 3.45)
         Magnolia_P2_7:removeEventListener( "tap", tintPlantP2 )
+
+        for i=1,P2Magnolia.numChildren do
+            local child = P2Magnolia[i]
+            child:scale(3.2, 4.15)
+            if child.Name == "P2Stamp" then
+               child:scale(3.2, 3.2)
+               child.xScale = 3.2
+               child.yScale = 3.2
+            end
+        end
 
         ecosystem_P2:insert( P2Magnolia)
         P2Magnolia:toBack()
@@ -3093,20 +3462,23 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
-        flax_P3:scale(1.35, 1.35)
         flax_P3:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_2:scale(1.35, 1.35)
         flax_P3_2:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_3:scale(1.35, 1.35)
         flax_P3_3:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_4:scale(1.35, 1.35)
         flax_P3_4:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_5:scale(1.35, 1.35)
         flax_P3_5:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_6:scale(1.35, 1.35)
         flax_P3_6:removeEventListener( "tap", tintPlantP3 )
-        flax_P3_7:scale(1.35, 1.35)
         flax_P3_7:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Flax.numChildren do
+            local child = P3Flax[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P3Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
 
         ecosystem_P3:insert( P3Flax )
         P3Flax:toFront()
@@ -3145,17 +3517,22 @@ function scene:create( event )
             x= math.random(-200, 600 ),
             y= math.random(-1080, -1075),
             time=1000})
-        fern_P3:scale(1.35, 1.35)
         fern_P3:removeEventListener( "tap", tintPlantP3 )
-        fern_P3_2:scale(1.35, 1.35)
         fern_P3_2:removeEventListener( "tap", tintPlantP3 )
-        fern_P3_3:scale(1.35, 1.35)
         fern_P3_3:removeEventListener( "tap", tintPlantP3 )
-        fern_P3_4:scale(1.35, 1.35)
         fern_P3_4:removeEventListener( "tap", tintPlantP3 )
-        fern_P3_5:scale(1.35, 1.35)
         fern_P3_5:removeEventListener( "tap", tintPlantP3 )
-    
+
+        for i=1,P3Fern.numChildren do
+            local child = P3Fern[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P3Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
+ 
         ecosystem_P3:insert( P3Fern )
         P3Fern:toFront()
     
@@ -3194,16 +3571,21 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
-        Horsetail_P3:scale(1.35, 1.35)
         Horsetail_P3:removeEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_2:scale(1.35, 1.35)
         Horsetail_P3_2:removeEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_3:scale(1.35, 1.35)
         Horsetail_P3_3:removeEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_4:scale(1.35, 1.35)
         Horsetail_P3_4:removeEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_5:scale(1.35, 1.35)
         Horsetail_P3_5:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Horsetail.numChildren do
+            local child = P3Horsetail[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P3Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
        
         ecosystem_P3:insert( P3Horsetail )
         P3Horsetail:toFront()
@@ -3243,26 +3625,26 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1210, -1205),
             time=1000})
-        palm_P3:scale(2.35, 2.95)
         palm_P3:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_2:scale(2.35, 2.95)
         palm_P3_2:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_3:scale(2.35, 2.95)
         palm_P3_3:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_4:scale(2.35, 2.95)
         palm_P3_4:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_5:scale(2.35, 2.95)
         palm_P3_5:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_6:scale(2.35, 2.95)
         palm_P3_6:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_7:scale(2.35, 2.95)
         palm_P3_7:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_8:scale(2.35, 2.95)
         palm_P3_8:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_9:scale(2.35, 2.95)
         palm_P3_9:removeEventListener( "tap", tintPlantP3 )
-        palm_P3_10:scale(2.35, 2.95)
         palm_P3_10:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Palm.numChildren do
+            local child = P3Palm[i]
+            child:scale(2.35, 2.95)
+            if child.Name == "P3Stamp" then
+               child:scale(2.35, 2.35)
+               child.xScale = 2.35
+               child.yScale = 2.35
+            end
+        end
 
         ecosystem_P3:insert( P3Palm )
 
@@ -3300,16 +3682,22 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1230, -1225),
             time=1000})
-        Cycad_P3:scale(2.85, 2.85)
         Cycad_P3:removeEventListener( "tap", tintPlantP3 )
-        Cycad_P3_2:scale(2.85, 2.85)
         Cycad_P3_2:removeEventListener( "tap", tintPlantP3 )
-        Cycad_P3_3:scale(2.85, 2.85)
         Cycad_P3_3:removeEventListener( "tap", tintPlantP3 )
-        Cycad_P3_4:scale(2.85, 2.85)
         Cycad_P3_4:removeEventListener( "tap", tintPlantP3 )
-        Cycad_P3_5:scale(2.85, 2.85)
         Cycad_P3_5:removeEventListener( "tap", tintPlantP3 )
+        Cycad_P3_6:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Cycad.numChildren do
+            local child = P3Cycad[i]
+            child:scale(2.85, 2.85)
+            if child.Name == "P3Stamp" then
+               child:scale(2.85, 2.85)
+               child.xScale = 2.85
+               child.yScale = 2.85
+            end
+        end
 
         ecosystem_P3:insert( P3Cycad )
 
@@ -3347,24 +3735,25 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1290, -1285),
             time=1000})
-        TreeFern_P3:scale(2.55, 2.55)
         TreeFern_P3:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_2:scale(2.55, 2.55)
         TreeFern_P3_2:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_3:scale(2.55, 2.55)
         TreeFern_P3_3:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_4:scale(2.55, 2.55)
         TreeFern_P3_4:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_5:scale(2.55, 2.55)
         TreeFern_P3_5:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_6:scale(2.55, 2.55)
         TreeFern_P3_6:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_7:scale(2.55, 2.55)
         TreeFern_P3_7:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_8:scale(2.55, 2.55)
         TreeFern_P3_8:removeEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_9:scale(2.55, 2.55)
         TreeFern_P3_9:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3TreeFern.numChildren do
+            local child = P3TreeFern[i]
+            child:scale(2.55, 2.55)
+            if child.Name == "P3Stamp" then
+               child:scale(2.55, 2.55)
+               child.xScale = 2.55
+               child.yScale = 2.55
+            end
+        end
 
         ecosystem_P3:insert( P3TreeFern )
 
@@ -3396,22 +3785,25 @@ function scene:create( event )
 
         transition.to(P3Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1350, -1345),
+            y= math.random(-1425, -1420),
             time=1000})
-        pine_P3:scale(2.40, 2.95)
         pine_P3:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_2:scale(2.40, 2.95)
         pine_P3_2:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_3:scale(2.40, 2.95)
         pine_P3_3:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_4:scale(2.40, 2.95)
         pine_P3_4:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_5:scale(2.40, 2.95)
         pine_P3_5:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_6:scale(2.40, 2.95)
         pine_P3_6:removeEventListener( "tap", tintPlantP3 )
-        pine_P3_7:scale(2.40, 2.95)
         pine_P3_7:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Pine.numChildren do
+            local child = P3Pine[i]
+            child:scale(2.65, 3.20)
+            if child.Name == "P3Stamp" then
+               child:scale(2.65, 2.65)
+               child.xScale = 2.65
+               child.yScale = 2.65
+            end
+        end
 
         ecosystem_P3:insert( P3Pine)
         P3Pine:toBack()
@@ -3444,24 +3836,26 @@ function scene:create( event )
     
         transition.to(P3Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1355, -1350),
+            y= math.random(-1425, -1420),
             time=1000})
-        Kaori_P3:scale(2.35, 4.35)
         Kaori_P3:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_2:scale(2.35, 4.35)
         Kaori_P3_2:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_3:scale(2.35, 4.35)
         Kaori_P3_3:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_4:scale(2.35, 4.35)
         Kaori_P3_4:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_5:scale(2.35, 4.35)
         Kaori_P3_5:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_6:scale(2.35, 4.35)
         Kaori_P3_6:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_7:scale(2.35, 4.35)
         Kaori_P3_7:removeEventListener( "tap", tintPlantP3 )
-        Kaori_P3_8:scale(2.35, 4.35)
         Kaori_P3_8:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Kaori.numChildren do
+            local child = P3Kaori[i]
+            child:scale(2.95, 4.95)
+            if child.Name == "P3Stamp" then
+               child:scale(2.95, 2.95)
+               child.xScale = 2.95
+               child.yScale = 2.95
+            end
+        end
            
         ecosystem_P3:insert( P3Kaori )
         P3Kaori:toBack()
@@ -3494,22 +3888,25 @@ function scene:create( event )
 
         transition.to(P3Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1500, -1495),
+            y= math.random(-1620, -1615),
             time=1000})
-        Magnolia_P3:scale(2.5, 3.45)
         Magnolia_P3:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_2:scale(2.5, 3.45)
         Magnolia_P3_2:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_3:scale(2.5, 3.45)
         Magnolia_P3_3:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_4:scale(2.5, 3.45)
         Magnolia_P3_4:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_5:scale(2.5, 3.45)
         Magnolia_P3_5:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_6:scale(2.5, 3.45)
         Magnolia_P3_6:removeEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_7:scale(2.5, 3.45)
         Magnolia_P3_7:removeEventListener( "tap", tintPlantP3 )
+
+        for i=1,P3Magnolia.numChildren do
+            local child = P3Magnolia[i]
+            child:scale(3.2, 4.15)
+            if child.Name == "P3Stamp" then
+               child:scale(3.2, 3.2)
+               child.xScale = 3.2
+               child.yScale = 3.2
+            end
+        end
 
         ecosystem_P3:insert( P3Magnolia)
         P3Magnolia:toBack()
@@ -3520,6 +3917,7 @@ function scene:create( event )
 
     end
     donebtn_spawnMagnoliaP3:addEventListener( "tap", donebtn_spawn_tapMagnoliaP3 )
+
     -------------------------------
     -- Player Four done functions
     -------------------------------
@@ -3552,20 +3950,23 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
-        flax_P4:scale(1.35, 1.35)
         flax_P4:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_2:scale(1.35, 1.35)
         flax_P4_2:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_3:scale(1.35, 1.35)
         flax_P4_3:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_4:scale(1.35, 1.35)
         flax_P4_4:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_5:scale(1.35, 1.35)
         flax_P4_5:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_6:scale(1.35, 1.35)
         flax_P4_6:removeEventListener( "tap", tintPlantP4 )
-        flax_P4_7:scale(1.35, 1.35)
         flax_P4_7:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Flax.numChildren do
+            local child = P4Flax[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P4Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
 
         ecosystem_P4:insert( P4Flax )
         P4Flax:toFront()
@@ -3604,17 +4005,22 @@ function scene:create( event )
             x= math.random(-200, 600 ),
             y= math.random(-1080, -1075),
             time=1000})
-        fern_P4:scale(1.35, 1.35)
         fern_P4:removeEventListener( "tap", tintPlantP4 )
-        fern_P4_2:scale(1.35, 1.35)
         fern_P4_2:removeEventListener( "tap", tintPlantP4 )
-        fern_P4_3:scale(1.35, 1.35)
         fern_P4_3:removeEventListener( "tap", tintPlantP4 )
-        fern_P4_4:scale(1.35, 1.35)
         fern_P4_4:removeEventListener( "tap", tintPlantP4 )
-        fern_P4_5:scale(1.35, 1.35)
         fern_P4_5:removeEventListener( "tap", tintPlantP4 )
-    
+
+        for i=1,P4Fern.numChildren do
+            local child = P4Fern[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P4Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
+ 
         ecosystem_P4:insert( P4Fern )
         P4Fern:toFront()
     
@@ -3653,16 +4059,21 @@ function scene:create( event )
             x= math.random(-200, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
-        Horsetail_P4:scale(1.35, 1.35)
         Horsetail_P4:removeEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_2:scale(1.35, 1.35)
         Horsetail_P4_2:removeEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_3:scale(1.35, 1.35)
         Horsetail_P4_3:removeEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_4:scale(1.35, 1.35)
         Horsetail_P4_4:removeEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_5:scale(1.35, 1.35)
         Horsetail_P4_5:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Horsetail.numChildren do
+            local child = P4Horsetail[i]
+            child:scale(1.35, 1.35)
+            if child.Name == "P4Stamp" then
+               child:scale(1.35, 1.35)
+               child.xScale = 1.35
+               child.yScale = 1.35
+            end
+        end
        
         ecosystem_P4:insert( P4Horsetail )
         P4Horsetail:toFront()
@@ -3702,26 +4113,26 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1210, -1205),
             time=1000})
-        palm_P4:scale(2.35, 2.95)
         palm_P4:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_2:scale(2.35, 2.95)
         palm_P4_2:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_3:scale(2.35, 2.95)
         palm_P4_3:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_4:scale(2.35, 2.95)
         palm_P4_4:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_5:scale(2.35, 2.95)
         palm_P4_5:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_6:scale(2.35, 2.95)
         palm_P4_6:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_7:scale(2.35, 2.95)
         palm_P4_7:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_8:scale(2.35, 2.95)
         palm_P4_8:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_9:scale(2.35, 2.95)
         palm_P4_9:removeEventListener( "tap", tintPlantP4 )
-        palm_P4_10:scale(2.35, 2.95)
         palm_P4_10:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Palm.numChildren do
+            local child = P4Palm[i]
+            child:scale(2.35, 2.95)
+            if child.Name == "P4Stamp" then
+               child:scale(2.35, 2.35)
+               child.xScale = 2.35
+               child.yScale = 2.35
+            end
+        end
 
         ecosystem_P4:insert( P4Palm )
 
@@ -3759,16 +4170,22 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1230, -1225),
             time=1000})
-        Cycad_P4:scale(2.85, 2.85)
         Cycad_P4:removeEventListener( "tap", tintPlantP4 )
-        Cycad_P4_2:scale(2.85, 2.85)
         Cycad_P4_2:removeEventListener( "tap", tintPlantP4 )
-        Cycad_P4_3:scale(2.85, 2.85)
         Cycad_P4_3:removeEventListener( "tap", tintPlantP4 )
-        Cycad_P4_4:scale(2.85, 2.85)
         Cycad_P4_4:removeEventListener( "tap", tintPlantP4 )
-        Cycad_P4_5:scale(2.85, 2.85)
         Cycad_P4_5:removeEventListener( "tap", tintPlantP4 )
+        Cycad_P4_6:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Cycad.numChildren do
+            local child = P4Cycad[i]
+            child:scale(2.85, 2.85)
+            if child.Name == "P4Stamp" then
+               child:scale(2.85, 2.85)
+               child.xScale = 2.85
+               child.yScale = 2.85
+            end
+        end
 
         ecosystem_P4:insert( P4Cycad )
 
@@ -3806,24 +4223,25 @@ function scene:create( event )
             x= math.random(-300, 500 ),
             y= math.random(-1290, -1285),
             time=1000})
-        TreeFern_P4:scale(2.55, 2.55)
         TreeFern_P4:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_2:scale(2.55, 2.55)
         TreeFern_P4_2:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_3:scale(2.55, 2.55)
         TreeFern_P4_3:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_4:scale(2.55, 2.55)
         TreeFern_P4_4:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_5:scale(2.55, 2.55)
         TreeFern_P4_5:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_6:scale(2.55, 2.55)
         TreeFern_P4_6:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_7:scale(2.55, 2.55)
         TreeFern_P4_7:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_8:scale(2.55, 2.55)
         TreeFern_P4_8:removeEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_9:scale(2.55, 2.55)
         TreeFern_P4_9:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4TreeFern.numChildren do
+            local child = P4TreeFern[i]
+            child:scale(2.55, 2.55)
+            if child.Name == "P4Stamp" then
+               child:scale(2.55, 2.55)
+               child.xScale = 2.55
+               child.yScale = 2.55
+            end
+        end
 
         ecosystem_P4:insert( P4TreeFern )
 
@@ -3855,22 +4273,25 @@ function scene:create( event )
 
         transition.to(P4Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1350, -1345),
+            y= math.random(-1425, -1420),
             time=1000})
-        pine_P4:scale(2.40, 2.95)
         pine_P4:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_2:scale(2.40, 2.95)
         pine_P4_2:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_3:scale(2.40, 2.95)
         pine_P4_3:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_4:scale(2.40, 2.95)
         pine_P4_4:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_5:scale(2.40, 2.95)
         pine_P4_5:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_6:scale(2.40, 2.95)
         pine_P4_6:removeEventListener( "tap", tintPlantP4 )
-        pine_P4_7:scale(2.40, 2.95)
         pine_P4_7:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Pine.numChildren do
+            local child = P4Pine[i]
+            child:scale(2.65, 3.20)
+            if child.Name == "P4Stamp" then
+               child:scale(2.65, 2.65)
+               child.xScale = 2.65
+               child.yScale = 2.65
+            end
+        end
 
         ecosystem_P4:insert( P4Pine)
         P4Pine:toBack()
@@ -3903,24 +4324,26 @@ function scene:create( event )
     
         transition.to(P4Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1355, -1350),
+            y= math.random(-1425, -1420),
             time=1000})
-        Kaori_P4:scale(2.35, 4.35)
         Kaori_P4:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_2:scale(2.35, 4.35)
         Kaori_P4_2:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_3:scale(2.35, 4.35)
         Kaori_P4_3:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_4:scale(2.35, 4.35)
         Kaori_P4_4:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_5:scale(2.35, 4.35)
         Kaori_P4_5:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_6:scale(2.35, 4.35)
         Kaori_P4_6:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_7:scale(2.35, 4.35)
         Kaori_P4_7:removeEventListener( "tap", tintPlantP4 )
-        Kaori_P4_8:scale(2.35, 4.35)
         Kaori_P4_8:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Kaori.numChildren do
+            local child = P4Kaori[i]
+            child:scale(2.95, 4.95)
+            if child.Name == "P4Stamp" then
+               child:scale(2.95, 2.95)
+               child.xScale = 2.95
+               child.yScale = 2.95
+            end
+        end
            
         ecosystem_P4:insert( P4Kaori )
         P4Kaori:toBack()
@@ -3953,22 +4376,25 @@ function scene:create( event )
 
         transition.to(P4Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1500, -1495),
+            y= math.random(-1620, -1615),
             time=1000})
-        Magnolia_P4:scale(2.5, 3.45)
         Magnolia_P4:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_2:scale(2.5, 3.45)
         Magnolia_P4_2:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_3:scale(2.5, 3.45)
         Magnolia_P4_3:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_4:scale(2.5, 3.45)
         Magnolia_P4_4:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_5:scale(2.5, 3.45)
         Magnolia_P4_5:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_6:scale(2.5, 3.45)
         Magnolia_P4_6:removeEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_7:scale(2.5, 3.45)
         Magnolia_P4_7:removeEventListener( "tap", tintPlantP4 )
+
+        for i=1,P4Magnolia.numChildren do
+            local child = P4Magnolia[i]
+            child:scale(3.2, 4.15)
+            if child.Name == "P4Stamp" then
+               child:scale(3.2, 3.2)
+               child.xScale = 3.2
+               child.yScale = 3.2
+            end
+        end
 
         ecosystem_P4:insert( P4Magnolia)
         P4Magnolia:toBack()
@@ -4402,11 +4828,24 @@ function scene:create( event )
     function chooseNormalP1 ()
         clicksound ()
         resetTimer()
+        P1Stamping = false
+        if proto_rectP1.isVisible == false then
+          toggleVisibility(proto_rectP1)
+          toggleVisibility(BrushP1)
+        end
+        proto_rectP1:setFillColor(0.3, 0.5, 0.5)
+        proto_rectP1.color = { 0.3, 0.5, 0.5 }
+        display.remove( P1CurrentBtnGlow )
         if P1normalPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P1rainbowPalette )
-           toggleVisibility( P1normalPalette )
+            toggleVisibility( P1normalPalette )
+            if P1stampPalette.isVisible == true then
+              toggleVisibility( P1stampPalette )
+            end
+            if P1rainbowPalette.isVisible == true then
+              toggleVisibility( P1rainbowPalette )
+            end
         end
     end
     P1NormalSelect:addEventListener( "tap", chooseNormalP1 )
@@ -4414,14 +4853,51 @@ function scene:create( event )
     function chooseRainbowP1 ()
         clicksound ()
         resetTimer()
+        P1Stamping = false
+        if proto_rectP1.isVisible == false then
+         toggleVisibility(proto_rectP1)
+         toggleVisibility(BrushP1)
+        end
+        proto_rectP1:setFillColor(1, 0.3, 0.5)
+        proto_rectP1.color = { 1, 0.3, 0.5 }
+        display.remove( P1CurrentBtnGlow )
         if P1rainbowPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P1rainbowPalette )
-           toggleVisibility( P1normalPalette )
+            toggleVisibility( P1rainbowPalette )
+            if P1stampPalette.isVisible == true then
+              toggleVisibility( P1stampPalette )
+            end
+            if P1normalPalette.isVisible == true then
+              toggleVisibility( P1normalPalette )
+            end
         end
     end
     P1RainbowSelect:addEventListener( "tap", chooseRainbowP1 )
+
+    function chooseStampP1 ()
+        P1stampReset ()
+        clicksound ()
+        resetTimer()
+        P1Stamping = true
+        if proto_rectP1.isVisible == true then
+            toggleVisibility(proto_rectP1)
+            toggleVisibility(BrushP1)
+        end
+        display.remove( P1CurrentBtnGlow )
+        if P1stampPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P1stampPalette )
+           if P1rainbowPalette.isVisible == true then
+             toggleVisibility( P1rainbowPalette )
+           end
+           if P1normalPalette.isVisible == true then
+             toggleVisibility( P1normalPalette )
+           end
+        end
+    end
+    P1StampSelect:addEventListener( "tap", chooseStampP1 )
 
     ---------------
     -- Player Two
@@ -4429,11 +4905,24 @@ function scene:create( event )
     function chooseNormalP2 ()
         clicksound ()
         resetTimer()
+        P2Stamping = false
+        if proto_rectP2.isVisible == false then
+          toggleVisibility(proto_rectP2)
+          toggleVisibility(BrushP2)
+        end
+        proto_rectP2:setFillColor(0.3, 0.5, 0.5)
+        proto_rectP2.color = { 0.3, 0.5, 0.5 }
+        display.remove( P2CurrentBtnGlow )
         if P2normalPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P2rainbowPalette )
-           toggleVisibility( P2normalPalette )
+            toggleVisibility( P2normalPalette )
+            if P2stampPalette.isVisible == true then
+              toggleVisibility( P2stampPalette )
+            end
+            if P2rainbowPalette.isVisible == true then
+              toggleVisibility( P2rainbowPalette )
+            end
         end
     end
     P2NormalSelect:addEventListener( "tap", chooseNormalP2 )
@@ -4441,14 +4930,51 @@ function scene:create( event )
     function chooseRainbowP2 ()
         clicksound ()
         resetTimer()
+        P2Stamping = false
+        if proto_rectP2.isVisible == false then
+         toggleVisibility(proto_rectP2)
+         toggleVisibility(BrushP2)
+        end
+        proto_rectP2:setFillColor(1, 0.3, 0.5)
+        proto_rectP2.color = { 1, 0.3, 0.5 }
+        display.remove( P2CurrentBtnGlow )
         if P2rainbowPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P2rainbowPalette )
-           toggleVisibility( P2normalPalette )
+            toggleVisibility( P2rainbowPalette )
+            if P2stampPalette.isVisible == true then
+              toggleVisibility( P2stampPalette )
+            end
+            if P2normalPalette.isVisible == true then
+              toggleVisibility( P2normalPalette )
+            end
         end
     end
     P2RainbowSelect:addEventListener( "tap", chooseRainbowP2 )
+
+    function chooseStampP2 ()
+        P2stampReset ()
+        clicksound ()
+        resetTimer()
+        P2Stamping = true
+        if proto_rectP2.isVisible == true then
+            toggleVisibility(proto_rectP2)
+            toggleVisibility(BrushP2)
+        end
+        display.remove( P2CurrentBtnGlow )
+        if P2stampPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P2stampPalette )
+           if P2rainbowPalette.isVisible == true then
+             toggleVisibility( P2rainbowPalette )
+           end
+           if P2normalPalette.isVisible == true then
+             toggleVisibility( P2normalPalette )
+           end
+        end
+    end
+    P2StampSelect:addEventListener( "tap", chooseStampP2 )
 
     -----------------
     -- Player Three
@@ -4456,11 +4982,24 @@ function scene:create( event )
     function chooseNormalP3 ()
         clicksound ()
         resetTimer()
+        P3Stamping = false
+        if proto_rectP3.isVisible == false then
+          toggleVisibility(proto_rectP3)
+          toggleVisibility(BrushP3)
+        end
+        proto_rectP3:setFillColor(0.3, 0.5, 0.5)
+        proto_rectP3.color = { 0.3, 0.5, 0.5 }
+        display.remove( P3CurrentBtnGlow )
         if P3normalPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P3rainbowPalette )
-           toggleVisibility( P3normalPalette )
+            toggleVisibility( P3normalPalette )
+            if P3stampPalette.isVisible == true then
+              toggleVisibility( P3stampPalette )
+            end
+            if P3rainbowPalette.isVisible == true then
+              toggleVisibility( P3rainbowPalette )
+            end
         end
     end
     P3NormalSelect:addEventListener( "tap", chooseNormalP3 )
@@ -4468,14 +5007,51 @@ function scene:create( event )
     function chooseRainbowP3 ()
         clicksound ()
         resetTimer()
+        P3Stamping = false
+        if proto_rectP3.isVisible == false then
+         toggleVisibility(proto_rectP3)
+         toggleVisibility(BrushP3)
+        end
+        proto_rectP3:setFillColor(1, 0.3, 0.5)
+        proto_rectP3.color = { 1, 0.3, 0.5 }
+        display.remove( P3CurrentBtnGlow )
         if P3rainbowPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P3rainbowPalette )
-           toggleVisibility( P3normalPalette )
+            toggleVisibility( P3rainbowPalette )
+            if P3stampPalette.isVisible == true then
+              toggleVisibility( P3stampPalette )
+            end
+            if P3normalPalette.isVisible == true then
+              toggleVisibility( P3normalPalette )
+            end
         end
     end
     P3RainbowSelect:addEventListener( "tap", chooseRainbowP3 )
+
+    function chooseStampP3 ()
+        P3stampReset ()
+        clicksound ()
+        resetTimer()
+        P3Stamping = true
+        if proto_rectP3.isVisible == true then
+            toggleVisibility(proto_rectP3)
+            toggleVisibility(BrushP3)
+        end
+        display.remove( P3CurrentBtnGlow )
+        if P3stampPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P3stampPalette )
+           if P3rainbowPalette.isVisible == true then
+             toggleVisibility( P3rainbowPalette )
+           end
+           if P3normalPalette.isVisible == true then
+             toggleVisibility( P3normalPalette )
+           end
+        end
+    end
+    P3StampSelect:addEventListener( "tap", chooseStampP3 )
 
     ----------------
     -- Player Four
@@ -4483,11 +5059,24 @@ function scene:create( event )
     function chooseNormalP4 ()
         clicksound ()
         resetTimer()
+        P4Stamping = false
+        if proto_rectP4.isVisible == false then
+          toggleVisibility(proto_rectP4)
+          toggleVisibility(BrushP4)
+        end
+        proto_rectP4:setFillColor(0.3, 0.5, 0.5)
+        proto_rectP4.color = { 0.3, 0.5, 0.5 }
+        display.remove( P4CurrentBtnGlow )
         if P4normalPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P4rainbowPalette )
-           toggleVisibility( P4normalPalette )
+            toggleVisibility( P4normalPalette )
+            if P4stampPalette.isVisible == true then
+              toggleVisibility( P4stampPalette )
+            end
+            if P4rainbowPalette.isVisible == true then
+              toggleVisibility( P4rainbowPalette )
+            end
         end
     end
     P4NormalSelect:addEventListener( "tap", chooseNormalP4 )
@@ -4495,14 +5084,51 @@ function scene:create( event )
     function chooseRainbowP4 ()
         clicksound ()
         resetTimer()
+        P4Stamping = false
+        if proto_rectP4.isVisible == false then
+         toggleVisibility(proto_rectP4)
+         toggleVisibility(BrushP4)
+        end
+        proto_rectP4:setFillColor(1, 0.3, 0.5)
+        proto_rectP4.color = { 1, 0.3, 0.5 }
+        display.remove( P4CurrentBtnGlow )
         if P4rainbowPalette.isVisible == true then
             do return end
         else
-           toggleVisibility( P4rainbowPalette )
-           toggleVisibility( P4normalPalette )
+            toggleVisibility( P4rainbowPalette )
+            if P4stampPalette.isVisible == true then
+              toggleVisibility( P4stampPalette )
+            end
+            if P4normalPalette.isVisible == true then
+              toggleVisibility( P4normalPalette )
+            end
         end
     end
     P4RainbowSelect:addEventListener( "tap", chooseRainbowP4 )
+
+    function chooseStampP4 ()
+        P4stampReset ()
+        clicksound ()
+        resetTimer()
+        P4Stamping = true
+        if proto_rectP4.isVisible == true then
+            toggleVisibility(proto_rectP4)
+            toggleVisibility(BrushP4)
+        end
+        display.remove( P4CurrentBtnGlow )
+        if P4stampPalette.isVisible == true then
+            do return end
+        else
+           toggleVisibility( P4stampPalette )
+           if P4rainbowPalette.isVisible == true then
+             toggleVisibility( P4rainbowPalette )
+           end
+           if P4normalPalette.isVisible == true then
+             toggleVisibility( P4normalPalette )
+           end
+        end
+    end
+    P4StampSelect:addEventListener( "tap", chooseStampP4 )
 
 end
 

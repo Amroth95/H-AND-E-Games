@@ -21,6 +21,10 @@ audio.setVolume( 0.1 )
 
 background()
 
+--if system.getInfo('platform') == 'html5' then
+    --onBrowserResize()
+--end
+
 -- the external library that allows us to jump scenes
 local composer = require( "composer" )
 

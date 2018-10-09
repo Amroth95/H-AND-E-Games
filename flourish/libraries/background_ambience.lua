@@ -8,12 +8,12 @@ function birds ()
 
     Bird = display.newSprite(BirdImageSheet1, sequenceBirdData)
     Bird.x = 7500 ; Bird.y = 620
-    Bird:scale(1.4, 0.6)
+    Bird:scale(1.6, 0.6)
     Bird:play()
 
     Bird2 = display.newSprite(BirdImageSheet1, sequenceBirdData)
     Bird2.x = 7600 ; Bird2.y = 420
-    Bird2:scale(1.2, 0.4)
+    Bird2:scale(1.4, 0.4)
     Bird2:play()
 
     transition.to( Bird, { time=5000, x=-300 } )

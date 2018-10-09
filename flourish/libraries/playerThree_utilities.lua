@@ -12,17 +12,17 @@ function selectionSetupP3 ()
   ---P3Select:insert( RockSelectP3 )
 
   -- Small Plant Buttons
-  btn_spawnFlaxP3 = display.newImageRect( "images/plant1/flax seed.png", 100, 100)
+  btn_spawnFlaxP3 = display.newImageRect( "images/plant1/flax seed.png", 130, 130)
   btn_spawnFlaxP3.x = display.contentCenterX+228
   btn_spawnFlaxP3.y = display.contentCenterY+960
   P3Select:insert( btn_spawnFlaxP3 )
 
-  btn_spawnFernP3 = display.newImageRect( "images/plant3/fern spore.png", 100, 100)
+  btn_spawnFernP3 = display.newImageRect( "images/plant3/fern spore.png", 140, 140)
   btn_spawnFernP3.x = display.contentCenterX+528
   btn_spawnFernP3.y = display.contentCenterY+960
   P3Select:insert( btn_spawnFernP3 )
 
-  btn_spawnHorsetailP3 = display.newImageRect( "images/horsetail/horsegrassseed.png", 130, 130)
+  btn_spawnHorsetailP3 = display.newImageRect( "images/horsetail/horsegrassseed.png", 150, 150)
   btn_spawnHorsetailP3.x = display.contentCenterX+828
   btn_spawnHorsetailP3.y = display.contentCenterY+960
   P3Select:insert( btn_spawnHorsetailP3 )
@@ -30,17 +30,17 @@ function selectionSetupP3 ()
   -- Meduim Plant Buttons
   P3MediumPlants = display.newGroup();
 
-  btn_spawnPalmP3 = display.newImageRect( "images/plant2/palm seed.png", 100, 100)
+  btn_spawnPalmP3 = display.newImageRect( "images/plant2/palm seed.png", 130, 130)
   btn_spawnPalmP3.x = display.contentCenterX+228
   btn_spawnPalmP3.y = display.contentCenterY+835
   P3MediumPlants:insert( btn_spawnPalmP3 )
 
-  btn_spawnCycadP3 = display.newImageRect( "images/cycad/cycad seed.png", 100, 100)
+  btn_spawnCycadP3 = display.newImageRect( "images/cycad/cycad seed.png", 130, 130)
   btn_spawnCycadP3.x = display.contentCenterX+528
   btn_spawnCycadP3.y = display.contentCenterY+835
   P3MediumPlants:insert( btn_spawnCycadP3 )
 
-  btn_spawnTreeFernP3 = display.newImageRect( "images/tree fern/tree fern spores.png", 100, 100)
+  btn_spawnTreeFernP3 = display.newImageRect( "images/tree fern/tree fern spores.png", 140, 140)
   btn_spawnTreeFernP3.x = display.contentCenterX+828
   btn_spawnTreeFernP3.y = display.contentCenterY+835
   P3MediumPlants:insert( btn_spawnTreeFernP3 )
@@ -51,17 +51,17 @@ function selectionSetupP3 ()
   -- Large Plant Buttons
   P3LargePlants = display.newGroup();
 
-  btn_spawnPineP3 = display.newImageRect( "images/plant4/pine seed deselected.png", 100, 100)
+  btn_spawnPineP3 = display.newImageRect( "images/plant4/pine seed deselected.png", 130, 130)
   btn_spawnPineP3.x = display.contentCenterX+228
   btn_spawnPineP3.y = display.contentCenterY+710
   P3LargePlants:insert( btn_spawnPineP3 )
 
-  btn_spawnKaoriP3 = display.newImageRect( "images/kaori/kaoriseed-forest.png", 130, 130)
+  btn_spawnKaoriP3 = display.newImageRect( "images/kaori/kaoriseed-forest.png", 150, 150)
   btn_spawnKaoriP3.x = display.contentCenterX+528
   btn_spawnKaoriP3.y = display.contentCenterY+710
   P3LargePlants:insert( btn_spawnKaoriP3 )
 
-  btn_spawnMagnoliaP3 = display.newImageRect( "images/magnolia/magseed.png", 130, 130)
+  btn_spawnMagnoliaP3 = display.newImageRect( "images/magnolia/magseed.png", 150, 150)
   btn_spawnMagnoliaP3.x = display.contentCenterX+828
   btn_spawnMagnoliaP3.y = display.contentCenterY+710
   P3LargePlants:insert( btn_spawnMagnoliaP3 )
@@ -325,40 +325,47 @@ function createCycadP3 ()
 
   P3Cycad = display.newGroup();
 
-  Cycad_P3 = createImage("images/cycad/cycad trunk.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3 = createImage("images/cycad/cycad top.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
   Cycad_P3:setFillColor(0.7)
   P3Cycad:insert( Cycad_P3 )
   Cycad_P3:scale(0.60, 0.60)
-  mask = graphics.newMask( "images/cycad/cycad trunk Mask.png" )
+  mask = graphics.newMask( "images/cycad/cycad top Mask.png" )
   Cycad_P3:setMask( mask )
 
-  Cycad_P3_2 = createImage("images/cycad/left leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
-  Cycad_P3_2:setFillColor(0.6)
+  Cycad_P3_2 = createImage("images/cycad/cycad trunk.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3_2:setFillColor(0.7)
   P3Cycad:insert( Cycad_P3_2 )
   Cycad_P3_2:scale(0.60, 0.60)
-  mask2 = graphics.newMask( "images/cycad/left leaf Mask.png" )
+  mask2 = graphics.newMask( "images/cycad/cycad trunk Mask.png" )
   Cycad_P3_2:setMask( mask2 )
 
-  Cycad_P3_3 = createImage("images/cycad/right leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
-  Cycad_P3_3:setFillColor(0.5)
+  Cycad_P3_3 = createImage("images/cycad/left leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3_3:setFillColor(0.6)
   P3Cycad:insert( Cycad_P3_3 )
   Cycad_P3_3:scale(0.60, 0.60)
-  mask3 = graphics.newMask( "images/cycad/right leaf Mask.png" )
+  mask3 = graphics.newMask( "images/cycad/left leaf Mask.png" )
   Cycad_P3_3:setMask( mask3 )
 
-  Cycad_P3_4 = createImage("images/cycad/cycad mid left leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
-  Cycad_P3_4:setFillColor(0.6)
+  Cycad_P3_4 = createImage("images/cycad/right leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3_4:setFillColor(0.5)
   P3Cycad:insert( Cycad_P3_4 )
   Cycad_P3_4:scale(0.60, 0.60)
-  mask4 = graphics.newMask( "images/cycad/cycad mid left leaf Mask.png" )
+  mask4 = graphics.newMask( "images/cycad/right leaf Mask.png" )
   Cycad_P3_4:setMask( mask4 )
 
-  Cycad_P3_5 = createImage("images/cycad/cycad mid right leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
-  Cycad_P3_5:setFillColor(0.5)
+  Cycad_P3_5 = createImage("images/cycad/cycad mid left leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3_5:setFillColor(0.6)
   P3Cycad:insert( Cycad_P3_5 )
   Cycad_P3_5:scale(0.60, 0.60)
-  mask5 = graphics.newMask( "images/cycad/cycad mid right leaf Mask.png" )
+  mask5 = graphics.newMask( "images/cycad/cycad mid left leaf Mask.png" )
   Cycad_P3_5:setMask( mask5 )
+
+  Cycad_P3_6 = createImage("images/cycad/cycad mid right leaf.png", 400, 400, display.contentCenterX+320, display.contentCenterY+1295)
+  Cycad_P3_6:setFillColor(0.5)
+  P3Cycad:insert( Cycad_P3_6 )
+  Cycad_P3_6:scale(0.60, 0.60)
+  mask6 = graphics.newMask( "images/cycad/cycad mid right leaf Mask.png" )
+  Cycad_P3_6:setMask( mask6 )
 
   Cycad_P3_Text = display.newText( "Cycad",display.contentCenterX+320, display.contentCenterY+1460, native.systemFont, 40 )
   P3Cycad:insert( Cycad_P3_Text )
@@ -653,7 +660,7 @@ function colouringSetupP3()
   -----------------------------------
 
   P3NormalSelect = display.newImageRect( "images/paintbuttons/NormalButton.png", 100, 100)
-  P3NormalSelect.x = display.contentCenterX+530
+  P3NormalSelect.x = display.contentCenterX+570
   P3NormalSelect.y = display.contentCenterY+1090
   P3Colouring:insert( P3NormalSelect )
 
@@ -662,37 +669,54 @@ function colouringSetupP3()
   P3RainbowSelect.y = display.contentCenterY+1090
   P3Colouring:insert( P3RainbowSelect )
 
+  P3StampSelect = display.newImageRect( "images/paintbuttons/StampButton.png", 100, 100)
+  P3StampSelect.x = display.contentCenterX+770
+  P3StampSelect.y = display.contentCenterY+1090
+  P3Colouring:insert( P3StampSelect )
+
   --------------------------------------
   -- creates normal colour selection buttons.
   --------------------------------------
   P3normalPalette = display.newGroup();
 
-  btn_new9 = display.newImageRect( "images/paintbuttons/paletteButton1.png", 130, 130)
-  btn_new9.color = { 0.3, 0.5, 0.3 }
-  btn_new9.x = display.contentCenterX+575
-  btn_new9.y = display.contentCenterY+1270
-  P3normalPalette:insert( btn_new9 )
+  btn_new13 = display.newImageRect( "images/paintbuttons/paletteButton1.png", 130, 130)
+  btn_new13.color = { 0.3, 0.5, 0.5 }
+  btn_new13.x = display.contentCenterX+575
+  btn_new13.y = display.contentCenterY+1270
+  P3normalPalette:insert( btn_new13 )
 
-  btn_new10 = display.newImageRect( "images/paintbuttons/paletteButton2.png", 130, 130)
-  btn_new10.color = { 0.3, 0.5, 0.1 }
-  btn_new10.x = display.contentCenterX+725
-  btn_new10.y = display.contentCenterY+1245
-  P3normalPalette:insert( btn_new10 )
+  btn_new14 = display.newImageRect( "images/paintbuttons/paletteButton2.png", 130, 130)
+  btn_new14.color = { 0.3, 0.5, 0.1 }
+  btn_new14.x = display.contentCenterX+695
+  btn_new14.y = display.contentCenterY+1270
+  P3normalPalette:insert( btn_new14 )
 
-  btn_new11 = display.newImageRect( "images/paintbuttons/paletteButton3.png", 130, 130)
-  btn_new11.color = { 0.1, 0.4, 0.2 }
-  btn_new11.x = display.contentCenterX+575
-  btn_new11.y = display.contentCenterY+1380
-  P3normalPalette:insert( btn_new11 )
+  btn_new15 = display.newImageRect( "images/paintbuttons/paletteButton3.png", 130, 130)
+  btn_new15.color = { 0.7, 0.8, 0 }
+  btn_new15.x = display.contentCenterX+575
+  btn_new15.y = display.contentCenterY+1380
+  P3normalPalette:insert( btn_new15 )
 
-  btn_new12 = display.newImageRect( "images/paintbuttons/paletteButton4.png", 130, 130)
-  btn_new12.color = { 0.4, 0.2, 0.1 }
-  btn_new12.x = display.contentCenterX+725
-  btn_new12.y = display.contentCenterY+1370
-  P3normalPalette:insert( btn_new12 )
+  btn_new16 = display.newImageRect( "images/paintbuttons/paletteButton4.png", 130, 130)
+  btn_new16.color = { 0.5, 0.3, 0.2 }
+  btn_new16.x = display.contentCenterX+695
+  btn_new16.y = display.contentCenterY+1380
+  P3normalPalette:insert( btn_new16 )
+
+  btn_new17 = display.newImageRect( "images/paintbuttons/paletteButton5.png", 130, 130)
+  btn_new17.color = { 0.8, 1, 0.6 }
+  btn_new17.x = display.contentCenterX+815
+  btn_new17.y = display.contentCenterY+1270
+  P3normalPalette:insert( btn_new17 )
+
+  btn_new18 = display.newImageRect( "images/paintbuttons/paletteButton6.png", 130, 130)
+  btn_new18.color = { 0.8, 0.7, 0.6 }
+  btn_new18.x = display.contentCenterX+815
+  btn_new18.y = display.contentCenterY+1380
+  P3normalPalette:insert( btn_new18 )
 
   P3NormalSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 100, 100)
-  P3NormalSelectGlow.x = display.contentCenterX+530
+  P3NormalSelectGlow.x = display.contentCenterX+570
   P3NormalSelectGlow.y = display.contentCenterY+1090
   P3normalPalette:insert( P3NormalSelectGlow )
 
@@ -703,29 +727,41 @@ function colouringSetupP3()
   --------------------------------------
   P3rainbowPalette = display.newGroup();
 
-  btn_rainbow9 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton1.png", 130, 130)
-  btn_rainbow9.color = { 1, 0, 0.}
-  btn_rainbow9.x = display.contentCenterX+575
-  btn_rainbow9.y = display.contentCenterY+1270
-  P3rainbowPalette:insert( btn_rainbow9 )
+  btn_rainbow13 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton1.png", 130, 130)
+  btn_rainbow13.color = { 1, 0.3, 0.5}
+  btn_rainbow13.x = display.contentCenterX+575
+  btn_rainbow13.y = display.contentCenterY+1270
+  P3rainbowPalette:insert( btn_rainbow13 )
 
-  btn_rainbow10 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton2.png", 130, 130)
-  btn_rainbow10.color = { 0, 0, 1 }
-  btn_rainbow10.x = display.contentCenterX+725
-  btn_rainbow10.y = display.contentCenterY+1245
-  P3rainbowPalette:insert( btn_rainbow10 )
+  btn_rainbow14 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton2.png", 130, 130)
+  btn_rainbow14.color = { 0.3, 0.5, 1 }
+  btn_rainbow14.x = display.contentCenterX+695
+  btn_rainbow14.y = display.contentCenterY+1270
+  P3rainbowPalette:insert( btn_rainbow14 )
 
-  btn_rainbow11 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton3.png", 130, 130)
-  btn_rainbow11.color = { 0.5, 0, 0.5 }
-  btn_rainbow11.x = display.contentCenterX+575
-  btn_rainbow11.y = display.contentCenterY+1380
-  P3rainbowPalette:insert( btn_rainbow11 )
+  btn_rainbow15 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton3.png", 130, 130)
+  btn_rainbow15.color = { 0.9, 0.3, 1 }
+  btn_rainbow15.x = display.contentCenterX+575
+  btn_rainbow15.y = display.contentCenterY+1380
+  P3rainbowPalette:insert( btn_rainbow15 )
 
-  btn_rainbow12 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton4.png", 130, 130)
-  btn_rainbow12.color = { 2, 2, 0 }
-  btn_rainbow12.x = display.contentCenterX+725
-  btn_rainbow12.y = display.contentCenterY+1370
-  P3rainbowPalette:insert( btn_rainbow12 )
+  btn_rainbow16 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton4.png", 130, 130)
+  btn_rainbow16.color = { 1, 1, 0.5 }
+  btn_rainbow16.x = display.contentCenterX+695
+  btn_rainbow16.y = display.contentCenterY+1380
+  P3rainbowPalette:insert( btn_rainbow16 )
+
+  btn_rainbow17 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton5.png", 130, 130)
+  btn_rainbow17.color = { 1, 0.7, 0.5 }
+  btn_rainbow17.x = display.contentCenterX+815
+  btn_rainbow17.y = display.contentCenterY+1270
+  P3rainbowPalette:insert( btn_rainbow17 )
+
+  btn_rainbow18 = display.newImageRect( "images/paintbuttons/Rainbow/rainbowButton6.png", 130, 130)
+  btn_rainbow18.color = { 0.5, 0.6, 0.4 }
+  btn_rainbow18.x = display.contentCenterX+815
+  btn_rainbow18.y = display.contentCenterY+1380
+  P3rainbowPalette:insert( btn_rainbow18 )
 
   P3RainbowSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 100, 100)
   P3RainbowSelectGlow.x = display.contentCenterX+670
@@ -735,63 +771,93 @@ function colouringSetupP3()
   P3Colouring:insert( P3rainbowPalette )
   toggleVisibility( P3rainbowPalette )
 
+  --------------------------------------
+  -- creates Stamp selection buttons.
+  --------------------------------------
+
+  P3stampPalette = display.newGroup();
+
+  P3StampIcon = display.newImageRect( "images/stamps/StampIcon.png", 120, 120)
+  P3StampIcon.x = display.contentCenterX+180
+  P3StampIcon.y = display.contentCenterY+1100
+  P3stampPalette:insert( P3StampIcon )
+
+  btn_stamp5 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
+  btn_stamp5.x = display.contentCenterX+575
+  btn_stamp5.y = display.contentCenterY+1270
+  btn_stamp5.Name = "P3Stamp1"
+  P3stampPalette:insert( btn_stamp5 )
+
+  btn_stamp6 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
+  btn_stamp6.x = display.contentCenterX+575
+  btn_stamp6.y = display.contentCenterY+1380
+  btn_stamp6.Name = "P3Stamp2"
+  P3stampPalette:insert( btn_stamp6 )
+
+  P3StampSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 100, 100)
+  P3StampSelectGlow.x = display.contentCenterX+770
+  P3StampSelectGlow.y = display.contentCenterY+1090
+  P3stampPalette:insert( P3StampSelectGlow )
+
+  P3Colouring:insert( P3stampPalette )
+  toggleVisibility( P3stampPalette )
+
   ---------------------------------------------------------------------------------------------
   -- creates done buttons for when you're finished colouring, set to invisible on level start.
   ---------------------------------------------------------------------------------------------
-  donebtn_spawnFlaxP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnFlaxP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnFlaxP3.x = display.contentCenterX+660
   donebtn_spawnFlaxP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnFlaxP3 )
   P3Colouring:insert( donebtn_spawnFlaxP3 )
 
-  donebtn_spawnFernP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnFernP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnFernP3.x = display.contentCenterX+660
   donebtn_spawnFernP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnFernP3 )
   P3Colouring:insert( donebtn_spawnFernP3 )
 
-  donebtn_spawnHorsetailP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnHorsetailP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnHorsetailP3.x = display.contentCenterX+660
   donebtn_spawnHorsetailP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnHorsetailP3 )
   P3Colouring:insert( donebtn_spawnHorsetailP3 )
 
-  donebtn_spawnPalmP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnPalmP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnPalmP3.x = display.contentCenterX+660
   donebtn_spawnPalmP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnPalmP3 )
   P3Colouring:insert( donebtn_spawnPalmP3 )
 
-  donebtn_spawnCycadP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnCycadP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnCycadP3.x = display.contentCenterX+660
   donebtn_spawnCycadP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnCycadP3 )
   P3Colouring:insert( donebtn_spawnCycadP3 )
 
-  donebtn_spawnTreeFernP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnTreeFernP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnTreeFernP3.x = display.contentCenterX+660
   donebtn_spawnTreeFernP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnTreeFernP3 )
   P3Colouring:insert( donebtn_spawnTreeFernP3 )
 
-  donebtn_spawnPineP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnPineP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnPineP3.x = display.contentCenterX+660
   donebtn_spawnPineP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnPineP3 )
   P3Colouring:insert( donebtn_spawnPineP3 )
 
-  donebtn_spawnKaoriP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnKaoriP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnKaoriP3.x = display.contentCenterX+660
   donebtn_spawnKaoriP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnKaoriP3 )
   P3Colouring:insert( donebtn_spawnKaoriP3 )
 
-  donebtn_spawnMagnoliaP3 = display.newImageRect( "images/Done Button Template.png", 150, 150)
+  donebtn_spawnMagnoliaP3 = display.newImageRect( "images/Done Button Template.png", 150, 130)
   donebtn_spawnMagnoliaP3.x = display.contentCenterX+660
   donebtn_spawnMagnoliaP3.y = display.contentCenterY+1560
   toggleVisibility( donebtn_spawnMagnoliaP3 )
   P3Colouring:insert( donebtn_spawnMagnoliaP3 )
-
   -----------------------------------------------------------------------------------------------
   -- creates compost buttons for if you want to change plants, set to invisible on level start.
   -----------------------------------------------------------------------------------------------
