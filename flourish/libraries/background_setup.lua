@@ -76,13 +76,13 @@ end
 
 function rainbow ()
     -- Rainbow set up
-    RainbowsheetData1 = { width =499.2, height =281, numFrames=28, sheetContentWidth=13978, sheetContentHeight=281 } 
+    RainbowsheetData1 = { width =1280, height =720, numFrames=9, sheetContentWidth=11520, sheetContentHeight=720 } 
     RainbowImageSheet1 = graphics.newImageSheet("images/backgroundAssets/rainbow sprite.png", RainbowsheetData1)
-    sequenceRainbowData = {{name="Rainbow", sheet=RainbowImageSheet1, start=1, count=28, time=2000}}
+    sequenceRainbowData = {{name="Rainbow", sheet=RainbowImageSheet1, start=1, count=9, time=2000}}
     Rainbow = display.newSprite(RainbowImageSheet1, sequenceRainbowData)
-    Rainbow.x = display.contentCenterX
-    Rainbow.y = display.contentCenterY
-    Rainbow:scale(8, 8)
+    Rainbow.x = display.contentCenterX+700
+    Rainbow.y = display.contentCenterY-100
+    Rainbow:scale(2.5, 2.5)
     Rainbow.alpha = 0.7
     Rainbow:play()
 end

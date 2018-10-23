@@ -250,7 +250,7 @@ function scene:create( event )
     function DinoJump ()
       Dino:setSequence( "normalJump" )
       Dino:play()
-      
+     
       local Jumptimeseconds = 2
 
         local function JumpTimer( event )
@@ -556,6 +556,7 @@ function scene:create( event )
     local FinishedPlantTextP1 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
     FinishedPlantTextP1:setFillColor( 0, 0, 0 )
     sceneGroup:insert( FinishedPlantTextP1 )
+    toggleVisibility( FinishedPlantTextP1 )
 
     local SmallPlantCountP1 = 0
     local MediumPlantCountP1 = 0
@@ -566,7 +567,8 @@ function scene:create( event )
 
     local FinishedPlantTextP2 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
     FinishedPlantTextP1:setFillColor( 0, 0, 0 )
-    sceneGroup:insert( FinishedPlantTextP1 )
+    sceneGroup:insert( FinishedPlantTextP2 )
+    toggleVisibility( FinishedPlantTextP2 )
 
     local SmallPlantCountP2 = 0
     local MediumPlantCountP2 = 0
@@ -577,7 +579,8 @@ function scene:create( event )
 
     local FinishedPlantTextP3 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
     FinishedPlantTextP1:setFillColor( 0, 0, 0 )
-    sceneGroup:insert( FinishedPlantTextP1 )
+    sceneGroup:insert( FinishedPlantTextP3 )
+    toggleVisibility( FinishedPlantTextP3 )
     
     local SmallPlantCountP3 = 0
     local MediumPlantCountP3 = 0
@@ -588,7 +591,8 @@ function scene:create( event )
 
     local FinishedPlantTextP4 = display.newText( FinishedPlantCountP1, display.contentCenterX, 20, native.systemFont, 40 )
     FinishedPlantTextP1:setFillColor( 0, 0, 0 )
-    sceneGroup:insert( FinishedPlantTextP1 )
+    sceneGroup:insert( FinishedPlantTextP4 )
+    toggleVisibility( FinishedPlantTextP4 )
     
     local SmallPlantCountP4 = 0
     local MediumPlantCountP4 = 0
@@ -721,7 +725,6 @@ function scene:create( event )
    
         function TimeToEatEcosystem1()
             if TimeTillEat1 <= 0 then
-             -- timer.cancel( ReadyToEat1Timer )
              EatEcosystem1 ()      
             end    
         end
@@ -729,9 +732,9 @@ function scene:create( event )
     end
 
     function EatEcosystem1 ()
-        DinoEat ()
-              
+        DinoEat ()  
         eatnoise ()
+        P1fireworks ()
 
         transition.fadeOut( ecosystem_P1, {time = 1000, onComplete = display.remove} )
         print("Yummy!")
@@ -755,6 +758,7 @@ function scene:create( event )
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
         print("New Ecosystem Ready")
+        
     end
 
     -- Player Two
@@ -764,11 +768,12 @@ function scene:create( event )
         physics.pause( Dino )
         Dino:setSequence( "normalWalk" )
         Dino:play()
-        transition.to( Dino, { time=2000, x=1536 } )
         if Dino.x >= 1536 then
+            transition.to( Dino, { time=2000, x=1836 } )
             print("Moving left")
             Dino.xScale = 5
         elseif Dino.x <= 1536 then
+            transition.to( Dino, { time=2000, x=1236 } )
             print("Moving right")
             Dino.xScale = -5     
         end
@@ -803,16 +808,15 @@ function scene:create( event )
   
        function TimeToEatEcosystem2()
             if TimeTillEat2 <= 0 then
-              --timer.cancel( ReadyToEat2Timer )
               EatEcosystem2 ()      
             end
         end
     end
 
     function EatEcosystem2 ()
-        DinoEat ()
-              
+        DinoEat ()     
         eatnoise ()
+        P2fireworks ()
 
         transition.fadeOut( ecosystem_P2, {time = 1000, onComplete = display.remove} )
         print("Yummy!")
@@ -845,11 +849,12 @@ function scene:create( event )
         physics.pause( Dino )
         Dino:setSequence( "normalWalk" )
         Dino:play()
-        transition.to( Dino, { time=2000, x=2436 } )
         if Dino.x >= 2436 then
+            transition.to( Dino, { time=2000, x=2736 } )
             print("Moving left")
             Dino.xScale = 5
         elseif Dino.x <= 2436 then
+            transition.to( Dino, { time=2000, x=2136 } )
             print("Moving right")
             Dino.xScale = -5     
         end
@@ -884,16 +889,15 @@ function scene:create( event )
   
        function TimeToEatEcosystem3()
             if TimeTillEat3 <= 0 then
-              --timer.cancel( ReadyToEat2Timer )
               EatEcosystem3 ()      
             end
         end
     end
 
     function EatEcosystem3 ()
-        DinoEat ()
-              
+        DinoEat ()      
         eatnoise ()
+        P3fireworks ()
 
         transition.fadeOut( ecosystem_P3, {time = 1000, onComplete = display.remove} )
         print("Yummy!")
@@ -965,16 +969,15 @@ function scene:create( event )
   
        function TimeToEatEcosystem4()
             if TimeTillEat4 <= 0 then
-              --timer.cancel( ReadyToEat2Timer )
               EatEcosystem4 ()      
             end
         end
     end
 
     function EatEcosystem4 ()
-        DinoEat ()
-              
+        DinoEat ()    
         eatnoise ()
+        P4fireworks ()
 
         transition.fadeOut( ecosystem_P4, {time = 1000, onComplete = display.remove} )
         print("Yummy!")
@@ -1129,7 +1132,7 @@ function scene:create( event )
     -- Rainbow
     local function RainbowAmbience ()
 
-        local Rainbowseconds = 92
+        local Rainbowseconds = 100
   
         local function RainbowClock( event )
     
@@ -1147,10 +1150,16 @@ function scene:create( event )
         RainbowClocktimer = timer.performWithDelay( 1000, RainbowClock, Rainbowseconds )
 
         function RainbowSpawn ()
-            if Rainbowseconds == 2 then
+            if Rainbowseconds == 10 then
                 rainbow ()
                 sceneGroup:insert( Rainbow )
-                Rainbow:toFront(sceneGroup)
+                Rainbow:toBack(sceneGroup)
+            end
+            if Rainbowseconds == 9 then
+                Rainbow:pause()
+            end
+            if Rainbowseconds == 1 then
+                Rainbow:play()
             end
         end
 
@@ -1273,32 +1282,32 @@ function scene:create( event )
     proto_rectP1.y = display.contentCenterY+1100
     proto_rectP1:setFillColor(0.3, 0.5, 0.3)
     proto_rectP1.color = {0.3, 0.5, 0.3}
-    P1Colouring:insert( proto_rectP1 )
-    P1Colouring:insert( BrushP1 )
+    toggleVisibility( proto_rectP1 )
+    toggleVisibility( BrushP1 )
 
     -- Player Two
     BrushP2 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
-    BrushP2.x = display.contentCenterX-850
+    BrushP2.x = display.contentCenterX-800
     BrushP2.y = display.contentCenterY+1100
     proto_rectP2 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush2.png", 180, 180)
-    proto_rectP2.x = display.contentCenterX-850
+    proto_rectP2.x = display.contentCenterX-800
     proto_rectP2.y = display.contentCenterY+1100
     proto_rectP2:setFillColor(0.3, 0.5, 0.3)
     proto_rectP2.color = {0.3, 0.5, 0.3}
-    P2Colouring:insert( proto_rectP2 )
-    P2Colouring:insert( BrushP2 )
+    toggleVisibility( proto_rectP2 )
+    toggleVisibility( BrushP2 )
 
     -- Player Three
     BrushP3 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
-    BrushP3.x = display.contentCenterX+180
+    BrushP3.x = display.contentCenterX+130
     BrushP3.y = display.contentCenterY+1100
     proto_rectP3 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush2.png", 180, 180)
-    proto_rectP3.x = display.contentCenterX+180
+    proto_rectP3.x = display.contentCenterX+130
     proto_rectP3.y = display.contentCenterY+1100
     proto_rectP3:setFillColor(0.3, 0.5, 0.3)
     proto_rectP3.color = {0.3, 0.5, 0.3}
-    P3Colouring:insert( proto_rectP3 )
-    P3Colouring:insert( BrushP3 )
+    toggleVisibility( proto_rectP3 )
+    toggleVisibility( BrushP3 )
 
     -- Player Four
     BrushP4 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
@@ -1309,8 +1318,8 @@ function scene:create( event )
     proto_rectP4.y = display.contentCenterY+1100
     proto_rectP4:setFillColor(0.3, 0.5, 0.3)
     proto_rectP4.color = {0.3, 0.5, 0.3}
-    P4Colouring:insert( proto_rectP4 )
-    P4Colouring:insert( BrushP4 )
+    toggleVisibility( proto_rectP4 )
+    toggleVisibility( BrushP4 )
     
     ---------------------------------------
     --Creates Buttons for spawning Plants
@@ -2809,7 +2818,7 @@ function scene:create( event )
 
         transition.to(P1Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1535, -1530),
             time=1000})
         pine_P1:removeEventListener( "tap", tintPlantP1 )
         pine_P1_2:removeEventListener( "tap", tintPlantP1 )
@@ -2821,7 +2830,7 @@ function scene:create( event )
 
         for i=1,P1Pine.numChildren do
             local child = P1Pine[i]
-            child:scale(2.65, 3.20)
+            child:scale(3.65, 3.80)
             if child.Name == "P1Stamp" then
                child:scale(2.65, 2.65)
                child.xScale = 2.65
@@ -2860,7 +2869,7 @@ function scene:create( event )
     
         transition.to(P1Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1545, -1540),
             time=1000})
         Kaori_P1:removeEventListener( "tap", tintPlantP1 )
         Kaori_P1_2:removeEventListener( "tap", tintPlantP1 )
@@ -2873,7 +2882,7 @@ function scene:create( event )
 
         for i=1,P1Kaori.numChildren do
             local child = P1Kaori[i]
-            child:scale(2.95, 4.95)
+            child:scale(3.95, 5.95)
             if child.Name == "P1Stamp" then
                child:scale(2.95, 2.95)
                child.xScale = 2.95
@@ -2912,7 +2921,7 @@ function scene:create( event )
 
         transition.to(P1Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1620, -1615),
+            y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P1:removeEventListener( "tap", tintPlantP1 )
         Magnolia_P1_2:removeEventListener( "tap", tintPlantP1 )
@@ -2924,7 +2933,7 @@ function scene:create( event )
 
         for i=1,P1Magnolia.numChildren do
             local child = P1Magnolia[i]
-            child:scale(3.2, 4.15)
+            child:scale(4.2, 5.2)
             if child.Name == "P1Stamp" then
                child:scale(3.2, 3.2)
                child.xScale = 3.2
@@ -3297,7 +3306,7 @@ function scene:create( event )
 
         transition.to(P2Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1535, -1530),
             time=1000})
         pine_P2:removeEventListener( "tap", tintPlantP2 )
         pine_P2_2:removeEventListener( "tap", tintPlantP2 )
@@ -3309,7 +3318,7 @@ function scene:create( event )
 
         for i=1,P2Pine.numChildren do
             local child = P2Pine[i]
-            child:scale(2.65, 3.20)
+            child:scale(3.65, 3.80)
             if child.Name == "P2Stamp" then
                child:scale(2.65, 2.65)
                child.xScale = 2.65
@@ -3348,7 +3357,7 @@ function scene:create( event )
     
         transition.to(P2Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1545, -1540),
             time=1000})
         Kaori_P2:removeEventListener( "tap", tintPlantP2 )
         Kaori_P2_2:removeEventListener( "tap", tintPlantP2 )
@@ -3361,7 +3370,7 @@ function scene:create( event )
 
         for i=1,P2Kaori.numChildren do
             local child = P2Kaori[i]
-            child:scale(2.95, 4.95)
+            child:scale(3.95, 5.95)
             if child.Name == "P2Stamp" then
                child:scale(2.95, 2.95)
                child.xScale = 2.95
@@ -3400,7 +3409,7 @@ function scene:create( event )
 
         transition.to(P2Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1620, -1615),
+            y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P2:removeEventListener( "tap", tintPlantP2 )
         Magnolia_P2_2:removeEventListener( "tap", tintPlantP2 )
@@ -3412,7 +3421,7 @@ function scene:create( event )
 
         for i=1,P2Magnolia.numChildren do
             local child = P2Magnolia[i]
-            child:scale(3.2, 4.15)
+            child:scale(4.2, 5.2)
             if child.Name == "P2Stamp" then
                child:scale(3.2, 3.2)
                child.xScale = 3.2
@@ -3785,7 +3794,7 @@ function scene:create( event )
 
         transition.to(P3Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1535, -1530),
             time=1000})
         pine_P3:removeEventListener( "tap", tintPlantP3 )
         pine_P3_2:removeEventListener( "tap", tintPlantP3 )
@@ -3797,7 +3806,7 @@ function scene:create( event )
 
         for i=1,P3Pine.numChildren do
             local child = P3Pine[i]
-            child:scale(2.65, 3.20)
+            child:scale(3.65, 3.80)
             if child.Name == "P3Stamp" then
                child:scale(2.65, 2.65)
                child.xScale = 2.65
@@ -3836,7 +3845,7 @@ function scene:create( event )
     
         transition.to(P3Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1545, -1540),
             time=1000})
         Kaori_P3:removeEventListener( "tap", tintPlantP3 )
         Kaori_P3_2:removeEventListener( "tap", tintPlantP3 )
@@ -3849,7 +3858,7 @@ function scene:create( event )
 
         for i=1,P3Kaori.numChildren do
             local child = P3Kaori[i]
-            child:scale(2.95, 4.95)
+            child:scale(3.95, 5.95)
             if child.Name == "P3Stamp" then
                child:scale(2.95, 2.95)
                child.xScale = 2.95
@@ -3888,7 +3897,7 @@ function scene:create( event )
 
         transition.to(P3Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1620, -1615),
+            y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P3:removeEventListener( "tap", tintPlantP3 )
         Magnolia_P3_2:removeEventListener( "tap", tintPlantP3 )
@@ -3900,7 +3909,7 @@ function scene:create( event )
 
         for i=1,P3Magnolia.numChildren do
             local child = P3Magnolia[i]
-            child:scale(3.2, 4.15)
+            child:scale(4.2, 5.2)
             if child.Name == "P3Stamp" then
                child:scale(3.2, 3.2)
                child.xScale = 3.2
@@ -4273,7 +4282,7 @@ function scene:create( event )
 
         transition.to(P4Pine, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1535, -1530),
             time=1000})
         pine_P4:removeEventListener( "tap", tintPlantP4 )
         pine_P4_2:removeEventListener( "tap", tintPlantP4 )
@@ -4285,7 +4294,7 @@ function scene:create( event )
 
         for i=1,P4Pine.numChildren do
             local child = P4Pine[i]
-            child:scale(2.65, 3.20)
+            child:scale(3.65, 3.80)
             if child.Name == "P4Stamp" then
                child:scale(2.65, 2.65)
                child.xScale = 2.65
@@ -4324,7 +4333,7 @@ function scene:create( event )
     
         transition.to(P4Kaori, {
             x= math.random(-300, 500 ),
-            y= math.random(-1425, -1420),
+            y= math.random(-1545, -1540),
             time=1000})
         Kaori_P4:removeEventListener( "tap", tintPlantP4 )
         Kaori_P4_2:removeEventListener( "tap", tintPlantP4 )
@@ -4337,7 +4346,7 @@ function scene:create( event )
 
         for i=1,P4Kaori.numChildren do
             local child = P4Kaori[i]
-            child:scale(2.95, 4.95)
+            child:scale(3.95, 5.95)
             if child.Name == "P4Stamp" then
                child:scale(2.95, 2.95)
                child.xScale = 2.95
@@ -4376,7 +4385,7 @@ function scene:create( event )
 
         transition.to(P4Magnolia, {
             x= math.random(-300, 500 ),
-            y= math.random(-1620, -1615),
+            y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P4:removeEventListener( "tap", tintPlantP4 )
         Magnolia_P4_2:removeEventListener( "tap", tintPlantP4 )
@@ -4388,7 +4397,7 @@ function scene:create( event )
 
         for i=1,P4Magnolia.numChildren do
             local child = P4Magnolia[i]
-            child:scale(3.2, 4.15)
+            child:scale(4.2, 5.2)
             if child.Name == "P4Stamp" then
                child:scale(3.2, 3.2)
                child.xScale = 3.2
@@ -4829,10 +4838,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P1Stamping = false
-        if proto_rectP1.isVisible == false then
-          toggleVisibility(proto_rectP1)
-          toggleVisibility(BrushP1)
-        end
         proto_rectP1:setFillColor(0.3, 0.5, 0.5)
         proto_rectP1.color = { 0.3, 0.5, 0.5 }
         display.remove( P1CurrentBtnGlow )
@@ -4854,10 +4859,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P1Stamping = false
-        if proto_rectP1.isVisible == false then
-         toggleVisibility(proto_rectP1)
-         toggleVisibility(BrushP1)
-        end
         proto_rectP1:setFillColor(1, 0.3, 0.5)
         proto_rectP1.color = { 1, 0.3, 0.5 }
         display.remove( P1CurrentBtnGlow )
@@ -4880,10 +4881,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P1Stamping = true
-        if proto_rectP1.isVisible == true then
-            toggleVisibility(proto_rectP1)
-            toggleVisibility(BrushP1)
-        end
         display.remove( P1CurrentBtnGlow )
         if P1stampPalette.isVisible == true then
             do return end
@@ -4906,10 +4903,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P2Stamping = false
-        if proto_rectP2.isVisible == false then
-          toggleVisibility(proto_rectP2)
-          toggleVisibility(BrushP2)
-        end
         proto_rectP2:setFillColor(0.3, 0.5, 0.5)
         proto_rectP2.color = { 0.3, 0.5, 0.5 }
         display.remove( P2CurrentBtnGlow )
@@ -4931,10 +4924,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P2Stamping = false
-        if proto_rectP2.isVisible == false then
-         toggleVisibility(proto_rectP2)
-         toggleVisibility(BrushP2)
-        end
         proto_rectP2:setFillColor(1, 0.3, 0.5)
         proto_rectP2.color = { 1, 0.3, 0.5 }
         display.remove( P2CurrentBtnGlow )
@@ -4957,10 +4946,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P2Stamping = true
-        if proto_rectP2.isVisible == true then
-            toggleVisibility(proto_rectP2)
-            toggleVisibility(BrushP2)
-        end
         display.remove( P2CurrentBtnGlow )
         if P2stampPalette.isVisible == true then
             do return end
@@ -4983,10 +4968,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P3Stamping = false
-        if proto_rectP3.isVisible == false then
-          toggleVisibility(proto_rectP3)
-          toggleVisibility(BrushP3)
-        end
         proto_rectP3:setFillColor(0.3, 0.5, 0.5)
         proto_rectP3.color = { 0.3, 0.5, 0.5 }
         display.remove( P3CurrentBtnGlow )
@@ -5008,10 +4989,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P3Stamping = false
-        if proto_rectP3.isVisible == false then
-         toggleVisibility(proto_rectP3)
-         toggleVisibility(BrushP3)
-        end
         proto_rectP3:setFillColor(1, 0.3, 0.5)
         proto_rectP3.color = { 1, 0.3, 0.5 }
         display.remove( P3CurrentBtnGlow )
@@ -5034,10 +5011,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P3Stamping = true
-        if proto_rectP3.isVisible == true then
-            toggleVisibility(proto_rectP3)
-            toggleVisibility(BrushP3)
-        end
         display.remove( P3CurrentBtnGlow )
         if P3stampPalette.isVisible == true then
             do return end
@@ -5060,10 +5033,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P4Stamping = false
-        if proto_rectP4.isVisible == false then
-          toggleVisibility(proto_rectP4)
-          toggleVisibility(BrushP4)
-        end
         proto_rectP4:setFillColor(0.3, 0.5, 0.5)
         proto_rectP4.color = { 0.3, 0.5, 0.5 }
         display.remove( P4CurrentBtnGlow )
@@ -5085,10 +5054,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P4Stamping = false
-        if proto_rectP4.isVisible == false then
-         toggleVisibility(proto_rectP4)
-         toggleVisibility(BrushP4)
-        end
         proto_rectP4:setFillColor(1, 0.3, 0.5)
         proto_rectP4.color = { 1, 0.3, 0.5 }
         display.remove( P4CurrentBtnGlow )
@@ -5111,10 +5076,6 @@ function scene:create( event )
         clicksound ()
         resetTimer()
         P4Stamping = true
-        if proto_rectP4.isVisible == true then
-            toggleVisibility(proto_rectP4)
-            toggleVisibility(BrushP4)
-        end
         display.remove( P4CurrentBtnGlow )
         if P4stampPalette.isVisible == true then
             do return end

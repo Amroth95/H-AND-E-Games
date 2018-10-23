@@ -110,7 +110,7 @@ end
 function P2stampCounter()
   P2stampsLeft = 8
   
-  P2stampsLeftText = display.newText( P2stampsLeft, display.contentCenterX-315, display.contentCenterY+1330, native.systemFont, 90 )
+  P2stampsLeftText = display.newText( P2stampsLeft, display.contentCenterX-265, display.contentCenterY+1330, native.systemFont, 90 )
   P2stampsLeftText:setFillColor( 1, 1, 1 )
 end
 
@@ -170,7 +170,7 @@ end
 function P3stampCounter()
   P3stampsLeft = 8
   
-  P3stampsLeftText = display.newText( P3stampsLeft, display.contentCenterX+730, display.contentCenterY+1330, native.systemFont, 90 )
+  P3stampsLeftText = display.newText( P3stampsLeft, display.contentCenterX+680, display.contentCenterY+1330, native.systemFont, 90 )
   P3stampsLeftText:setFillColor( 1, 1, 1 )
 end
 
