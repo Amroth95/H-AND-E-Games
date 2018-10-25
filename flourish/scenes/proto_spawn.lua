@@ -758,7 +758,6 @@ function scene:create( event )
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
         print("New Ecosystem Ready")
-        
     end
 
     -- Player Two
