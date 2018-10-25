@@ -835,17 +835,62 @@ function colouringSetupP3()
 
   P3stampPalette = display.newGroup();
 
-  btn_stamp5 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
-  btn_stamp5.x = display.contentCenterX+525
-  btn_stamp5.y = display.contentCenterY+1250
-  btn_stamp5.Name = "P3Stamp1"
-  P3stampPalette:insert( btn_stamp5 )
+  btn_outlineStamp9 = display.newImageRect( "images/stamps/leaf clicked.png", 130, 130)
+  btn_outlineStamp9.x = display.contentCenterX+525
+  btn_outlineStamp9.y = display.contentCenterY+1250
+  P3stampPalette:insert( btn_outlineStamp9 )
 
-  btn_stamp6 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
-  btn_stamp6.x = display.contentCenterX+525
-  btn_stamp6.y = display.contentCenterY+1380
-  btn_stamp6.Name = "P3Stamp2"
-  P3stampPalette:insert( btn_stamp6 )
+  btn_stamp9 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
+  btn_stamp9.x = display.contentCenterX+525
+  btn_stamp9.y = display.contentCenterY+1250
+  btn_stamp9.Name = "P3Stamp1"
+  P3stampPalette:insert( btn_stamp9 )
+
+  btn_outlineStamp10 = display.newImageRect( "images/stamps/stick clicked.png", 130, 130)
+  btn_outlineStamp10.x = display.contentCenterX+525
+  btn_outlineStamp10.y = display.contentCenterY+1380
+  P3stampPalette:insert( btn_outlineStamp10 )
+
+  btn_stamp10 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
+  btn_stamp10.x = display.contentCenterX+525
+  btn_stamp10.y = display.contentCenterY+1380
+  btn_stamp10.Name = "P3Stamp2"
+  P3stampPalette:insert( btn_stamp10 )
+
+  btn_outlineStamp11 = display.newImageRect( "images/stamps/weta clicked.png", 130, 130)
+  btn_outlineStamp11.x = display.contentCenterX+660
+  btn_outlineStamp11.y = display.contentCenterY+1250
+  P3stampPalette:insert( btn_outlineStamp11 )
+
+  btn_stamp11 = display.newImageRect( "images/stamps/Stamp3.png", 130, 130)
+  btn_stamp11.x = display.contentCenterX+660
+  btn_stamp11.y = display.contentCenterY+1250
+  btn_stamp11.Name = "P3Stamp3"
+  P3stampPalette:insert( btn_stamp11 )
+
+  -- Special Stamp
+
+  P3SpecialSelectionsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P3SpecialSelectionSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectionSprite.png", P3SpecialSelectionsheetData)
+  P3SpecialSelectedsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P3SpecialSelectedSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectedSprite.png", P3SpecialSelectedsheetData)
+  P3SpecialData = {
+  {name="Selection", sheet=P3SpecialSelectionSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
+  {name="Selected", sheet=P3SpecialSelectedSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500}
+  }
+    
+  btn_outlineStamp12 = display.newSprite(P3SpecialSelectedSheet1, P3SpecialData)
+  btn_outlineStamp12.x = display.contentCenterX+660
+  btn_outlineStamp12.y = display.contentCenterY+1380
+  btn_outlineStamp12:scale(0.25, 0.25)
+  P3stampPalette:insert( btn_outlineStamp12 )
+    
+  btn_stamp12 = display.newSprite(P3SpecialSelectionSheet1, P3SpecialData)
+  btn_stamp12.x = display.contentCenterX+660
+  btn_stamp12.y = display.contentCenterY+1380
+  btn_stamp12.Name = "P3Stamp4"
+  btn_stamp12:scale(0.25, 0.25)
+  P3stampPalette:insert( btn_stamp12 )
 
   P3StampSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 140, 140)
   P3StampSelectGlow.x = display.contentCenterX+720

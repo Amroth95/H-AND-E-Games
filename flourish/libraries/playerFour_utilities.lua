@@ -837,17 +837,62 @@ function colouringSetupP4()
 
   P4stampPalette = display.newGroup();
 
-  btn_stamp7 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
-  btn_stamp7.x = display.contentCenterX+1490
-  btn_stamp7.y = display.contentCenterY+1250
-  btn_stamp7.Name = "P4Stamp1"
-  P4stampPalette:insert( btn_stamp7 )
+  btn_outlineStamp13 = display.newImageRect( "images/stamps/leaf clicked.png", 130, 130)
+  btn_outlineStamp13.x = display.contentCenterX+1490
+  btn_outlineStamp13.y = display.contentCenterY+1250
+  P4stampPalette:insert( btn_outlineStamp13 )
 
-  btn_stamp8 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
-  btn_stamp8.x = display.contentCenterX+1490
-  btn_stamp8.y = display.contentCenterY+1380
-  btn_stamp8.Name = "P4Stamp2"
-  P4stampPalette:insert( btn_stamp8 )
+  btn_stamp13 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
+  btn_stamp13.x = display.contentCenterX+1490
+  btn_stamp13.y = display.contentCenterY+1250
+  btn_stamp13.Name = "P4Stamp1"
+  P4stampPalette:insert( btn_stamp13 )
+
+  btn_outlineStamp14 = display.newImageRect( "images/stamps/stick clicked.png", 130, 130)
+  btn_outlineStamp14.x = display.contentCenterX+1490
+  btn_outlineStamp14.y = display.contentCenterY+1380
+  P4stampPalette:insert( btn_outlineStamp14 )
+
+  btn_stamp14 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
+  btn_stamp14.x = display.contentCenterX+1490
+  btn_stamp14.y = display.contentCenterY+1380
+  btn_stamp14.Name = "P4Stamp2"
+  P4stampPalette:insert( btn_stamp14 )
+
+  btn_outlineStamp15 = display.newImageRect( "images/stamps/weta clicked.png", 130, 130)
+  btn_outlineStamp15.x = display.contentCenterX+1625
+  btn_outlineStamp15.y = display.contentCenterY+1250
+  P4stampPalette:insert( btn_outlineStamp15 )
+
+  btn_stamp15 = display.newImageRect( "images/stamps/Stamp3.png", 130, 130)
+  btn_stamp15.x = display.contentCenterX+1625
+  btn_stamp15.y = display.contentCenterY+1250
+  btn_stamp15.Name = "P4Stamp3"
+  P4stampPalette:insert( btn_stamp15 )
+
+  -- Special Stamp
+
+  P4SpecialSelectionsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P4SpecialSelectionSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectionSprite.png", P4SpecialSelectionsheetData)
+  P4SpecialSelectedsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P4SpecialSelectedSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectedSprite.png", P4SpecialSelectedsheetData)
+  P4SpecialData = {
+  {name="Selection", sheet=P4SpecialSelectionSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
+  {name="Selected", sheet=P4SpecialSelectedSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500}
+  }
+      
+  btn_outlineStamp16 = display.newSprite(P4SpecialSelectedSheet1, P4SpecialData)
+  btn_outlineStamp16.x = display.contentCenterX+1625
+  btn_outlineStamp16.y = display.contentCenterY+1380
+  btn_outlineStamp16:scale(0.25, 0.25)
+  P4stampPalette:insert( btn_outlineStamp16 )
+      
+  btn_stamp16 = display.newSprite(P4SpecialSelectionSheet1, P4SpecialData)
+  btn_stamp16.x = display.contentCenterX+1625
+  btn_stamp16.y = display.contentCenterY+1380
+  btn_stamp16.Name = "P4Stamp4"
+  btn_stamp16:scale(0.25, 0.25)
+  P4stampPalette:insert( btn_stamp16 )
 
   P4StampSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 140, 140)
   P4StampSelectGlow.x = display.contentCenterX+1670

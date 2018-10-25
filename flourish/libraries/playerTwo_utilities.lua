@@ -835,17 +835,62 @@ function colouringSetupP2()
 
   P2stampPalette = display.newGroup();
 
-  btn_stamp3 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
-  btn_stamp3.x = display.contentCenterX-415
-  btn_stamp3.y = display.contentCenterY+1250
-  btn_stamp3.Name = "P2Stamp1"
-  P2stampPalette:insert( btn_stamp3 )
+  btn_outlineStamp5 = display.newImageRect( "images/stamps/leaf clicked.png", 130, 130)
+  btn_outlineStamp5.x = display.contentCenterX-415
+  btn_outlineStamp5.y = display.contentCenterY+1250
+  P2stampPalette:insert( btn_outlineStamp5 )
 
-  btn_stamp4 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
-  btn_stamp4.x = display.contentCenterX-415
-  btn_stamp4.y = display.contentCenterY+1380
-  btn_stamp4.Name = "P2Stamp2"
-  P2stampPalette:insert( btn_stamp4 )
+  btn_stamp5 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
+  btn_stamp5.x = display.contentCenterX-415
+  btn_stamp5.y = display.contentCenterY+1250
+  btn_stamp5.Name = "P2Stamp1"
+  P2stampPalette:insert( btn_stamp5 )
+
+  btn_outlineStamp6 = display.newImageRect( "images/stamps/stick clicked.png", 130, 130)
+  btn_outlineStamp6.x = display.contentCenterX-415
+  btn_outlineStamp6.y = display.contentCenterY+1380
+  P2stampPalette:insert( btn_outlineStamp6 )
+
+  btn_stamp6 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
+  btn_stamp6.x = display.contentCenterX-415
+  btn_stamp6.y = display.contentCenterY+1380
+  btn_stamp6.Name = "P2Stamp2"
+  P2stampPalette:insert( btn_stamp6 )
+
+  btn_outlineStamp7 = display.newImageRect( "images/stamps/weta clicked.png", 130, 130)
+  btn_outlineStamp7.x = display.contentCenterX-280
+  btn_outlineStamp7.y = display.contentCenterY+1250
+  P2stampPalette:insert( btn_outlineStamp7 )
+
+  btn_stamp7 = display.newImageRect( "images/stamps/Stamp3.png", 130, 130)
+  btn_stamp7.x = display.contentCenterX-280
+  btn_stamp7.y = display.contentCenterY+1250
+  btn_stamp7.Name = "P2Stamp3"
+  P2stampPalette:insert( btn_stamp7 )
+
+  -- Special Stamp
+
+  P2SpecialSelectionsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P2SpecialSelectionSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectionSprite.png", P2SpecialSelectionsheetData)
+  P2SpecialSelectedsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P2SpecialSelectedSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectedSprite.png", P2SpecialSelectedsheetData)
+  P2SpecialData = {
+  {name="Selection", sheet=P2SpecialSelectionSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
+  {name="Selected", sheet=P2SpecialSelectedSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500}
+  }
+  
+  btn_outlineStamp8 = display.newSprite(P2SpecialSelectedSheet1, P2SpecialData)
+  btn_outlineStamp8.x = display.contentCenterX-280
+  btn_outlineStamp8.y = display.contentCenterY+1380
+  btn_outlineStamp8:scale(0.25, 0.25)
+  P2stampPalette:insert( btn_outlineStamp8 )
+  
+  btn_stamp8 = display.newSprite(P2SpecialSelectionSheet1, P2SpecialData)
+  btn_stamp8.x = display.contentCenterX-280
+  btn_stamp8.y = display.contentCenterY+1380
+  btn_stamp8.Name = "P2Stamp4"
+  btn_stamp8:scale(0.25, 0.25)
+  P2stampPalette:insert( btn_stamp8 )
 
   P2StampSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 140, 140)
   P2StampSelectGlow.x = display.contentCenterX-220

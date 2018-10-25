@@ -301,8 +301,6 @@ function createPalmP1 ()
 
   P1Palm = display.newGroup();
 
-  P1Palm = display.newGroup();
-
   palm_P1 = createImage("images/plant2/plant3.png", 400, 400, display.contentCenterX-1670, display.contentCenterY+1295)
   palm_P1:setFillColor(0.7)
   P1Palm:insert( palm_P1 )
@@ -838,17 +836,62 @@ function colouringSetupP1()
 
   P1stampPalette = display.newGroup();
 
+  btn_outlineStamp1 = display.newImageRect( "images/stamps/leaf clicked.png", 130, 130)
+  btn_outlineStamp1.x = display.contentCenterX-1380
+  btn_outlineStamp1.y = display.contentCenterY+1250
+  P1stampPalette:insert( btn_outlineStamp1 )
+
   btn_stamp1 = display.newImageRect( "images/stamps/Stamp1.png", 130, 130)
   btn_stamp1.x = display.contentCenterX-1380
   btn_stamp1.y = display.contentCenterY+1250
   btn_stamp1.Name = "P1Stamp1"
   P1stampPalette:insert( btn_stamp1 )
 
+  btn_outlineStamp2 = display.newImageRect( "images/stamps/stick clicked.png", 130, 130)
+  btn_outlineStamp2.x = display.contentCenterX-1380
+  btn_outlineStamp2.y = display.contentCenterY+1380
+  P1stampPalette:insert( btn_outlineStamp2 )
+
   btn_stamp2 = display.newImageRect( "images/stamps/Stamp2.png", 130, 130)
   btn_stamp2.x = display.contentCenterX-1380
   btn_stamp2.y = display.contentCenterY+1380
   btn_stamp2.Name = "P1Stamp2"
   P1stampPalette:insert( btn_stamp2 )
+
+  btn_outlineStamp3 = display.newImageRect( "images/stamps/weta clicked.png", 130, 130)
+  btn_outlineStamp3.x = display.contentCenterX-1250
+  btn_outlineStamp3.y = display.contentCenterY+1250
+  P1stampPalette:insert( btn_outlineStamp3 )
+
+  btn_stamp3 = display.newImageRect( "images/stamps/Stamp3.png", 130, 130)
+  btn_stamp3.x = display.contentCenterX-1250
+  btn_stamp3.y = display.contentCenterY+1250
+  btn_stamp3.Name = "P1Stamp3"
+  P1stampPalette:insert( btn_stamp3 )
+
+  -- Special Stamp
+  
+  P1SpecialSelectionsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P1SpecialSelectionSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectionSprite.png", P1SpecialSelectionsheetData)
+  P1SpecialSelectedsheetData = { width =600, height =600, numFrames=9, sheetContentWidth=5400, sheetContentHeight=600 } 
+  P1SpecialSelectedSheet1 = graphics.newImageSheet("images/stamps/special stamps/specialSelectedSprite.png", P1SpecialSelectedsheetData)
+  P1SpecialData = {
+  {name="Selection", sheet=P1SpecialSelectionSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
+  {name="Selected", sheet=P1SpecialSelectedSheet1, frames={9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500}
+  }
+
+  btn_outlineStamp4 = display.newSprite(P1SpecialSelectedSheet1, P1SpecialData)
+  btn_outlineStamp4.x = display.contentCenterX-1250
+  btn_outlineStamp4.y = display.contentCenterY+1380
+  btn_outlineStamp4:scale(0.25, 0.25)
+  P1stampPalette:insert( btn_outlineStamp4 )
+
+  btn_stamp4 = display.newSprite(P1SpecialSelectionSheet1, P1SpecialData)
+  btn_stamp4.x = display.contentCenterX-1250
+  btn_stamp4.y = display.contentCenterY+1380
+  btn_stamp4.Name = "P1Stamp4"
+  btn_stamp4:scale(0.25, 0.25)
+  P1stampPalette:insert( btn_stamp4 )
 
   P1StampSelectGlow = display.newImageRect( "images/paintbuttons/PaletteSelectionGlow.png", 140, 140)
   P1StampSelectGlow.x = display.contentCenterX-1170

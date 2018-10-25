@@ -26,11 +26,11 @@ function clouds ()
     cloud1.x = -700 ; cloud1.y = 520
     cloud1.alpha = 0.8
 
-    cloud2 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1600, 1000 )
+    cloud2 = display.newImageRect( "images/ambienceAssets/clouds/cloud2.png", 1600, 1000 )
     cloud2.x = -1400 ; cloud2.y = 620
     cloud2.alpha = 0.8
 
-    cloud3 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1800, 1200 )
+    cloud3 = display.newImageRect( "images/ambienceAssets/clouds/cloud3.png", 1800, 1200 )
     cloud3.x = -2100 ; cloud3.y = 920
     cloud3.alpha = 0.8
 
