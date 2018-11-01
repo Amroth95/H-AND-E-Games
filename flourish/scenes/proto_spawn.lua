@@ -102,7 +102,11 @@ function scene:create( event )
     sceneGroup:insert( Dino )
     physics.start( Dino )
 
-    -- Set up foreground grass
+    -- Set up for signs and foreground grass
+    signs ()
+    sceneGroup:insert( sign1 )
+    sceneGroup:insert( sign2 )
+    SignMove1 ()
     grass ()
     sceneGroup:insert( backgroundGrassFront )
 
@@ -114,6 +118,7 @@ function scene:create( event )
             do return end
         else
             Dino.xScale = 5
+            EatChecker = false
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
@@ -156,6 +161,7 @@ function scene:create( event )
                 if rightsecondsTillcomplete == 9
                 then
                   Dino:setSequence( "normalIdle" )
+                  EatChecker = false
                   Dino:play()
                 end
             end
@@ -183,6 +189,7 @@ function scene:create( event )
             do return end
         else
             Dino.xScale = -5
+            EatChecker = false
             Dino:setSequence( "normalWalk" )
             Dino:play()
         end
@@ -225,6 +232,7 @@ function scene:create( event )
                 if rightsecondsTillcomplete == 9
                 then
                   Dino:setSequence( "normalIdle" )
+                  EatChecker = false
                   Dino:play()
                 end
             end
@@ -393,22 +401,24 @@ function scene:create( event )
           clicksound ()
           do return end
         else
-            local P1btnCenterX, P1btnCenterY = event.target:localToContent( 0, 0 )
-            print( "P1 button position in screen coordinates: ", P1btnCenterX, P1btnCenterY )
+            if event.target.name == "P1Button" then
+             local P1btnCenterX, P1btnCenterY = event.target:localToContent( 0, 0 )
+             print( "P1 button position in screen coordinates: ", P1btnCenterX, P1btnCenterY )
       
-            display.remove( P1CurrentBtnGlow )
-            P1CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
-            P1CurrentBtnGlow.x = P1btnCenterX
-            P1CurrentBtnGlow.y = P1btnCenterY+600
-            P1Colouring:insert( P1CurrentBtnGlow )
+             display.remove( P1CurrentBtnGlow )
+             P1CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+             P1CurrentBtnGlow.x = P1btnCenterX
+             P1CurrentBtnGlow.y = P1btnCenterY+600
+             P1Colouring:insert( P1CurrentBtnGlow )
 
-            proto_rectP1:setFillColor(unpack(event.target.color))
-            proto_rectP1.color = event.target.color
-            print(unpack(proto_rectP1.color))
+             proto_rectP1:setFillColor(unpack(event.target.color))
+             proto_rectP1.color = event.target.color
+             print(unpack(proto_rectP1.color))
   
-            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+             local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
 
-            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+             local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+            end
         end
     end
 
@@ -433,22 +443,24 @@ function scene:create( event )
             clicksound ()
             do return end
         else
-            local P2btnCenterX, P2btnCenterY = event.target:localToContent( 0, 0 )
-            print( "P2 button position in screen coordinates: ", P2btnCenterX, P2btnCenterY )
+            if event.target.name == "P2Button" then
+             local P2btnCenterX, P2btnCenterY = event.target:localToContent( 0, 0 )
+             print( "P2 button position in screen coordinates: ", P2btnCenterX, P2btnCenterY )
       
-            display.remove( P2CurrentBtnGlow )
-            P2CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
-            P2CurrentBtnGlow.x = P2btnCenterX
-            P2CurrentBtnGlow.y = P2btnCenterY+600
-            P2Colouring:insert( P2CurrentBtnGlow )
+             display.remove( P2CurrentBtnGlow )
+             P2CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+             P2CurrentBtnGlow.x = P2btnCenterX
+             P2CurrentBtnGlow.y = P2btnCenterY+600
+             P2Colouring:insert( P2CurrentBtnGlow )
 
-            proto_rectP2:setFillColor(unpack(event.target.color))
-            proto_rectP2.color = event.target.color
-            print(unpack(proto_rectP2.color))
+             proto_rectP2:setFillColor(unpack(event.target.color))
+             proto_rectP2.color = event.target.color
+             print(unpack(proto_rectP2.color))
     
-            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+             local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
   
-            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+             local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+            end
         end
     end
   
@@ -473,22 +485,24 @@ function scene:create( event )
             clicksound ()
             do return end
         else
-            local P3btnCenterX, P3btnCenterY = event.target:localToContent( 0, 0 )
-            print( "P3 button position in screen coordinates: ", P3btnCenterX, P3btnCenterY )
+            if event.target.name == "P3Button" then
+             local P3btnCenterX, P3btnCenterY = event.target:localToContent( 0, 0 )
+             print( "P3 button position in screen coordinates: ", P3btnCenterX, P3btnCenterY )
       
-            display.remove( P3CurrentBtnGlow )
-            P3CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
-            P3CurrentBtnGlow.x = P3btnCenterX
-            P3CurrentBtnGlow.y = P3btnCenterY+600
-            P3Colouring:insert( P3CurrentBtnGlow )
+             display.remove( P3CurrentBtnGlow )
+             P3CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+             P3CurrentBtnGlow.x = P3btnCenterX
+             P3CurrentBtnGlow.y = P3btnCenterY+600
+             P3Colouring:insert( P3CurrentBtnGlow )
 
-            proto_rectP3:setFillColor(unpack(event.target.color))
-            proto_rectP3.color = event.target.color
-            print(unpack(proto_rectP3.color))
+             proto_rectP3:setFillColor(unpack(event.target.color))
+             proto_rectP3.color = event.target.color
+             print(unpack(proto_rectP3.color))
     
-            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+             local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
   
-            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+             local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+            end
         end
     end
       
@@ -513,22 +527,24 @@ function scene:create( event )
             clicksound ()
             do return end
         else
-            local P4btnCenterX, P4btnCenterY = event.target:localToContent( 0, 0 )
-            print( "P4 button position in screen coordinates: ", P4btnCenterX, P4btnCenterY )
+            if event.target.name == "P4Button" then
+             local P4btnCenterX, P4btnCenterY = event.target:localToContent( 0, 0 )
+             print( "P4 button position in screen coordinates: ", P4btnCenterX, P4btnCenterY )
       
-            display.remove( P4CurrentBtnGlow )
-            P4CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
-            P4CurrentBtnGlow.x = P4btnCenterX
-            P4CurrentBtnGlow.y = P4btnCenterY+600
-            P4Colouring:insert( P4CurrentBtnGlow )
+             display.remove( P4CurrentBtnGlow )
+             P4CurrentBtnGlow = display.newImageRect( "images/paintbuttons/ButtonSelectionGlow.png", 125, 125)
+             P4CurrentBtnGlow.x = P4btnCenterX
+             P4CurrentBtnGlow.y = P4btnCenterY+600
+             P4Colouring:insert( P4CurrentBtnGlow )
 
-            proto_rectP4:setFillColor(unpack(event.target.color))
-            proto_rectP4.color = event.target.color
-            print(unpack(proto_rectP4.color))
+             proto_rectP4:setFillColor(unpack(event.target.color))
+             proto_rectP4.color = event.target.color
+             print(unpack(proto_rectP4.color))
     
-            local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
+             local Paintselect = audio.loadSound( "sounds/buttons/Paint Select.mp3" )
   
-            local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+             local Paintselectchannel = audio.play( Paintselect, { channel=2, loops=0 } )
+            end
         end
     end
       
@@ -618,14 +634,15 @@ function scene:create( event )
     end
 
     local countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    
+
+    -- Resets Timer
     local function resetTimer()
       timer.cancel(countDownTimer)
       secondsLeft = 300
       countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
     end
 
-    -- Resets Timer
+    -- Activates splashscreen transition if time is up
     function timeup ()
 
         local splashoptions = {
@@ -640,6 +657,9 @@ function scene:create( event )
             timer.cancel( cloudsDuplicationTimer )
             timer.cancel( flyingBirdTimer )
             timer.cancel( ButterflyClocktimer )
+            timer.cancel( RainbowClocktimer )
+            timer.cancel( RingSecondstimer )
+            timer.cancel( SignMove1timer )
             Dino = nil
             P1Select = nil
             P2Select = nil
@@ -681,54 +701,59 @@ function scene:create( event )
 
    -- Player One
    local function GoToEcosystemP1 ()
-      transition.cancel( Dino )
-      timer.cancel( gorighttimer )
-      physics.pause( Dino )
-      Dino:setSequence( "normalWalk" )
-      Dino:play()
-      transition.to( Dino, { time=2000, x=936 } )
-        if Dino.x >= 936 then
-         print("Moving left")
-         Dino.xScale = 5
-        elseif Dino.x <= 936 then
-         print("Moving right")
-         Dino.xScale = -5     
-        end
-
-        if P1MediumPlants.isVisible == false then
-          do return end
+        if EatChecker == true then
+         do return end
         else
-          toggleVisibility( P1MediumPlants )
-        end
+         EatChecker = true
+         P1ShowRings ()
+         transition.cancel( Dino )
+         timer.cancel( gorighttimer )
+         physics.pause( Dino )
+         Dino:setSequence( "normalWalk" )
+         Dino:play()
+         transition.to( Dino, { time=2000, x=936 } )
+            if Dino.x >= 936 then
+             print("Moving left")
+             Dino.xScale = 5
+            elseif Dino.x <= 936 then
+             print("Moving right")
+             Dino.xScale = -5     
+            end
 
-        if P1LargePlants.isVisible == false then
-          do return end
-        else
-         toggleVisibility( P1LargePlants )
-        end
+            if P1MediumPlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P1MediumPlants )
+            end
+
+            if P1LargePlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P1LargePlants )
+            end
         
-        local TimeTillEat1 = 2  -- 10 minutes = 600 seconds
+         local TimeTillEat1 = 2  -- 10 minutes = 600 seconds
         
-        function updateTimeTillEat1( event )
+            function updateTimeTillEat1( event )
 
-            -- Decrement the number of seconds
-            TimeTillEat1 = TimeTillEat1 - 1
+             -- Decrement the number of seconds
+             TimeTillEat1 = TimeTillEat1 - 1
    
-            -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( TimeTillEat1 / 2 )
-            local seconds = TimeTillEat1 % 2
+             -- Time is tracked in seconds; convert it to minutes and seconds
+             local minutes = math.floor( TimeTillEat1 / 2 )
+             local seconds = TimeTillEat1 % 2
    
-            TimeToEatEcosystem1 ()
+             TimeToEatEcosystem1 ()
+            end
+   
+            ReadyToEat1Timer = timer.performWithDelay( 1000, updateTimeTillEat1, TimeTillEat1 )
+   
+            function TimeToEatEcosystem1()
+                if TimeTillEat1 <= 0 then
+                 EatEcosystem1 ()      
+                end    
+            end
         end
-   
-        ReadyToEat1Timer = timer.performWithDelay( 1000, updateTimeTillEat1, TimeTillEat1 )
-   
-        function TimeToEatEcosystem1()
-            if TimeTillEat1 <= 0 then
-             EatEcosystem1 ()      
-            end    
-        end
-
     end
 
     function EatEcosystem1 ()
@@ -762,52 +787,58 @@ function scene:create( event )
 
     -- Player Two
     local function GoToEcosystemP2 ()
-        transition.cancel( Dino )
-        timer.cancel( gorighttimer )
-        physics.pause( Dino )
-        Dino:setSequence( "normalWalk" )
-        Dino:play()
-        if Dino.x >= 1536 then
-            transition.to( Dino, { time=2000, x=1836 } )
-            print("Moving left")
-            Dino.xScale = 5
-        elseif Dino.x <= 1536 then
-            transition.to( Dino, { time=2000, x=1236 } )
-            print("Moving right")
-            Dino.xScale = -5     
-        end
-  
-        if P2MediumPlants.isVisible == false then
+        if EatChecker == true then
             do return end
         else
-            toggleVisibility( P2MediumPlants )
-        end
+         EatChecker = true
+         P2ShowRings ()
+         transition.cancel( Dino )
+         timer.cancel( gorighttimer )
+         physics.pause( Dino )
+         Dino:setSequence( "normalWalk" )
+         Dino:play()
+            if Dino.x >= 1536 then
+             transition.to( Dino, { time=2000, x=1836 } )
+             print("Moving left")
+             Dino.xScale = 5
+            elseif Dino.x <= 1536 then
+             transition.to( Dino, { time=2000, x=1236 } )
+             print("Moving right")
+             Dino.xScale = -5     
+            end
   
-        if P2LargePlants.isVisible == false then
-            do return end
-        else
-           toggleVisibility( P2LargePlants )
-        end
+            if P2MediumPlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P2MediumPlants )
+            end
+  
+            if P2LargePlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P2LargePlants )
+            end
           
-        local TimeTillEat2 = 2  -- 10 minutes = 600 seconds
+         local TimeTillEat2 = 2  -- 10 minutes = 600 seconds
   
-        function updateTimeTillEat2( event )
+            function updateTimeTillEat2( event )
   
-           -- Decrement the number of seconds
-           TimeTillEat2 = TimeTillEat2 - 1
+             -- Decrement the number of seconds
+             TimeTillEat2 = TimeTillEat2 - 1
   
-           -- Time is tracked in seconds; convert it to minutes and seconds
-           local minutes = math.floor( TimeTillEat2 / 2 )
-           local seconds = TimeTillEat2 % 2
+             -- Time is tracked in seconds; convert it to minutes and seconds
+             local minutes = math.floor( TimeTillEat2 / 2 )
+             local seconds = TimeTillEat2 % 2
   
-           TimeToEatEcosystem2 ()
-        end
+             TimeToEatEcosystem2 ()
+            end
   
-        ReadyToEat2Timer = timer.performWithDelay( 1000, updateTimeTillEat2, TimeTillEat2 )
+         ReadyToEat2Timer = timer.performWithDelay( 1000, updateTimeTillEat2, TimeTillEat2 )
   
-       function TimeToEatEcosystem2()
-            if TimeTillEat2 <= 0 then
-              EatEcosystem2 ()      
+            function TimeToEatEcosystem2()
+                if TimeTillEat2 <= 0 then
+                 EatEcosystem2 ()      
+                end
             end
         end
     end
@@ -843,52 +874,58 @@ function scene:create( event )
 
     -- Player Three
     local function GoToEcosystemP3 ()
-        transition.cancel( Dino )
-        timer.cancel( gorighttimer )
-        physics.pause( Dino )
-        Dino:setSequence( "normalWalk" )
-        Dino:play()
-        if Dino.x >= 2436 then
-            transition.to( Dino, { time=2000, x=2736 } )
-            print("Moving left")
-            Dino.xScale = 5
-        elseif Dino.x <= 2436 then
-            transition.to( Dino, { time=2000, x=2136 } )
-            print("Moving right")
-            Dino.xScale = -5     
-        end
-  
-        if P3MediumPlants.isVisible == false then
+        if EatChecker == true then
             do return end
         else
-            toggleVisibility( P3MediumPlants )
-        end
+         EatChecker = true
+         P3ShowRings ()
+         transition.cancel( Dino )
+         timer.cancel( gorighttimer )
+         physics.pause( Dino )
+         Dino:setSequence( "normalWalk" )
+         Dino:play()
+            if Dino.x >= 2436 then
+             transition.to( Dino, { time=2000, x=2736 } )
+             print("Moving left")
+             Dino.xScale = 5
+            elseif Dino.x <= 2436 then
+             transition.to( Dino, { time=2000, x=2136 } )
+             print("Moving right")
+             Dino.xScale = -5     
+            end
   
-        if P3LargePlants.isVisible == false then
-            do return end
-        else
-           toggleVisibility( P3LargePlants )
-        end
+            if P3MediumPlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P3MediumPlants )
+            end
+  
+            if P3LargePlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P3LargePlants )
+            end
           
-        local TimeTillEat3 = 2  -- 10 minutes = 600 seconds
+         local TimeTillEat3 = 2  -- 10 minutes = 600 seconds
   
-        function updateTimeTillEat3( event )
+            function updateTimeTillEat3( event )
   
-           -- Decrement the number of seconds
-           TimeTillEat3 = TimeTillEat3 - 1
+             -- Decrement the number of seconds
+             TimeTillEat3 = TimeTillEat3 - 1
   
-           -- Time is tracked in seconds; convert it to minutes and seconds
-           local minutes = math.floor( TimeTillEat3 / 2 )
-           local seconds = TimeTillEat3 % 2
+             -- Time is tracked in seconds; convert it to minutes and seconds
+             local minutes = math.floor( TimeTillEat3 / 2 )
+             local seconds = TimeTillEat3 % 2
   
-           TimeToEatEcosystem3 ()
-        end
+             TimeToEatEcosystem3 ()
+            end
   
-        ReadyToEat3Timer = timer.performWithDelay( 1000, updateTimeTillEat3, TimeTillEat3 )
+         ReadyToEat3Timer = timer.performWithDelay( 1000, updateTimeTillEat3, TimeTillEat3 )
   
-       function TimeToEatEcosystem3()
-            if TimeTillEat3 <= 0 then
-              EatEcosystem3 ()      
+            function TimeToEatEcosystem3()
+                if TimeTillEat3 <= 0 then
+                 EatEcosystem3 ()      
+                end
             end
         end
     end
@@ -924,51 +961,57 @@ function scene:create( event )
 
     -- Player Four
     local function GoToEcosystemP4 ()
-        transition.cancel( Dino )
-        timer.cancel( gorighttimer )
-        physics.pause( Dino )
-        Dino:setSequence( "normalWalk" )
-        Dino:play()
-        transition.to( Dino, { time=2000, x=2836 } )
-        if Dino.x >= 2836 then
-            print("Moving left")
-            Dino.xScale = 5
-        elseif Dino.x <= 2836 then
-            print("Moving right")
-            Dino.xScale = -5     
-        end
-  
-        if P4MediumPlants.isVisible == false then
+        if EatChecker == true then
             do return end
         else
-            toggleVisibility( P4MediumPlants )
-        end
+         EatChecker = true
+         P4ShowRings ()
+         transition.cancel( Dino )
+         timer.cancel( gorighttimer )
+         physics.pause( Dino )
+         Dino:setSequence( "normalWalk" )
+         Dino:play()
+         transition.to( Dino, { time=2000, x=2836 } )
+            if Dino.x >= 2836 then
+             print("Moving left")
+             Dino.xScale = 5
+            elseif Dino.x <= 2836 then
+             print("Moving right")
+             Dino.xScale = -5     
+            end
   
-        if P4LargePlants.isVisible == false then
-            do return end
-        else
-           toggleVisibility( P4LargePlants )
-        end
+            if P4MediumPlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P4MediumPlants )
+            end
+  
+            if P4LargePlants.isVisible == false then
+             do return end
+            else
+             toggleVisibility( P4LargePlants )
+            end
           
-        local TimeTillEat4 = 2  -- 10 minutes = 600 seconds
+         local TimeTillEat4 = 2  -- 10 minutes = 600 seconds
   
-        function updateTimeTillEat4( event )
+            function updateTimeTillEat4( event )
   
-           -- Decrement the number of seconds
-           TimeTillEat4 = TimeTillEat4 - 1
+             -- Decrement the number of seconds
+             TimeTillEat4 = TimeTillEat4 - 1
   
-           -- Time is tracked in seconds; convert it to minutes and seconds
-           local minutes = math.floor( TimeTillEat4 / 2 )
-           local seconds = TimeTillEat4 % 2
+             -- Time is tracked in seconds; convert it to minutes and seconds
+             local minutes = math.floor( TimeTillEat4 / 2 )
+             local seconds = TimeTillEat4 % 2
   
-           TimeToEatEcosystem4 ()
-        end
+             TimeToEatEcosystem4 ()
+            end
   
-        ReadyToEat4Timer = timer.performWithDelay( 1000, updateTimeTillEat4, TimeTillEat4 )
+         ReadyToEat4Timer = timer.performWithDelay( 1000, updateTimeTillEat4, TimeTillEat4 )
   
-       function TimeToEatEcosystem4()
-            if TimeTillEat4 <= 0 then
-              EatEcosystem4 ()      
+            function TimeToEatEcosystem4()
+                if TimeTillEat4 <= 0 then
+                 EatEcosystem4 ()      
+                end
             end
         end
     end
@@ -1008,18 +1051,14 @@ function scene:create( event )
 
     -- Clouds
     local function CloudAmbience ()
-        clouds ()
+        cloudSpawn1 ()
         mountainOverlayer ()
         sceneGroup:insert( mountainOverlay )
         mountainOverlay:toBack()
         sceneGroup:insert( cloud1 )
         cloud1:toBack()
-        sceneGroup:insert( cloud2 )
-        cloud2:toBack()
-        sceneGroup:insert( cloud3 )
-        cloud3:toBack()
 
-        cloudDuplicateSeconds = 35
+        cloudDuplicateSeconds = 90
 
         function cloudDuplicateTimer( event )
   
@@ -1027,8 +1066,8 @@ function scene:create( event )
           cloudDuplicateSeconds = cloudDuplicateSeconds - 1
   
           -- Time is tracked in seconds; convert it to minutes and seconds
-          local minutes = math.floor( cloudDuplicateSeconds / 35 )
-          local seconds = cloudDuplicateSeconds % 35
+          local minutes = math.floor( cloudDuplicateSeconds / 80 )
+          local seconds = cloudDuplicateSeconds % 80
   
           cloudDuplicate ()
   
@@ -1037,6 +1076,16 @@ function scene:create( event )
         cloudsDuplicationTimer = timer.performWithDelay( 1000, cloudDuplicateTimer, cloudDuplicateSeconds )
   
         function cloudDuplicate ()
+            if cloudDuplicateSeconds == 60 then
+                cloudSpawn2 ()
+                sceneGroup:insert( cloud2 )
+                cloud2:toBack()
+            end
+            if cloudDuplicateSeconds == 30 then
+                cloudSpawn3 ()
+                sceneGroup:insert( cloud3 )
+                cloud3:toBack()
+            end
             if cloudDuplicateSeconds <= 0 then
              timer.cancel( cloudsDuplicationTimer )
              CloudAmbience ()
@@ -1131,6 +1180,7 @@ function scene:create( event )
     -- Rainbow
     local function RainbowAmbience ()
 
+        display.remove( Rainbow )
         local Rainbowseconds = 100
   
         local function RainbowClock( event )
@@ -1139,8 +1189,8 @@ function scene:create( event )
             Rainbowseconds = Rainbowseconds - 1
     
             -- Time is tracked in seconds; convert it to minutes and seconds
-            local minutes = math.floor( Rainbowseconds / 240 )
-            local seconds = Rainbowseconds % 240
+            local minutes = math.floor( Rainbowseconds / 100 )
+            local seconds = Rainbowseconds % 100
     
             RainbowSpawn ()
             RainbowClockReset()
@@ -1163,9 +1213,9 @@ function scene:create( event )
         end
 
         function RainbowClockReset ()
-            if Rainbowseconds <= 0 then
-                timer.cancel( RainbowClocktimer )
+            if Rainbowseconds == 0 then
                 display.remove( Rainbow )
+                timer.cancel( RainbowClocktimer )
                 RainbowAmbience ()
             end
         end
@@ -1276,9 +1326,9 @@ function scene:create( event )
     P4Colouring.y = display.contentCenterY+1
     sceneGroup:insert( P4Colouring )
 
-    ------------------------------------
-    -- Colour indicators (Brushes)
-    ------------------------------------
+    ----------------------
+    -- Colour indicators
+    ----------------------
 
     -- Player One
     BrushP1 = display.newImageRect( "images/paintbuttons/Colour Indicator/Brush1.png", 180, 180)
@@ -1334,21 +1384,25 @@ function scene:create( event )
     
     -- Buttons for Player 1
     selectionSetupP1 ()
+    P1Rings ()
     sceneGroup:insert( P1Select )
 
     -- Buttons for Player 2
     selectionSetupP2 ()
+    P2Rings ()
     sceneGroup:insert( P2Select )
 
     -- Buttons for Player 3
     selectionSetupP3 ()
+    P3Rings ()
     sceneGroup:insert( P3Select )
 
     -- Buttons for Player 4
     selectionSetupP4 ()
+    P4Rings ()
     sceneGroup:insert( P4Select )
 
-    buttonFlipOne ( event )
+    RingControl ()
 
     ---------------------------------------
     --Creates Spawn functions for buttons
@@ -1360,40 +1414,41 @@ function scene:create( event )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P1 ()
-      toggleVisibility( donebtn_spawnFlaxP1 )
-      toggleVisibility( compostButtonFlaxP1 )
+       donebtn_spawnFlaxP1.isVisible = true
+       compostButtonFlaxP1.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP1 ()
-      createFlaxP1 ()
-      P1stampReset()
-      P1stampCounter()
-      btn_stamp4:setFrame(9)
-      btn_outlineStamp4:setFrame(9)
+       clicksound ()
+       resetTimer()
+       chooseNormalP1 ()
+       createFlaxP1 ()
+       P1stampReset()
+       P1stampCounter()
+       btn_stamp4:setFrame(9)
+       btn_outlineStamp4:setFrame(9)
 
-      flax_P1:addEventListener( "tap", tintPlantP1 )
-      flax_P1_2:addEventListener( "tap", tintPlantP1 )
-      flax_P1_3:addEventListener( "tap", tintPlantP1 )
-      flax_P1_4:addEventListener( "tap", tintPlantP1 )
-      flax_P1_5:addEventListener( "tap", tintPlantP1 )
-      flax_P1_6:addEventListener( "tap", tintPlantP1 )
-      flax_P1_7:addEventListener( "tap", tintPlantP1 )
+       flax_P1:addEventListener( "tap", tintPlantP1 )
+       flax_P1_2:addEventListener( "tap", tintPlantP1 )
+       flax_P1_3:addEventListener( "tap", tintPlantP1 )
+       flax_P1_4:addEventListener( "tap", tintPlantP1 )
+       flax_P1_5:addEventListener( "tap", tintPlantP1 )
+       flax_P1_6:addEventListener( "tap", tintPlantP1 )
+       flax_P1_7:addEventListener( "tap", tintPlantP1 )
 
-      P1Colouring:insert( P1Flax )
+       P1Colouring:insert( P1Flax )
 
-      transition.to( P1Select, { time=500, y=(800) } )
+       P1ColouringRing:toFront()
 
-      transition.to( P1Colouring, { time=600, y=(-600) } )
+       transition.to( P1Select, { time=500, y=(800) } )
 
+       transition.to( P1Colouring, { time=600, y=(-600) } )
 
     end
     btn_spawnFlaxP1:addEventListener( "tap", btn_spawn_tapFlax_P1 )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P1 ()
-        toggleVisibility( donebtn_spawnFernP1 )
-        toggleVisibility( compostButtonFernP1 )
+        donebtn_spawnFernP1.isVisible = true
+        compostButtonFernP1.isVisible = true
     
         clicksound ()
         resetTimer()
@@ -1411,6 +1466,8 @@ function scene:create( event )
         fern_P1_5:addEventListener( "tap", tintPlantP1 )
     
         P1Colouring:insert( P1Fern )
+
+        P1ColouringRing:toFront()
     
         transition.to( P1Select, { time=500, y=(800) } )
     
@@ -1421,8 +1478,8 @@ function scene:create( event )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P1 ()
-        toggleVisibility( donebtn_spawnHorsetailP1 )
-        toggleVisibility( compostButtonHorsetailP1 )
+        donebtn_spawnHorsetailP1.isVisible = true
+        compostButtonHorsetailP1.isVisible = true
               
         clicksound ()
         resetTimer()
@@ -1440,6 +1497,8 @@ function scene:create( event )
         Horsetail_P1_5:addEventListener( "tap", tintPlantP1 )
               
         P1Colouring:insert( P1Horsetail )
+
+        P1ColouringRing:toFront()
               
         transition.to( P1Select, { time=500, y=(800) } )
               
@@ -1451,8 +1510,8 @@ function scene:create( event )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P1 ()
-      toggleVisibility( donebtn_spawnPalmP1 )
-      toggleVisibility( compostButtonPalmP1 )
+      donebtn_spawnPalmP1.isVisible = true
+      compostButtonPalmP1.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -1486,8 +1545,8 @@ function scene:create( event )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P1 ()
-        toggleVisibility( donebtn_spawnCycadP1 )
-        toggleVisibility( compostButtonCycadP1 )
+        donebtn_spawnCycadP1.isVisible = true
+        compostButtonCycadP1.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -1516,8 +1575,8 @@ function scene:create( event )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P1 ()
-        toggleVisibility( donebtn_spawnTreeFernP1 )
-        toggleVisibility( compostButtonTreeFernP1 )
+        donebtn_spawnTreeFernP1.isVisible = true
+        compostButtonTreeFernP1.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -1549,8 +1608,8 @@ function scene:create( event )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P1 ()
-        toggleVisibility( donebtn_spawnPineP1 )
-        toggleVisibility( compostButtonPineP1 )
+        donebtn_spawnPineP1.isVisible = true
+        compostButtonPineP1.isVisible = true
 
         clicksound ()
         resetTimer()
@@ -1580,8 +1639,8 @@ function scene:create( event )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P1 ()
-        toggleVisibility( donebtn_spawnKaoriP1 )
-        toggleVisibility( compostButtonKaoriP1 )
+        donebtn_spawnKaoriP1.isVisible = true
+        compostButtonKaoriP1.isVisible = true
             
         clicksound ()
         resetTimer()
@@ -1612,8 +1671,8 @@ function scene:create( event )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P1 ()
-        toggleVisibility( donebtn_spawnMagnoliaP1 )
-        toggleVisibility( compostButtonMagnoliaP1 )
+        donebtn_spawnMagnoliaP1.isVisible = true
+        compostButtonMagnoliaP1.isVisible = true
         
         clicksound ()
         resetTimer()
@@ -1647,8 +1706,8 @@ function scene:create( event )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P2 ()
-      toggleVisibility( donebtn_spawnFlaxP2 )
-      toggleVisibility( compostButtonFlaxP2 )
+      donebtn_spawnFlaxP2.isVisible = true
+      compostButtonFlaxP2.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -1669,6 +1728,8 @@ function scene:create( event )
 
       P2Colouring:insert( P2Flax )
 
+      P2ColouringRing:toFront()
+
       transition.to( P2Select, { time=500, y=(800) } )
 
       transition.to( P2Colouring, { time=600, y=(-600) } )
@@ -1679,8 +1740,8 @@ function scene:create( event )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P2 ()
-        toggleVisibility( donebtn_spawnFernP2 )
-        toggleVisibility( compostButtonFernP2 )
+        donebtn_spawnFernP2.isVisible = true
+        compostButtonFernP2.isVisible = true
     
         clicksound ()
         resetTimer()
@@ -1698,6 +1759,8 @@ function scene:create( event )
         fern_P2_5:addEventListener( "tap", tintPlantP2 )
     
         P2Colouring:insert( P2Fern )
+
+        P2ColouringRing:toFront()
     
         transition.to( P2Select, { time=500, y=(800) } )
     
@@ -1708,8 +1771,8 @@ function scene:create( event )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P2 ()
-        toggleVisibility( donebtn_spawnHorsetailP2 )
-        toggleVisibility( compostButtonHorsetailP2 )
+        donebtn_spawnHorsetailP2.isVisible = true
+        compostButtonHorsetailP2.isVisible = true
               
         clicksound ()
         resetTimer()
@@ -1727,6 +1790,8 @@ function scene:create( event )
         Horsetail_P2_5:addEventListener( "tap", tintPlantP2 )
               
         P2Colouring:insert( P2Horsetail )
+
+        P2ColouringRing:toFront()
               
         transition.to( P2Select, { time=500, y=(800) } )
               
@@ -1738,8 +1803,8 @@ function scene:create( event )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P2 ()
-      toggleVisibility( donebtn_spawnPalmP2 )
-      toggleVisibility( compostButtonPalmP2 )
+      donebtn_spawnPalmP2.isVisible = true
+      compostButtonPalmP2.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -1773,8 +1838,8 @@ function scene:create( event )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P2 ()
-        toggleVisibility( donebtn_spawnCycadP2 )
-        toggleVisibility( compostButtonCycadP2 )
+        donebtn_spawnCycadP2.isVisible = true
+        compostButtonCycadP2.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -1803,8 +1868,8 @@ function scene:create( event )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P2 ()
-        toggleVisibility( donebtn_spawnTreeFernP2 )
-        toggleVisibility( compostButtonTreeFernP2 )
+        donebtn_spawnTreeFernP2.isVisible = true
+        compostButtonTreeFernP2.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -1836,8 +1901,8 @@ function scene:create( event )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P2 ()
-        toggleVisibility( donebtn_spawnPineP2 )
-        toggleVisibility( compostButtonPineP2 )
+        donebtn_spawnPineP2.isVisible = true
+        compostButtonPineP2.isVisible = true
 
         clicksound ()
         resetTimer()
@@ -1867,8 +1932,8 @@ function scene:create( event )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P2 ()
-        toggleVisibility( donebtn_spawnKaoriP2 )
-        toggleVisibility( compostButtonKaoriP2 )
+        donebtn_spawnKaoriP2.isVisible = true
+        compostButtonKaoriP2.isVisible = true
             
         clicksound ()
         resetTimer()
@@ -1899,8 +1964,8 @@ function scene:create( event )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P2 ()
-        toggleVisibility( donebtn_spawnMagnoliaP2 )
-        toggleVisibility( compostButtonMagnoliaP2 )
+        donebtn_spawnMagnoliaP2.isVisible = true
+        compostButtonMagnoliaP2.isVisible = true
         
         clicksound ()
         resetTimer()
@@ -1934,8 +1999,8 @@ function scene:create( event )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P3 ()
-      toggleVisibility( donebtn_spawnFlaxP3 )
-      toggleVisibility( compostButtonFlaxP3 )
+      donebtn_spawnFlaxP3.isVisible = true
+      compostButtonFlaxP3.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -1956,6 +2021,8 @@ function scene:create( event )
 
       P3Colouring:insert( P3Flax )
 
+      P3ColouringRing:toFront()
+
       transition.to( P3Select, { time=500, y=(800) } )
 
       transition.to( P3Colouring, { time=600, y=(-600) } )
@@ -1966,8 +2033,8 @@ function scene:create( event )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P3 ()
-        toggleVisibility( donebtn_spawnFernP3 )
-        toggleVisibility( compostButtonFernP3 )
+        donebtn_spawnFernP3.isVisible = true
+        compostButtonFernP3.isVisible = true
     
         clicksound ()
         resetTimer()
@@ -1985,6 +2052,8 @@ function scene:create( event )
         fern_P3_5:addEventListener( "tap", tintPlantP3 )
     
         P3Colouring:insert( P3Fern )
+
+        P3ColouringRing:toFront()
     
         transition.to( P3Select, { time=500, y=(800) } )
     
@@ -1995,8 +2064,8 @@ function scene:create( event )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P3 ()
-        toggleVisibility( donebtn_spawnHorsetailP3 )
-        toggleVisibility( compostButtonHorsetailP3 )
+        donebtn_spawnHorsetailP3.isVisible = true
+        compostButtonHorsetailP3.isVisible = true
               
         clicksound ()
         resetTimer()
@@ -2014,6 +2083,8 @@ function scene:create( event )
         Horsetail_P3_5:addEventListener( "tap", tintPlantP3 )
               
         P3Colouring:insert( P3Horsetail )
+
+        P3ColouringRing:toFront()
               
         transition.to( P3Select, { time=500, y=(800) } )
               
@@ -2025,8 +2096,8 @@ function scene:create( event )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P3 ()
-      toggleVisibility( donebtn_spawnPalmP3 )
-      toggleVisibility( compostButtonPalmP3 )
+      donebtn_spawnPalmP3.isVisible = true
+      compostButtonPalmP3.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -2060,8 +2131,8 @@ function scene:create( event )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P3 ()
-        toggleVisibility( donebtn_spawnCycadP3 )
-        toggleVisibility( compostButtonCycadP3 )
+        donebtn_spawnCycadP3.isVisible = true
+        compostButtonCycadP3.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -2090,8 +2161,8 @@ function scene:create( event )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P3 ()
-        toggleVisibility( donebtn_spawnTreeFernP3 )
-        toggleVisibility( compostButtonTreeFernP3 )
+        donebtn_spawnTreeFernP3.isVisible = true
+        compostButtonTreeFernP3.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -2123,8 +2194,8 @@ function scene:create( event )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P3 ()
-        toggleVisibility( donebtn_spawnPineP3 )
-        toggleVisibility( compostButtonPineP3 )
+        donebtn_spawnPineP3.isVisible = true
+        compostButtonPineP3.isVisible = true
 
         clicksound ()
         resetTimer()
@@ -2154,8 +2225,8 @@ function scene:create( event )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P3 ()
-        toggleVisibility( donebtn_spawnKaoriP3 )
-        toggleVisibility( compostButtonKaoriP3 )
+        donebtn_spawnKaoriP3.isVisible = true
+        compostButtonKaoriP3.isVisible = true
             
         clicksound ()
         resetTimer()
@@ -2186,8 +2257,8 @@ function scene:create( event )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P3 ()
-        toggleVisibility( donebtn_spawnMagnoliaP3 )
-        toggleVisibility( compostButtonMagnoliaP3 )
+        donebtn_spawnMagnoliaP3.isVisible = true
+        compostButtonMagnoliaP3.isVisible = true
         
         clicksound ()
         resetTimer()
@@ -2221,8 +2292,8 @@ function scene:create( event )
 
    -- Spawn Flax
     local function btn_spawn_tapFlax_P4 ()
-      toggleVisibility( donebtn_spawnFlaxP4 )
-      toggleVisibility( compostButtonFlaxP4 )
+      donebtn_spawnFlaxP4.isVisible = true
+      compostButtonFlaxP4.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -2243,6 +2314,8 @@ function scene:create( event )
 
       P4Colouring:insert( P4Flax )
 
+      P4ColouringRing:toFront()
+
       transition.to( P4Select, { time=500, y=(800) } )
 
       transition.to( P4Colouring, { time=600, y=(-600) } )
@@ -2253,8 +2326,8 @@ function scene:create( event )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P4 ()
-        toggleVisibility( donebtn_spawnFernP4 )
-        toggleVisibility( compostButtonFernP4 )
+        donebtn_spawnFernP4.isVisible = true
+        compostButtonFernP4.isVisible = true
     
         clicksound ()
         resetTimer()
@@ -2272,6 +2345,8 @@ function scene:create( event )
         fern_P4_5:addEventListener( "tap", tintPlantP4 )
     
         P4Colouring:insert( P4Fern )
+
+        P4ColouringRing:toFront()
     
         transition.to( P4Select, { time=500, y=(800) } )
     
@@ -2282,8 +2357,8 @@ function scene:create( event )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P4 ()
-        toggleVisibility( donebtn_spawnHorsetailP4 )
-        toggleVisibility( compostButtonHorsetailP4 )
+        donebtn_spawnHorsetailP4.isVisible = true
+        compostButtonHorsetailP4.isVisible = true
               
         clicksound ()
         resetTimer()
@@ -2301,6 +2376,8 @@ function scene:create( event )
         Horsetail_P4_5:addEventListener( "tap", tintPlantP4 )
               
         P4Colouring:insert( P4Horsetail )
+
+        P4ColouringRing:toFront()
               
         transition.to( P4Select, { time=500, y=(800) } )
               
@@ -2312,8 +2389,8 @@ function scene:create( event )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P4 ()
-      toggleVisibility( donebtn_spawnPalmP4 )
-      toggleVisibility( compostButtonPalmP4 )
+      donebtn_spawnPalmP4.isVisible = true
+      compostButtonPalmP4.isVisible = true
 
       clicksound ()
       resetTimer()
@@ -2347,8 +2424,8 @@ function scene:create( event )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P4 ()
-        toggleVisibility( donebtn_spawnCycadP4 )
-        toggleVisibility( compostButtonCycadP4 )
+        donebtn_spawnCycadP4.isVisible = true
+        compostButtonCycadP4.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -2377,8 +2454,8 @@ function scene:create( event )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P4 ()
-        toggleVisibility( donebtn_spawnTreeFernP4 )
-        toggleVisibility( compostButtonTreeFernP4 )
+        donebtn_spawnTreeFernP4.isVisible = true
+        compostButtonTreeFernP4.isVisible = true
   
         clicksound ()
         resetTimer()
@@ -2410,8 +2487,8 @@ function scene:create( event )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P4 ()
-        toggleVisibility( donebtn_spawnPineP4 )
-        toggleVisibility( compostButtonPineP4 )
+        donebtn_spawnPineP4.isVisible = true
+        compostButtonPineP4.isVisible = true
 
         clicksound ()
         resetTimer()
@@ -2441,8 +2518,8 @@ function scene:create( event )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P4 ()
-        toggleVisibility( donebtn_spawnKaoriP4 )
-        toggleVisibility( compostButtonKaoriP4 )
+        donebtn_spawnKaoriP4.isVisible = true
+        compostButtonKaoriP4.isVisible = true
             
         clicksound ()
         resetTimer()
@@ -2473,8 +2550,8 @@ function scene:create( event )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P4 ()
-        toggleVisibility( donebtn_spawnMagnoliaP4 )
-        toggleVisibility( compostButtonMagnoliaP4 )
+        donebtn_spawnMagnoliaP4.isVisible = true
+        compostButtonMagnoliaP4.isVisible = true
         
         clicksound ()
         resetTimer()
@@ -2526,7 +2603,7 @@ function scene:create( event )
         SmallPlantCountP1 = SmallPlantCountP1 + 1
 
         if SmallPlantCountP1 == 1 then
-
+         P1HideRings ()
          toggleVisibility( P1MediumPlants )
         end
         
@@ -2560,8 +2637,8 @@ function scene:create( event )
         P1Flax:toFront()
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP1 )
-        toggleVisibility( compostButtonFlaxP1 )
+        donebtn_spawnFlaxP1.isVisible = false
+        compostButtonFlaxP1.isVisible = false
 
     end
     donebtn_spawnFlaxP1:addEventListener( "tap", donebtn_spawn_tapFlaxP1 )
@@ -2582,6 +2659,7 @@ function scene:create( event )
         SmallPlantCountP1 = SmallPlantCountP1 + 1
     
         if SmallPlantCountP1 == 1 then
+            P1HideRings ()
             toggleVisibility( P1MediumPlants )
         end  
     
@@ -2613,8 +2691,8 @@ function scene:create( event )
         P1Fern:toFront()
     
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP1 )
-        toggleVisibility( compostButtonFernP1 )
+        donebtn_spawnFernP1.isVisible = false
+        compostButtonFernP1.isVisible = false
     
     end
     donebtn_spawnFernP1:addEventListener( "tap", donebtn_spawn_tapFernP1 )
@@ -2635,7 +2713,7 @@ function scene:create( event )
         SmallPlantCountP1 = SmallPlantCountP1 + 1
     
         if SmallPlantCountP1 == 1 then
-    
+            P1HideRings ()
             toggleVisibility( P1MediumPlants )
         end
             
@@ -2667,8 +2745,8 @@ function scene:create( event )
         P1Horsetail:toFront()
     
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP1 )
-        toggleVisibility( compostButtonHorsetailP1 )
+        donebtn_spawnHorsetailP1.isVisible = false
+        compostButtonHorsetailP1.isVisible = false
 
     end
     donebtn_spawnHorsetailP1:addEventListener( "tap", donebtn_spawn_tapHorsetailP1 )
@@ -2725,8 +2803,8 @@ function scene:create( event )
         ecosystem_P1:insert( P1Palm )
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP1 )
-        toggleVisibility( compostButtonPalmP1 )
+        donebtn_spawnPalmP1.isVisible = false
+        compostButtonPalmP1.isVisible = false
 
     end
     donebtn_spawnPalmP1:addEventListener( "tap", donebtn_spawn_tapPalmP1 )
@@ -2778,8 +2856,8 @@ function scene:create( event )
         ecosystem_P1:insert( P1Cycad )
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP1 )
-        toggleVisibility( compostButtonCycadP1 )
+        donebtn_spawnCycadP1.isVisible = false
+        compostButtonCycadP1.isVisible = false
 
     end
     donebtn_spawnCycadP1:addEventListener( "tap", donebtn_spawn_tapCycadP1 )
@@ -2834,8 +2912,8 @@ function scene:create( event )
         ecosystem_P1:insert( P1TreeFern )
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP1 )
-        toggleVisibility( compostButtonTreeFernP1 )
+        donebtn_spawnTreeFernP1.isVisible = false
+        compostButtonTreeFernP1.isVisible = false
 
     end
     donebtn_spawnTreeFernP1:addEventListener( "tap", donebtn_spawn_tapTreeFernP1 )
@@ -2885,8 +2963,8 @@ function scene:create( event )
         P1Pine:toBack()
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP1 )
-        toggleVisibility( compostButtonPineP1 )
+        donebtn_spawnPineP1.isVisible = false
+        compostButtonPineP1.isVisible = false
 
     end
     donebtn_spawnPineP1:addEventListener( "tap", donebtn_spawn_tapPineP1 )
@@ -2937,8 +3015,8 @@ function scene:create( event )
         P1Kaori:toBack()
     
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP1 )
-        toggleVisibility( compostButtonKaoriP1 )
+        donebtn_spawnKaoriP1.isVisible = false
+        compostButtonKaoriP1.isVisible = false
     
     end
     donebtn_spawnKaoriP1:addEventListener( "tap", donebtn_spawn_tapKaoriP1 )
@@ -2988,8 +3066,8 @@ function scene:create( event )
         P1Magnolia:toBack()
 
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP1 )
-        toggleVisibility( compostButtonMagnoliaP1 )
+        donebtn_spawnMagnoliaP1.isVisible = false
+        compostButtonMagnoliaP1.isVisible = false
 
     end
     donebtn_spawnMagnoliaP1:addEventListener( "tap", donebtn_spawn_tapMagnoliaP1 )
@@ -3014,7 +3092,7 @@ function scene:create( event )
         SmallPlantCountP2 = SmallPlantCountP2 + 1
 
         if SmallPlantCountP2 == 1 then
-
+         P2HideRings ()
          toggleVisibility( P2MediumPlants )
         end
         
@@ -3023,7 +3101,7 @@ function scene:create( event )
         end  
 
         transition.to(P2Flax, {
-            x= math.random(-200, 400 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
         flax_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3048,8 +3126,8 @@ function scene:create( event )
         P2Flax:toFront()
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP2 )
-        toggleVisibility( compostButtonFlaxP2 )
+        donebtn_spawnFlaxP2.isVisible = false
+        compostButtonFlaxP2.isVisible = false
 
     end
     donebtn_spawnFlaxP2:addEventListener( "tap", donebtn_spawn_tapFlaxP2 )
@@ -3070,6 +3148,7 @@ function scene:create( event )
         SmallPlantCountP2 = SmallPlantCountP2 + 1
     
         if SmallPlantCountP2 == 1 then
+            P2HideRings ()
             toggleVisibility( P2MediumPlants )
         end  
     
@@ -3078,7 +3157,7 @@ function scene:create( event )
         end 
     
         transition.to(P2Fern, {
-            x= math.random(-200, 600 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1080, -1075),
             time=1000})
         fern_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3101,8 +3180,8 @@ function scene:create( event )
         P2Fern:toFront()
     
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP2 )
-        toggleVisibility( compostButtonFernP2 )
+        donebtn_spawnFernP2.isVisible = false
+        compostButtonFernP2.isVisible = false
     
     end
     donebtn_spawnFernP2:addEventListener( "tap", donebtn_spawn_tapFernP2 )
@@ -3123,7 +3202,7 @@ function scene:create( event )
         SmallPlantCountP2 = SmallPlantCountP2 + 1
     
         if SmallPlantCountP2 == 1 then
-    
+            P2HideRings ()
             toggleVisibility( P2MediumPlants )
         end
             
@@ -3132,7 +3211,7 @@ function scene:create( event )
         end  
     
         transition.to(P2Horsetail, {
-            x= math.random(-200, 400 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
         Horsetail_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3155,8 +3234,8 @@ function scene:create( event )
         P2Horsetail:toFront()
     
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP2 )
-        toggleVisibility( compostButtonHorsetailP2 )
+        donebtn_spawnHorsetailP2.isVisible = false
+        compostButtonHorsetailP2.isVisible = false
 
     end
     donebtn_spawnHorsetailP2:addEventListener( "tap", donebtn_spawn_tapHorsetailP2 )
@@ -3186,7 +3265,7 @@ function scene:create( event )
         end 
 
         transition.to(P2Palm, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1210, -1205),
             time=1000})
         palm_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3213,8 +3292,8 @@ function scene:create( event )
         ecosystem_P2:insert( P2Palm )
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP2 )
-        toggleVisibility( compostButtonPalmP2 )
+        donebtn_spawnPalmP2.isVisible = false
+        compostButtonPalmP2.isVisible = false
 
     end
     donebtn_spawnPalmP2:addEventListener( "tap", donebtn_spawn_tapPalmP2 )
@@ -3243,7 +3322,7 @@ function scene:create( event )
         end 
 
         transition.to(P2Cycad, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1230, -1225),
             time=1000})
         Cycad_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3266,8 +3345,8 @@ function scene:create( event )
         ecosystem_P2:insert( P2Cycad )
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP2 )
-        toggleVisibility( compostButtonCycadP2 )
+        donebtn_spawnCycadP2.isVisible = false
+        compostButtonCycadP2.isVisible = false
 
     end
     donebtn_spawnCycadP2:addEventListener( "tap", donebtn_spawn_tapCycadP2 )
@@ -3296,7 +3375,7 @@ function scene:create( event )
         end 
 
         transition.to(P2TreeFern, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1290, -1285),
             time=1000})
         TreeFern_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3322,8 +3401,8 @@ function scene:create( event )
         ecosystem_P2:insert( P2TreeFern )
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP2 )
-        toggleVisibility( compostButtonTreeFernP2 )
+        donebtn_spawnTreeFernP2.isVisible = false
+        compostButtonTreeFernP2.isVisible = false
 
     end
     donebtn_spawnTreeFernP2:addEventListener( "tap", donebtn_spawn_tapTreeFernP2 )
@@ -3348,7 +3427,7 @@ function scene:create( event )
         end 
 
         transition.to(P2Pine, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1535, -1530),
             time=1000})
         pine_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3373,8 +3452,8 @@ function scene:create( event )
         P2Pine:toBack()
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP2 )
-        toggleVisibility( compostButtonPineP2 )
+        donebtn_spawnPineP2.isVisible = false
+        compostButtonPineP2.isVisible = false
 
     end
     donebtn_spawnPineP2:addEventListener( "tap", donebtn_spawn_tapPineP2 )
@@ -3399,7 +3478,7 @@ function scene:create( event )
         end 
     
         transition.to(P2Kaori, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1545, -1540),
             time=1000})
         Kaori_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3425,8 +3504,8 @@ function scene:create( event )
         P2Kaori:toBack()
     
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP2 )
-        toggleVisibility( compostButtonKaoriP2 )
+        donebtn_spawnKaoriP2.isVisible = false
+        compostButtonKaoriP2.isVisible = false
     
     end
     donebtn_spawnKaoriP2:addEventListener( "tap", donebtn_spawn_tapKaoriP2 )
@@ -3451,7 +3530,7 @@ function scene:create( event )
         end 
 
         transition.to(P2Magnolia, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P2:removeEventListener( "tap", tintPlantP2 )
@@ -3476,8 +3555,8 @@ function scene:create( event )
         P2Magnolia:toBack()
 
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP2 )
-        toggleVisibility( compostButtonMagnoliaP2 )
+        donebtn_spawnMagnoliaP2.isVisible = false
+        compostButtonMagnoliaP2.isVisible = false
 
     end
     donebtn_spawnMagnoliaP2:addEventListener( "tap", donebtn_spawn_tapMagnoliaP2 )
@@ -3502,8 +3581,8 @@ function scene:create( event )
         SmallPlantCountP3 = SmallPlantCountP3 + 1
 
         if SmallPlantCountP3 == 1 then
-
-         toggleVisibility( P3MediumPlants )
+          P3HideRings ()
+          toggleVisibility( P3MediumPlants )
         end
         
         if LargePlantCountP3 >=3 and FinishedPlantCountP3 >=6  then
@@ -3511,7 +3590,7 @@ function scene:create( event )
         end  
 
         transition.to(P3Flax, {
-            x= math.random(-200, 400 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1105, -1100),
             time=1000})
         flax_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3536,8 +3615,8 @@ function scene:create( event )
         P3Flax:toFront()
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP3 )
-        toggleVisibility( compostButtonFlaxP3 )
+        donebtn_spawnFlaxP3.isVisible = false
+        compostButtonFlaxP3.isVisible = false
 
     end
     donebtn_spawnFlaxP3:addEventListener( "tap", donebtn_spawn_tapFlaxP3 )
@@ -3558,6 +3637,7 @@ function scene:create( event )
         SmallPlantCountP3 = SmallPlantCountP3 + 1
     
         if SmallPlantCountP3 == 1 then
+            P3HideRings ()
             toggleVisibility( P3MediumPlants )
         end  
     
@@ -3566,7 +3646,7 @@ function scene:create( event )
         end 
     
         transition.to(P3Fern, {
-            x= math.random(-200, 600 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1080, -1075),
             time=1000})
         fern_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3589,8 +3669,8 @@ function scene:create( event )
         P3Fern:toFront()
     
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP3 )
-        toggleVisibility( compostButtonFernP3 )
+        donebtn_spawnFernP3.isVisible = false
+        compostButtonFernP3.isVisible = false
     
     end
     donebtn_spawnFernP3:addEventListener( "tap", donebtn_spawn_tapFernP3 )
@@ -3611,7 +3691,7 @@ function scene:create( event )
         SmallPlantCountP3 = SmallPlantCountP3 + 1
     
         if SmallPlantCountP3 == 1 then
-    
+            P3HideRings ()
             toggleVisibility( P3MediumPlants )
         end
             
@@ -3620,7 +3700,7 @@ function scene:create( event )
         end  
     
         transition.to(P3Horsetail, {
-            x= math.random(-200, 400 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1120, -1115),
             time=1000})
         Horsetail_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3643,8 +3723,8 @@ function scene:create( event )
         P3Horsetail:toFront()
     
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP3 )
-        toggleVisibility( compostButtonHorsetailP3 )
+        donebtn_spawnHorsetailP3.isVisible = false
+        compostButtonHorsetailP3.isVisible = false
 
     end
     donebtn_spawnHorsetailP3:addEventListener( "tap", donebtn_spawn_tapHorsetailP3 )
@@ -3674,7 +3754,7 @@ function scene:create( event )
         end 
 
         transition.to(P3Palm, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1210, -1205),
             time=1000})
         palm_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3701,8 +3781,8 @@ function scene:create( event )
         ecosystem_P3:insert( P3Palm )
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP3 )
-        toggleVisibility( compostButtonPalmP3 )
+        donebtn_spawnPalmP3.isVisible = false
+        compostButtonPalmP3.isVisible = false
 
     end
     donebtn_spawnPalmP3:addEventListener( "tap", donebtn_spawn_tapPalmP3 )
@@ -3731,7 +3811,7 @@ function scene:create( event )
         end 
 
         transition.to(P3Cycad, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1230, -1225),
             time=1000})
         Cycad_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3754,8 +3834,8 @@ function scene:create( event )
         ecosystem_P3:insert( P3Cycad )
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP3 )
-        toggleVisibility( compostButtonCycadP3 )
+        donebtn_spawnCycadP3.isVisible = false
+        compostButtonCycadP3.isVisible = false
 
     end
     donebtn_spawnCycadP3:addEventListener( "tap", donebtn_spawn_tapCycadP3 )
@@ -3784,7 +3864,7 @@ function scene:create( event )
         end 
 
         transition.to(P3TreeFern, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1290, -1285),
             time=1000})
         TreeFern_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3810,8 +3890,8 @@ function scene:create( event )
         ecosystem_P3:insert( P3TreeFern )
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP3 )
-        toggleVisibility( compostButtonTreeFernP3 )
+        donebtn_spawnTreeFernP3.isVisible = false
+        compostButtonTreeFernP3.isVisible = false
 
     end
     donebtn_spawnTreeFernP3:addEventListener( "tap", donebtn_spawn_tapTreeFernP3 )
@@ -3836,7 +3916,7 @@ function scene:create( event )
         end 
 
         transition.to(P3Pine, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1535, -1530),
             time=1000})
         pine_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3861,8 +3941,8 @@ function scene:create( event )
         P3Pine:toBack()
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP3 )
-        toggleVisibility( compostButtonPineP3 )
+        donebtn_spawnPineP3.isVisible = false
+        compostButtonPineP3.isVisible = false
 
     end
     donebtn_spawnPineP3:addEventListener( "tap", donebtn_spawn_tapPineP3 )
@@ -3887,7 +3967,7 @@ function scene:create( event )
         end 
     
         transition.to(P3Kaori, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1545, -1540),
             time=1000})
         Kaori_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3913,8 +3993,8 @@ function scene:create( event )
         P3Kaori:toBack()
     
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP3 )
-        toggleVisibility( compostButtonKaoriP3 )
+        donebtn_spawnKaoriP3.isVisible = false
+        compostButtonKaoriP3.isVisible = false
     
     end
     donebtn_spawnKaoriP3:addEventListener( "tap", donebtn_spawn_tapKaoriP3 )
@@ -3939,7 +4019,7 @@ function scene:create( event )
         end 
 
         transition.to(P3Magnolia, {
-            x= math.random(-300, 500 ),
+            x= math.random(-400, 400 ),
             y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P3:removeEventListener( "tap", tintPlantP3 )
@@ -3964,8 +4044,8 @@ function scene:create( event )
         P3Magnolia:toBack()
 
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP3 )
-        toggleVisibility( compostButtonMagnoliaP3 )
+        donebtn_spawnMagnoliaP3.isVisible = false
+        compostButtonMagnoliaP3.isVisible = false
 
     end
     donebtn_spawnMagnoliaP3:addEventListener( "tap", donebtn_spawn_tapMagnoliaP3 )
@@ -3990,7 +4070,7 @@ function scene:create( event )
         SmallPlantCountP4 = SmallPlantCountP4 + 1
 
         if SmallPlantCountP4 == 1 then
-
+         P4HideRings ()
          toggleVisibility( P4MediumPlants )
         end
         
@@ -3999,7 +4079,7 @@ function scene:create( event )
         end  
 
         transition.to(P4Flax, {
-            x= math.random(-200, 400 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1105, -1100),
             time=1000})
         flax_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4024,8 +4104,8 @@ function scene:create( event )
         P4Flax:toFront()
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP4 )
-        toggleVisibility( compostButtonFlaxP4 )
+        donebtn_spawnFlaxP4.isVisible = false
+        compostButtonFlaxP4.isVisible = false
 
     end
     donebtn_spawnFlaxP4:addEventListener( "tap", donebtn_spawn_tapFlaxP4 )
@@ -4046,6 +4126,7 @@ function scene:create( event )
         SmallPlantCountP4 = SmallPlantCountP4 + 1
     
         if SmallPlantCountP4 == 1 then
+            P4HideRings ()
             toggleVisibility( P4MediumPlants )
         end  
     
@@ -4054,7 +4135,7 @@ function scene:create( event )
         end 
     
         transition.to(P4Fern, {
-            x= math.random(-200, 600 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1080, -1075),
             time=1000})
         fern_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4077,8 +4158,8 @@ function scene:create( event )
         P4Fern:toFront()
     
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP4 )
-        toggleVisibility( compostButtonFernP4 )
+        donebtn_spawnFernP4.isVisible = false
+        compostButtonFernP4.isVisible = false
     
     end
     donebtn_spawnFernP4:addEventListener( "tap", donebtn_spawn_tapFernP4 )
@@ -4099,7 +4180,7 @@ function scene:create( event )
         SmallPlantCountP4 = SmallPlantCountP4 + 1
     
         if SmallPlantCountP4 == 1 then
-    
+            P4HideRings ()
             toggleVisibility( P4MediumPlants )
         end
             
@@ -4108,7 +4189,7 @@ function scene:create( event )
         end  
     
         transition.to(P4Horsetail, {
-            x= math.random(-200, 400 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1120, -1115),
             time=1000})
         Horsetail_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4131,8 +4212,8 @@ function scene:create( event )
         P4Horsetail:toFront()
     
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP4 )
-        toggleVisibility( compostButtonHorsetailP4 )
+        donebtn_spawnHorsetailP4.isVisible = false
+        compostButtonHorsetailP4.isVisible = false
 
     end
     donebtn_spawnHorsetailP4:addEventListener( "tap", donebtn_spawn_tapHorsetailP4 )
@@ -4162,7 +4243,7 @@ function scene:create( event )
         end 
 
         transition.to(P4Palm, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1210, -1205),
             time=1000})
         palm_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4189,8 +4270,8 @@ function scene:create( event )
         ecosystem_P4:insert( P4Palm )
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP4 )
-        toggleVisibility( compostButtonPalmP4 )
+        donebtn_spawnPalmP4.isVisible = false
+        compostButtonPalmP4.isVisible = false
 
     end
     donebtn_spawnPalmP4:addEventListener( "tap", donebtn_spawn_tapPalmP4 )
@@ -4219,7 +4300,7 @@ function scene:create( event )
         end 
 
         transition.to(P4Cycad, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1230, -1225),
             time=1000})
         Cycad_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4242,8 +4323,8 @@ function scene:create( event )
         ecosystem_P4:insert( P4Cycad )
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP4 )
-        toggleVisibility( compostButtonCycadP4 )
+        donebtn_spawnCycadP4.isVisible = false
+        compostButtonCycadP4.isVisible = false
 
     end
     donebtn_spawnCycadP4:addEventListener( "tap", donebtn_spawn_tapCycadP4 )
@@ -4272,7 +4353,7 @@ function scene:create( event )
         end 
 
         transition.to(P4TreeFern, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1290, -1285),
             time=1000})
         TreeFern_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4298,8 +4379,8 @@ function scene:create( event )
         ecosystem_P4:insert( P4TreeFern )
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP4 )
-        toggleVisibility( compostButtonTreeFernP4 )
+        donebtn_spawnTreeFernP4.isVisible = false
+        compostButtonTreeFernP4.isVisible = false
 
     end
     donebtn_spawnTreeFernP4:addEventListener( "tap", donebtn_spawn_tapTreeFernP4 )
@@ -4324,7 +4405,7 @@ function scene:create( event )
         end 
 
         transition.to(P4Pine, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1535, -1530),
             time=1000})
         pine_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4349,8 +4430,8 @@ function scene:create( event )
         P4Pine:toBack()
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP4 )
-        toggleVisibility( compostButtonPineP4 )
+        donebtn_spawnPineP4.isVisible = false
+        compostButtonPineP4.isVisible = false
 
     end
     donebtn_spawnPineP4:addEventListener( "tap", donebtn_spawn_tapPineP4 )
@@ -4375,7 +4456,7 @@ function scene:create( event )
         end 
     
         transition.to(P4Kaori, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1545, -1540),
             time=1000})
         Kaori_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4401,8 +4482,8 @@ function scene:create( event )
         P4Kaori:toBack()
     
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP4 )
-        toggleVisibility( compostButtonKaoriP4 )
+        donebtn_spawnKaoriP4.isVisible = false
+        compostButtonKaoriP4.isVisible = false
     
     end
     donebtn_spawnKaoriP4:addEventListener( "tap", donebtn_spawn_tapKaoriP4 )
@@ -4427,7 +4508,7 @@ function scene:create( event )
         end 
 
         transition.to(P4Magnolia, {
-            x= math.random(-300, 500 ),
+            x= math.random(-600, 100 ),
             y= math.random(-1835, -1830),
             time=1000})
         Magnolia_P4:removeEventListener( "tap", tintPlantP4 )
@@ -4452,8 +4533,8 @@ function scene:create( event )
         P4Magnolia:toBack()
 
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP4 )
-        toggleVisibility( compostButtonMagnoliaP4 )
+        donebtn_spawnMagnoliaP4.isVisible = false
+        compostButtonMagnoliaP4.isVisible = false
 
     end
     donebtn_spawnMagnoliaP4:addEventListener( "tap", donebtn_spawn_tapMagnoliaP4 )
@@ -4471,8 +4552,8 @@ function scene:create( event )
         display.remove( P1Flax )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP1 )
-        toggleVisibility( compostButtonFlaxP1 )
+        donebtn_spawnFlaxP1.isVisible = false
+        compostButtonFlaxP1.isVisible = false
     end
     compostButtonFlaxP1:addEventListener( "tap", CompostP1Flax )
 
@@ -4482,8 +4563,8 @@ function scene:create( event )
         display.remove( P1Fern )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP1 )
-        toggleVisibility( compostButtonFernP1 )
+        donebtn_spawnFernP1.isVisible = false
+        compostButtonFernP1.isVisible = false
     end
     compostButtonFernP1:addEventListener( "tap", CompostP1Fern )
 
@@ -4493,8 +4574,8 @@ function scene:create( event )
         display.remove( P1Horsetail )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP1 )
-        toggleVisibility( compostButtonHorsetailP1 )
+        donebtn_spawnHorsetailP1.isVisible = false
+        compostButtonHorsetailP1.isVisible = false
     end
     compostButtonHorsetailP1:addEventListener( "tap", CompostP1Horsetail )
 
@@ -4504,8 +4585,8 @@ function scene:create( event )
         display.remove( P1Palm )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP1 )
-        toggleVisibility( compostButtonPalmP1 )
+        donebtn_spawnPalmP1.isVisible = false
+        compostButtonPalmP1.isVisible = false
     end
     compostButtonPalmP1:addEventListener( "tap", CompostP1Palm )
 
@@ -4515,8 +4596,8 @@ function scene:create( event )
         display.remove( P1Cycad )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP1 )
-        toggleVisibility( compostButtonCycadP1 )
+        donebtn_spawnCycadP1.isVisible = false
+        compostButtonCycadP1.isVisible = false
     end
     compostButtonCycadP1:addEventListener( "tap", CompostP1Cycad )
 
@@ -4526,8 +4607,8 @@ function scene:create( event )
         display.remove( P1TreeFern )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP1 )
-        toggleVisibility( compostButtonTreeFernP1 )
+        donebtn_spawnTreeFernP1.isVisible = false
+        compostButtonTreeFernP1.isVisible = false
     end
     compostButtonTreeFernP1:addEventListener( "tap", CompostP1TreeFern )
 
@@ -4537,8 +4618,8 @@ function scene:create( event )
         display.remove( P1Pine )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP1 )
-        toggleVisibility( compostButtonPineP1 )
+        donebtn_spawnPineP1.isVisible = false
+        compostButtonPineP1.isVisible = false
     end
     compostButtonPineP1:addEventListener( "tap", CompostP1Pine )
 
@@ -4548,8 +4629,8 @@ function scene:create( event )
         display.remove( P1Kaori )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP1 )
-        toggleVisibility( compostButtonKaoriP1 )
+        donebtn_spawnKaoriP1.isVisible = false
+        compostButtonKaoriP1.isVisible = false
     end
     compostButtonKaoriP1:addEventListener( "tap", CompostP1Kaori )
 
@@ -4559,8 +4640,8 @@ function scene:create( event )
         display.remove( P1Magnolia )
         transition.to( P1Colouring, { time=500, y=(140) } )
         transition.to( P1Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP1 )
-        toggleVisibility( compostButtonMagnoliaP1 )
+        donebtn_spawnMagnoliaP1.isVisible = false
+        compostButtonMagnoliaP1.isVisible = false
     end
     compostButtonMagnoliaP1:addEventListener( "tap", CompostP1Magnolia )
 
@@ -4573,8 +4654,8 @@ function scene:create( event )
         display.remove( P2Flax )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP2 )
-        toggleVisibility( compostButtonFlaxP2 )
+        donebtn_spawnFlaxP2.isVisible = false
+        compostButtonFlaxP2.isVisible = false
     end
     compostButtonFlaxP2:addEventListener( "tap", CompostP2Flax )
 
@@ -4584,8 +4665,8 @@ function scene:create( event )
         display.remove( P2Fern )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP2 )
-        toggleVisibility( compostButtonFernP2 )
+        donebtn_spawnFernP2.isVisible = false
+        compostButtonFernP2.isVisible = false
     end
     compostButtonFernP2:addEventListener( "tap", CompostP2Fern )
     
@@ -4595,8 +4676,8 @@ function scene:create( event )
         display.remove( P2Horsetail )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP2 )
-        toggleVisibility( compostButtonHorsetailP2 )
+        donebtn_spawnHorsetailP2.isVisible = false
+        compostButtonHorsetailP2.isVisible = false
     end
     compostButtonHorsetailP2:addEventListener( "tap", CompostP2Horsetail )
 
@@ -4606,8 +4687,8 @@ function scene:create( event )
         display.remove( P2Palm )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP2 )
-        toggleVisibility( compostButtonPalmP2 )
+        donebtn_spawnPalmP2.isVisible = false
+        compostButtonPalmP2.isVisible = false
     end
     compostButtonPalmP2:addEventListener( "tap", CompostP2Palm )
 
@@ -4617,8 +4698,8 @@ function scene:create( event )
         display.remove( P2Cycad )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP2 )
-        toggleVisibility( compostButtonCycadP2 )
+        donebtn_spawnCycadP2.isVisible = false
+        compostButtonCycadP2.isVisible = false
     end
     compostButtonCycadP2:addEventListener( "tap", CompostP2Cycad )
 
@@ -4628,8 +4709,8 @@ function scene:create( event )
         display.remove( P2TreeFern )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP2 )
-        toggleVisibility( compostButtonTreeFernP2 )
+        donebtn_spawnTreeFernP2.isVisible = false
+        compostButtonTreeFernP2.isVisible = false
     end
     compostButtonTreeFernP2:addEventListener( "tap", CompostP2TreeFern )
 
@@ -4639,8 +4720,8 @@ function scene:create( event )
         display.remove( P2Pine )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP2 )
-        toggleVisibility( compostButtonPineP2 )
+        donebtn_spawnPineP2.isVisible = false
+        compostButtonPineP2.isVisible = false
     end
     compostButtonPineP2:addEventListener( "tap", CompostP2Pine )
 
@@ -4650,8 +4731,8 @@ function scene:create( event )
         display.remove( P2Kaori )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP2 )
-        toggleVisibility( compostButtonKaoriP2 )
+        donebtn_spawnKaoriP2.isVisible = false
+        compostButtonKaoriP2.isVisible = false
     end
     compostButtonKaoriP2:addEventListener( "tap", CompostP2Kaori )
 
@@ -4661,8 +4742,8 @@ function scene:create( event )
         display.remove( P2Magnolia )
         transition.to( P2Colouring, { time=500, y=(140) } )
         transition.to( P2Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP2 )
-        toggleVisibility( compostButtonMagnoliaP2 )
+        donebtn_spawnMagnoliaP2.isVisible = false
+        compostButtonMagnoliaP2.isVisible = false
     end
     compostButtonMagnoliaP2:addEventListener( "tap", CompostP2Magnolia )
 
@@ -4675,8 +4756,8 @@ function scene:create( event )
         display.remove( P3Flax )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP3 )
-        toggleVisibility( compostButtonFlaxP3 )
+        donebtn_spawnFlaxP3.isVisible = false
+        compostButtonFlaxP3.isVisible = false
     end
     compostButtonFlaxP3:addEventListener( "tap", CompostP3Flax )
 
@@ -4686,8 +4767,8 @@ function scene:create( event )
         display.remove( P3Fern )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP3 )
-        toggleVisibility( compostButtonFernP3 )
+        donebtn_spawnFernP3.isVisible = false
+        compostButtonFernP3.isVisible = false
     end
     compostButtonFernP3:addEventListener( "tap", CompostP3Fern )
     
@@ -4697,8 +4778,8 @@ function scene:create( event )
         display.remove( P3Horsetail )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP3 )
-        toggleVisibility( compostButtonHorsetailP3 )
+        donebtn_spawnHorsetailP3.isVisible = false
+        compostButtonHorsetailP3.isVisible = false
     end
     compostButtonHorsetailP3:addEventListener( "tap", CompostP3Horsetail )
 
@@ -4708,8 +4789,8 @@ function scene:create( event )
         display.remove( P3Palm )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP3 )
-        toggleVisibility( compostButtonPalmP3 )
+        donebtn_spawnPalmP3.isVisible = false
+        compostButtonPalmP3.isVisible = false
     end
     compostButtonPalmP3:addEventListener( "tap", CompostP3Palm )
 
@@ -4719,8 +4800,8 @@ function scene:create( event )
         display.remove( P3Cycad )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP3 )
-        toggleVisibility( compostButtonCycadP3 )
+        donebtn_spawnCycadP3.isVisible = false
+        compostButtonCycadP3.isVisible = false
     end
     compostButtonCycadP3:addEventListener( "tap", CompostP3Cycad )
 
@@ -4730,8 +4811,8 @@ function scene:create( event )
         display.remove( P3TreeFern )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP3 )
-        toggleVisibility( compostButtonTreeFernP3 )
+        donebtn_spawnTreeFernP3.isVisible = false
+        compostButtonTreeFernP3.isVisible = false
     end
     compostButtonTreeFernP3:addEventListener( "tap", CompostP3TreeFern )
 
@@ -4741,8 +4822,8 @@ function scene:create( event )
         display.remove( P3Pine )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP3 )
-        toggleVisibility( compostButtonPineP3 )
+        donebtn_spawnPineP3.isVisible = false
+        compostButtonPineP3.isVisible = false
     end
     compostButtonPineP3:addEventListener( "tap", CompostP3Pine )
 
@@ -4752,8 +4833,8 @@ function scene:create( event )
         display.remove( P3Kaori )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP3 )
-        toggleVisibility( compostButtonKaoriP3 )
+        donebtn_spawnKaoriP3.isVisible = false
+        compostButtonKaoriP3.isVisible = false
     end
     compostButtonKaoriP3:addEventListener( "tap", CompostP3Kaori )
 
@@ -4763,8 +4844,8 @@ function scene:create( event )
         display.remove( P3Magnolia )
         transition.to( P3Colouring, { time=500, y=(140) } )
         transition.to( P3Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP3 )
-        toggleVisibility( compostButtonMagnoliaP3 )
+        donebtn_spawnMagnoliaP3.isVisible = false
+        compostButtonMagnoliaP3.isVisible = false
     end
     compostButtonMagnoliaP3:addEventListener( "tap", CompostP3Magnolia )
 
@@ -4777,8 +4858,8 @@ function scene:create( event )
         display.remove( P4Flax )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFlaxP4 )
-        toggleVisibility( compostButtonFlaxP4 )
+        donebtn_spawnFlaxP4.isVisible = false
+        compostButtonFlaxP4.isVisible = false
     end
     compostButtonFlaxP4:addEventListener( "tap", CompostP4Flax )
 
@@ -4788,8 +4869,8 @@ function scene:create( event )
         display.remove( P4Fern )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnFernP4 )
-        toggleVisibility( compostButtonFernP4 )
+        donebtn_spawnFernP4.isVisible = false
+        compostButtonFernP4.isVisible = false
     end
     compostButtonFernP4:addEventListener( "tap", CompostP4Fern )
     
@@ -4799,8 +4880,8 @@ function scene:create( event )
         display.remove( P4Horsetail )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnHorsetailP4 )
-        toggleVisibility( compostButtonHorsetailP4 )
+        donebtn_spawnHorsetailP4.isVisible = false
+        compostButtonHorsetailP4.isVisible = false
     end
     compostButtonHorsetailP4:addEventListener( "tap", CompostP4Horsetail )
 
@@ -4810,8 +4891,8 @@ function scene:create( event )
         display.remove( P4Palm )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPalmP4 )
-        toggleVisibility( compostButtonPalmP4 )
+        donebtn_spawnPalmP4.isVisible = false
+        compostButtonPalmP4.isVisible = false
     end
     compostButtonPalmP4:addEventListener( "tap", CompostP4Palm )
 
@@ -4821,8 +4902,8 @@ function scene:create( event )
         display.remove( P4Cycad )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnCycadP4 )
-        toggleVisibility( compostButtonCycadP4 )
+        donebtn_spawnCycadP4.isVisible = false
+        compostButtonCycadP4.isVisible = false
     end
     compostButtonCycadP4:addEventListener( "tap", CompostP4Cycad )
 
@@ -4832,8 +4913,8 @@ function scene:create( event )
         display.remove( P4TreeFern )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnTreeFernP4 )
-        toggleVisibility( compostButtonTreeFernP4 )
+        donebtn_spawnTreeFernP4.isVisible = false
+        compostButtonTreeFernP4.isVisible = false
     end
     compostButtonTreeFernP4:addEventListener( "tap", CompostP4TreeFern )
 
@@ -4843,8 +4924,8 @@ function scene:create( event )
         display.remove( P4Pine )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnPineP4 )
-        toggleVisibility( compostButtonPineP4 )
+        donebtn_spawnPineP4.isVisible = false
+        compostButtonPineP4.isVisible = false
     end
     compostButtonPineP4:addEventListener( "tap", CompostP4Pine )
 
@@ -4854,8 +4935,8 @@ function scene:create( event )
         display.remove( P4Kaori )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnKaoriP4 )
-        toggleVisibility( compostButtonKaoriP4 )
+        donebtn_spawnKaoriP4.isVisible = false
+        compostButtonKaoriP4.isVisible = false
     end
     compostButtonKaoriP4:addEventListener( "tap", CompostP4Kaori )
 
@@ -4865,8 +4946,8 @@ function scene:create( event )
         display.remove( P4Magnolia )
         transition.to( P4Colouring, { time=500, y=(140) } )
         transition.to( P4Select, { time=500, y=(-3) } )
-        toggleVisibility( donebtn_spawnMagnoliaP4 )
-        toggleVisibility( compostButtonMagnoliaP4 )
+        donebtn_spawnMagnoliaP4.isVisible = false
+        compostButtonMagnoliaP4.isVisible = false
     end
     compostButtonMagnoliaP4:addEventListener( "tap", CompostP4Magnolia )
 

@@ -19,11 +19,10 @@ local backgroundAmbient = require( "libraries.background_ambience" )
 
 audio.setVolume( 0.1 )
 
-background()
+native.setProperty( "windowMode", "fullscreen" )
+native.setProperty( "mouseCursorVisible", false )
 
---if system.getInfo('platform') == 'html5' then
-    --onBrowserResize()
---end
+background()
 
 -- the external library that allows us to jump scenes
 local composer = require( "composer" )

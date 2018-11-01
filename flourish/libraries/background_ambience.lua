@@ -20,24 +20,35 @@ function birds ()
     transition.to( Bird2, { time=5000, x=-200 } )
 end
 
-function clouds ()
+-- Cloud Functions
 
-    cloud1 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1200, 800 )
-    cloud1.x = -700 ; cloud1.y = 520
+function cloudSpawn1 ()
+
+    cloud1 = display.newImageRect( "images/ambienceAssets/clouds/clouds.png", 1600, 1200 )
+    cloud1.x = -900 ; cloud1.y = 720
     cloud1.alpha = 0.8
 
-    cloud2 = display.newImageRect( "images/ambienceAssets/clouds/cloud2.png", 1600, 1000 )
-    cloud2.x = -1400 ; cloud2.y = 620
+    transition.to( cloud1, { time=170000, x=7500 } )
+end
+
+function cloudSpawn2 ()
+
+    cloud2 = display.newImageRect( "images/ambienceAssets/clouds/cloud2.png", 1600, 1200 )
+    cloud2.x = -900 ; cloud2.y = 720
     cloud2.alpha = 0.8
 
-    cloud3 = display.newImageRect( "images/ambienceAssets/clouds/cloud3.png", 1800, 1200 )
-    cloud3.x = -2100 ; cloud3.y = 920
+    transition.to( cloud2, { time=170000, x=7500 } )
+end
+
+function cloudSpawn3 ()
+
+    cloud3 = display.newImageRect( "images/ambienceAssets/clouds/cloud3.png", 1600, 1200 )
+    cloud3.x = -900 ; cloud3.y = 720
     cloud3.alpha = 0.8
 
-    transition.to( cloud1, { time=150000, x=7500 } )
-    transition.to( cloud2, { time=150000, x=7350 } )
-    transition.to( cloud3, { time=150000, x=7450 } )
+    transition.to( cloud3, { time=170000, x=7500 } )
 end
+
 
 --------------------------------------
 -- Set up for butterfly ambience

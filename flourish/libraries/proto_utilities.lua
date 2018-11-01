@@ -34,107 +34,92 @@ function toggleVisibility ( displayObject )
   end
 end
 
-function buttonFlipOne ( )
+function RingControl ()
 
-  if P1Select == nil then
-    do return end
-  else
-   P1Select:rotate( 0.1 )
-  end
+  P1ColouringRing:setFrame(1)
+  P1SelectionRing1:setFrame(1)
+  P1SelectionRing2:setFrame(1)
+  P1SelectionRing3:setFrame(1)
 
-  if P2Select == nil then
-    do return end
-  else
-   P2Select:rotate( 0.1 )
-  end
+  P2ColouringRing:setFrame(1)
+  P2SelectionRing1:setFrame(1)
+  P2SelectionRing2:setFrame(1)
+  P2SelectionRing3:setFrame(1)
 
-  if P3Select == nil then
-    do return end
-  else
-   P3Select:rotate( 0.1 )
-  end
+  P3ColouringRing:setFrame(1)
+  P3SelectionRing1:setFrame(1)
+  P3SelectionRing2:setFrame(1)
+  P3SelectionRing3:setFrame(1)
 
-  if P4Select == nil then
-    do return end
-  else
-   P4Select:rotate( 0.1 )
-  end
+  P4ColouringRing:setFrame(1)
+  P4SelectionRing1:setFrame(1)
+  P4SelectionRing2:setFrame(1)
+  P4SelectionRing3:setFrame(1)
 
-  local buttonFlipSeconds = 1
+  local RingSeconds = 7
 
-  local function buttonFlipTimer( event )
+  local function RingSecondsTime( event )
 
    -- Decrement the number of seconds
-   buttonFlipSeconds = buttonFlipSeconds - 1
+   RingSeconds = RingSeconds - 1
 
    -- Time is tracked in seconds; convert it to minutes and seconds
-   local minutes = math.floor( buttonFlipSeconds / 1 )
-   local seconds = buttonFlipSeconds % 1
+   local minutes = math.floor( RingSeconds / 7 )
+   local seconds = RingSeconds % 7
 
-   buttonFliptimeup ()
-
-  end
-
-  buttonFliptimer = timer.performWithDelay( 1000, buttonFlipTimer, buttonFlipSeconds )
-
-  function buttonFliptimeup ()
-    if buttonFlipSeconds <= 0
-      then
-        timer.cancel( buttonFliptimer )
-        buttonFlipTwo()
-      end
-  end
-end
-
-function buttonFlipTwo ( )
-
-  if P1Select == nil then
-    do return end
-  else
-   P1Select:rotate( -0.1 )
-  end
-
-  if P2Select == nil then
-    do return end
-  else
-   P2Select:rotate( -0.1 )
-  end
-
-  if P3Select == nil then
-    do return end
-  else
-   P3Select:rotate( -0.1 )
-  end
-
-  if P4Select == nil then
-    do return end
-  else
-   P4Select:rotate( -0.1 )
-  end
-
-  local buttonFlipSeconds = 1
-
-  local function buttonFlipTimer( event )
-
-   -- Decrement the number of seconds
-   buttonFlipSeconds = buttonFlipSeconds - 1
-
-   -- Time is tracked in seconds; convert it to minutes and seconds
-   local minutes = math.floor( buttonFlipSeconds / 1 )
-   local seconds = buttonFlipSeconds % 1
-
-   buttonFliptimeup ()
+   RingSecondstimecheck ()
 
   end
 
-  buttonFliptimer = timer.performWithDelay( 1000, buttonFlipTimer, buttonFlipSeconds )
+  RingSecondstimer = timer.performWithDelay( 1000, RingSecondsTime, RingSeconds )
 
-  function buttonFliptimeup ()
-    if buttonFlipSeconds <= 0
-      then
-        timer.cancel( buttonFliptimer )
-        buttonFlipOne()
-      end
+  function RingSecondstimecheck ()
+    if RingSeconds == 1 then
+
+      P1ColouringRing:play()
+      P1SelectionRing1:play()
+      P1SelectionRing2:play()
+      P1SelectionRing3:play()
+
+      P2ColouringRing:play()
+      P2SelectionRing1:play()
+      P2SelectionRing2:play()
+      P2SelectionRing3:play()
+
+      P3ColouringRing:play()
+      P3SelectionRing1:play()
+      P3SelectionRing2:play()
+      P3SelectionRing3:play()
+
+      P4ColouringRing:play()
+      P4SelectionRing1:play()
+      P4SelectionRing2:play()
+      P4SelectionRing3:play()
+    end
+    if RingSeconds <= 0 then
+      P1ColouringRing:pause()
+      P1SelectionRing1:pause()
+      P1SelectionRing2:pause()
+      P1SelectionRing3:pause()
+
+      P2ColouringRing:pause()
+      P2SelectionRing1:pause()
+      P2SelectionRing2:pause()
+      P2SelectionRing3:pause()
+
+      P3ColouringRing:pause()
+      P3SelectionRing1:pause()
+      P3SelectionRing2:pause()
+      P3SelectionRing3:pause()
+
+      P4ColouringRing:pause()
+      P4SelectionRing1:pause()
+      P4SelectionRing2:pause()
+      P4SelectionRing3:pause()
+      
+      timer.cancel( RingSecondstimer )
+      RingControl ()
+    end
   end
 end
 
@@ -150,6 +135,12 @@ SmallFirework1Sheet1 = graphics.newImageSheet("images/fireworks/fireworks1 small
 SmallFirework2sheetData = { width =480, height =270, numFrames=25, sheetContentWidth=12000, sheetContentHeight=270 } 
 SmallFirework2Sheet1 = graphics.newImageSheet("images/fireworks/fireworks1 small sprite sheet 2 25 frames.png", SmallFirework2sheetData)
 
+SmallFirework3sheetData = { width =480, height =270, numFrames=25, sheetContentWidth=12000, sheetContentHeight=270 } 
+SmallFirework3Sheet1 = graphics.newImageSheet("images/fireworks/fireworks3 small sprite sheet 1 25 frames.png", SmallFirework3sheetData)
+
+SmallFirework4sheetData = { width =480, height =270, numFrames=25, sheetContentWidth=12000, sheetContentHeight=270 } 
+SmallFirework4Sheet1 = graphics.newImageSheet("images/fireworks/fireworks3 small sprite sheet 2 25 frames.png", SmallFirework4sheetData)
+
 LargeFirework1sheetData = { width =521.4, height =270, numFrames=23, sheetContentWidth=12000, sheetContentHeight=270 } 
 LargeFirework1Sheet1 = graphics.newImageSheet("images/fireworks/fireworks2 large sprite sheet 1 23 frames.png", LargeFirework1sheetData)
 
@@ -159,12 +150,22 @@ LargeFirework2Sheet1 = graphics.newImageSheet("images/fireworks/fireworks2 large
 LargeFirework3sheetData = { width =521.4, height =270, numFrames=23, sheetContentWidth=12000, sheetContentHeight=270 } 
 LargeFirework3Sheet1 = graphics.newImageSheet("images/fireworks/fireworks2 large sprite sheet 3 23 frames.png", LargeFirework3sheetData)
 
+LargeFirework4sheetData = { width =521.4, height =270, numFrames=23, sheetContentWidth=12000, sheetContentHeight=270 } 
+LargeFirework4Sheet1 = graphics.newImageSheet("images/fireworks/fireworks4 large sprite sheet 1 23 frames.png", LargeFirework4sheetData)
+
+LargeFirework5sheetData = { width =521.4, height =270, numFrames=23, sheetContentWidth=12000, sheetContentHeight=270 } 
+LargeFirework5Sheet1 = graphics.newImageSheet("images/fireworks/fireworks4 large sprite sheet 2 23 frames.png", LargeFirework5sheetData)
+
 FireworkData = {
 {name="Small1", sheet=SmallFirework1Sheet1, frames={ 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750},
 {name="Small2", sheet=SmallFirework2Sheet1, frames={ 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
+{name="Small3", sheet=SmallFirework3Sheet1, frames={ 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=375},
+{name="Small4", sheet=SmallFirework4Sheet1, frames={ 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750},
 {name="Large1", sheet=LargeFirework1Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750},
 {name="Large2", sheet=LargeFirework2Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=500},
-{name="Large3", sheet=LargeFirework3Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750}
+{name="Large3", sheet=LargeFirework3Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750},
+{name="Large4", sheet=LargeFirework4Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=750},
+{name="Large5", sheet=LargeFirework5Sheet1, frames={ 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=375}
 }
 
 -- Fireworks functions for each player.
@@ -212,6 +213,13 @@ function P1fireworks ()
       P1fireworks3:scale(3, 3)
       P1fireworks3:setSequence( "Large1" )
       P1fireworks3:play()
+
+      P1fireworks6 = display.newSprite(SmallFirework3Sheet1, FireworkData)
+      P1fireworks6.x = display.contentCenterX-1440
+      P1fireworks6.y = display.contentCenterY+120
+      P1fireworks6:scale(3.2, 3.2)
+      P1fireworks6:setSequence( "Small3" )
+      P1fireworks6:play()
     end
     if P1fireworksSeconds == 4 then
       display.remove( P1fireworks2 )
@@ -221,23 +229,48 @@ function P1fireworks ()
       P1fireworks4:scale(3, 3)
       P1fireworks4:setSequence( "Large2" )
       P1fireworks4:play()
+
+      P1fireworks7 = display.newSprite(SmallFirework4Sheet1, FireworkData)
+      P1fireworks7.x = display.contentCenterX-1440
+      P1fireworks7.y = display.contentCenterY+120
+      P1fireworks7:scale(3.2, 3.2)
+      P1fireworks7:setSequence( "Small4" )
+      P1fireworks7:play()
     end
     if P1fireworksSeconds == 3 then
       display.remove( P1fireworks3 )
+      display.remove( P1fireworks6 )
       P1fireworks5 = display.newSprite(LargeFirework1Sheet1, FireworkData)
       P1fireworks5.x = display.contentCenterX-1440
       P1fireworks5.y = display.contentCenterY+120
       P1fireworks5:scale(3, 3)
       P1fireworks5:setSequence( "Large3" )
       P1fireworks5:play()
+
+      P1fireworks8 = display.newSprite(LargeFirework4Sheet1, FireworkData)
+      P1fireworks8.x = display.contentCenterX-1440
+      P1fireworks8.y = display.contentCenterY+120
+      P1fireworks8:scale(3.2, 3.2)
+      P1fireworks8:setSequence( "Large5" )
+      P1fireworks8:play()
     end
     if P1fireworksSeconds == 2 then
       display.remove( P1fireworks4 )
+      display.remove( P1fireworks7 )
+
+      P1fireworks9 = display.newSprite(LargeFirework5Sheet1, FireworkData)
+      P1fireworks9.x = display.contentCenterX-1440
+      P1fireworks9.y = display.contentCenterY+120
+      P1fireworks9:scale(3.2, 3.2)
+      P1fireworks9:setSequence( "Large4" )
+      P1fireworks9:play()
     end
     if P1fireworksSeconds == 1 then
       display.remove( P1fireworks5 )
+      display.remove( P1fireworks8 )
     end
     if P1fireworksSeconds <= 0 then
+      display.remove( P1fireworks9 )
       timer.cancel( P1fireworkstimer )
     end
   end
@@ -286,6 +319,13 @@ function P2fireworks ()
       P2fireworks3:scale(3, 3)
       P2fireworks3:setSequence( "Large1" )
       P2fireworks3:play()
+
+      P2fireworks6 = display.newSprite(SmallFirework3Sheet1, FireworkData)
+      P2fireworks6.x = display.contentCenterX-470
+      P2fireworks6.y = display.contentCenterY+120
+      P2fireworks6:scale(3.2, 3.2)
+      P2fireworks6:setSequence( "Small3" )
+      P2fireworks6:play()
     end
     if P2fireworksSeconds == 4 then
       display.remove( P2fireworks2 )
@@ -295,23 +335,48 @@ function P2fireworks ()
       P2fireworks4:scale(3, 3)
       P2fireworks4:setSequence( "Large2" )
       P2fireworks4:play()
+
+      P2fireworks7 = display.newSprite(SmallFirework4Sheet1, FireworkData)
+      P2fireworks7.x = display.contentCenterX-470
+      P2fireworks7.y = display.contentCenterY+120
+      P2fireworks7:scale(3.2, 3.2)
+      P2fireworks7:setSequence( "Small4" )
+      P2fireworks7:play()
     end
     if P2fireworksSeconds == 3 then
       display.remove( P2fireworks3 )
+      display.remove( P2fireworks6 )
       P2fireworks5 = display.newSprite(LargeFirework1Sheet1, FireworkData)
       P2fireworks5.x = display.contentCenterX-470
       P2fireworks5.y = display.contentCenterY+120
       P2fireworks5:scale(3, 3)
       P2fireworks5:setSequence( "Large3" )
       P2fireworks5:play()
+
+      P2fireworks8 = display.newSprite(LargeFirework4Sheet1, FireworkData)
+      P2fireworks8.x = display.contentCenterX-470
+      P2fireworks8.y = display.contentCenterY+120
+      P2fireworks8:scale(3.2, 3.2)
+      P2fireworks8:setSequence( "Large5" )
+      P2fireworks8:play()
     end
     if P2fireworksSeconds == 2 then
       display.remove( P2fireworks4 )
+      display.remove( P2fireworks7 )
+
+      P2fireworks9 = display.newSprite(LargeFirework5Sheet1, FireworkData)
+      P2fireworks9.x = display.contentCenterX-470
+      P2fireworks9.y = display.contentCenterY+120
+      P2fireworks9:scale(3.2, 3.2)
+      P2fireworks9:setSequence( "Large4" )
+      P2fireworks9:play()
     end
     if P2fireworksSeconds == 1 then
       display.remove( P2fireworks5 )
+      display.remove( P2fireworks8 )
     end
     if P2fireworksSeconds <= 0 then
+      display.remove( P2fireworks9 )
       timer.cancel( P2fireworkstimer )
     end
   end
@@ -360,6 +425,13 @@ function P3fireworks ()
       P3fireworks3:scale(3, 3)
       P3fireworks3:setSequence( "Large1" )
       P3fireworks3:play()
+
+      P3fireworks6 = display.newSprite(SmallFirework3Sheet1, FireworkData)
+      P3fireworks6.x = display.contentCenterX+470
+      P3fireworks6.y = display.contentCenterY+120
+      P3fireworks6:scale(3.2, 3.2)
+      P3fireworks6:setSequence( "Small3" )
+      P3fireworks6:play()
     end
     if P3fireworksSeconds == 4 then
       display.remove( P3fireworks2 )
@@ -369,23 +441,48 @@ function P3fireworks ()
       P3fireworks4:scale(3, 3)
       P3fireworks4:setSequence( "Large2" )
       P3fireworks4:play()
+
+      P3fireworks7 = display.newSprite(SmallFirework4Sheet1, FireworkData)
+      P3fireworks7.x = display.contentCenterX+470
+      P3fireworks7.y = display.contentCenterY+120
+      P3fireworks7:scale(3.2, 3.2)
+      P3fireworks7:setSequence( "Small4" )
+      P3fireworks7:play()
     end
     if P3fireworksSeconds == 3 then
       display.remove( P3fireworks3 )
+      display.remove( P3fireworks6 )
       P3fireworks5 = display.newSprite(LargeFirework1Sheet1, FireworkData)
       P3fireworks5.x = display.contentCenterX+470
       P3fireworks5.y = display.contentCenterY+120
       P3fireworks5:scale(3, 3)
       P3fireworks5:setSequence( "Large3" )
       P3fireworks5:play()
+
+      P3fireworks8 = display.newSprite(LargeFirework4Sheet1, FireworkData)
+      P3fireworks8.x = display.contentCenterX+470
+      P3fireworks8.y = display.contentCenterY+120
+      P3fireworks8:scale(3.2, 3.2)
+      P3fireworks8:setSequence( "Large5" )
+      P3fireworks8:play()
     end
     if P3fireworksSeconds == 2 then
       display.remove( P3fireworks4 )
+      display.remove( P3fireworks7 )
+
+      P3fireworks9 = display.newSprite(LargeFirework5Sheet1, FireworkData)
+      P3fireworks9.x = display.contentCenterX+470
+      P3fireworks9.y = display.contentCenterY+120
+      P3fireworks9:scale(3.2, 3.2)
+      P3fireworks9:setSequence( "Large4" )
+      P3fireworks9:play()
     end
     if P3fireworksSeconds == 1 then
       display.remove( P3fireworks5 )
+      display.remove( P3fireworks8 )
     end
     if P3fireworksSeconds <= 0 then
+      display.remove( P3fireworks9 )
       timer.cancel( P3fireworkstimer )
     end
   end
@@ -434,6 +531,13 @@ function P4fireworks ()
       P4fireworks3:scale(3, 3)
       P4fireworks3:setSequence( "Large1" )
       P4fireworks3:play()
+
+      P4fireworks6 = display.newSprite(SmallFirework3Sheet1, FireworkData)
+      P4fireworks6.x = display.contentCenterX+1440
+      P4fireworks6.y = display.contentCenterY+120
+      P4fireworks6:scale(3.2, 3.2)
+      P4fireworks6:setSequence( "Small3" )
+      P4fireworks6:play()
     end
     if P4fireworksSeconds == 4 then
       display.remove( P4fireworks2 )
@@ -443,23 +547,48 @@ function P4fireworks ()
       P4fireworks4:scale(3, 3)
       P4fireworks4:setSequence( "Large2" )
       P4fireworks4:play()
+
+      P4fireworks7 = display.newSprite(SmallFirework4Sheet1, FireworkData)
+      P4fireworks7.x = display.contentCenterX+1440
+      P4fireworks7.y = display.contentCenterY+120
+      P4fireworks7:scale(3.2, 3.2)
+      P4fireworks7:setSequence( "Small4" )
+      P4fireworks7:play()
     end
     if P4fireworksSeconds == 3 then
       display.remove( P4fireworks3 )
+      display.remove( P4fireworks6 )
       P4fireworks5 = display.newSprite(LargeFirework1Sheet1, FireworkData)
       P4fireworks5.x = display.contentCenterX+1440
       P4fireworks5.y = display.contentCenterY+120
       P4fireworks5:scale(3, 3)
       P4fireworks5:setSequence( "Large3" )
       P4fireworks5:play()
+
+      P4fireworks8 = display.newSprite(LargeFirework4Sheet1, FireworkData)
+      P4fireworks8.x = display.contentCenterX+1440
+      P4fireworks8.y = display.contentCenterY+120
+      P4fireworks8:scale(3.2, 3.2)
+      P4fireworks8:setSequence( "Large5" )
+      P4fireworks8:play()
     end
     if P4fireworksSeconds == 2 then
       display.remove( P4fireworks4 )
+      display.remove( P4fireworks7 )
+
+      P4fireworks9 = display.newSprite(LargeFirework5Sheet1, FireworkData)
+      P4fireworks9.x = display.contentCenterX+1440
+      P4fireworks9.y = display.contentCenterY+120
+      P4fireworks9:scale(3.2, 3.2)
+      P4fireworks9:setSequence( "Large4" )
+      P4fireworks9:play()
     end
     if P4fireworksSeconds == 1 then
       display.remove( P4fireworks5 )
+      display.remove( P4fireworks8 )
     end
     if P4fireworksSeconds <= 0 then
+      display.remove( P4fireworks9 )
       timer.cancel( P4fireworkstimer )
     end
   end
