@@ -49,7 +49,7 @@ function scene:create( event )
         }
 
         if restartSecondsLeft <= 0 then
-            composer.gotoScene( "scenes..proto_spawn", startoptions )
+            composer.gotoScene( "scenes.proto_spawn", startoptions )
             backtoGameplay ()
         end
     end
@@ -74,7 +74,7 @@ function scene:create( event )
   
         function Replaybegin()
             if secondsTillchange <= 0 then
-                composer.removeScene( "scenes..splashscreen")
+                composer.removeScene( "scenes.splashscreen", false)
             end
         end
       

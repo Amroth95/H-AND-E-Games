@@ -20,7 +20,7 @@ local backgroundAmbient = require( "libraries.background_ambience" )
 audio.setVolume( 0.1 )
 
 native.setProperty( "windowMode", "fullscreen" )
-native.setProperty( "mouseCursorVisible", false )
+--native.setProperty( "mouseCursorVisible", false )
 
 background()
 

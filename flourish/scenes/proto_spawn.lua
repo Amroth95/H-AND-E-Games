@@ -65,24 +65,19 @@ function scene:create( event )
     local DinosheetData4 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
     local DinoImageSheet4 = graphics.newImageSheet("images/sprite sheet/Stand Test2.png", DinosheetData4)
 
-    local DinosheetData5 = { width =319.49, height =397, numFrames=7, sheetContentWidth=2238, sheetContentHeight=397 } 
-    local DinoImageSheet5 = graphics.newImageSheet("images/sprite sheet/ReartoRun Test1.png", DinosheetData5)
+    local DinosheetData5 = { width =319.49, height =397, numFrames=17, sheetContentWidth=5440, sheetContentHeight=397 } 
+    local DinoImageSheet5 = graphics.newImageSheet("images/sprite sheet/Drink Test2.png", DinosheetData5)
 
-    local DinosheetData6 = { width =319.49, height =397, numFrames=27, sheetContentWidth=8633, sheetContentHeight=397 } 
-    local DinoImageSheet6 = graphics.newImageSheet("images/sprite sheet/Run Test1.png", DinosheetData6)
-
-    local DinosheetData7 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
-    local DinoImageSheet7 = graphics.newImageSheet("images/sprite sheet/Jump Test1.png", DinosheetData7)
+    local DinosheetData6 = { width =319.49, height =397, numFrames=37, sheetContentWidth=11830, sheetContentHeight=397 } 
+    local DinoImageSheet6 = graphics.newImageSheet("images/sprite sheet/Jump Test1.png", DinosheetData6)
 
     local sequenceDinoData = {
     {name="normalWalk", sheet=DinoImageSheet1, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1500},
     {name="normalIdle", sheet=DinoImageSheet2, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000},
     {name="normalStand", sheet=DinoImageSheet4, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000},
     {name="normalEat", sheet=DinoImageSheet3, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=2000, loopCount=0},
-    {name="normalJump", sheet=DinoImageSheet7, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1000},
-    {name="normalRun", sheet=DinoImageSheet6, frames={ 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1000},
-    {name="normalRearUp", sheet=DinoImageSheet5, frames={7, 6, 5, 4, 3, 2, 1, }, time=1000},
-    {name="normalRearDown", sheet=DinoImageSheet5, frames={1, 2, 3, 4, 5, 6, 7, }, time=1000}
+    {name="normalJump", sheet=DinoImageSheet6, frames={ 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1000},
+    {name="normalDrink", sheet=DinoImageSheet5, frames={17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, }, time=1000}
     }
 
     ---------------------------------------------------------------------------------------------------------------
@@ -247,6 +242,12 @@ function scene:create( event )
                  timer.cancel( gorighttimer )
                  goLeft()
                 end
+                if Dino.x >= 3090 then
+                 transition.cancel( Dino )
+                 timer.cancel( gorighttimer )
+                 Dino.xScale = -5
+                 DinoDrink ()
+                end
             end
         end
 
@@ -296,6 +297,51 @@ function scene:create( event )
             end
         end
     end
+
+    ----------------------------------------------------------------------
+    -- function for making the Dino drink from the lake
+    ----------------------------------------------------------------------
+    function DinoDrink ()
+        transition.pause(Dino)
+        Dino:setSequence( "normalDrink" )
+        Dino:play()
+
+        local sqCenterX, sqCenterY = Dino:localToContent( 0, 0 )
+        print( "Dino position in screen coordinates: ", sqCenterX, sqCenterY )
+       
+        local Drinktimeseconds = 1
+  
+          local function DrinkTimer( event )
+  
+            -- Decrement the number of seconds
+            Drinktimeseconds = Drinktimeseconds - 1
+  
+            -- Time is tracked in seconds; convert it to minutes and seconds
+            local minutes = math.floor( Drinktimeseconds / 1 )
+            local seconds = Drinktimeseconds % 1
+  
+            Drinktimeup ()
+  
+          end
+  
+          Drinkingtimer = timer.performWithDelay( 1000, DrinkTimer, Drinktimeseconds )
+  
+          function Drinktimeup ()
+  
+             if Dino == nil then
+                do return end
+              else
+                  if Drinktimeseconds <= 0 then
+                    physics.start( Dino )
+                    Dino:setSequence( "normalWalk" )
+                    Dino:play()
+                    timer.cancel( Drinkingtimer )
+                    Dino.xScale = 5
+                    goLeft()
+                  end
+              end
+          end
+      end
 
     ----------------------------------------------------------------------
     -- function for stoping the dino and making it eat
@@ -629,6 +675,7 @@ function scene:create( event )
       local minutes = math.floor( secondsLeft / 300 )
       local seconds = secondsLeft % 300
 
+      signcheck ()
       timeup ()
 
     end
@@ -642,6 +689,20 @@ function scene:create( event )
       countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
     end
 
+    -- Brings back instruction signs if nothing happens for a certain amount of time
+    function signcheck ()
+        if secondsLeft == 150 then
+            transition.to( sign1, { time=1000, x=display.contentCenterX-1790} )
+            transition.to( sign2, { time=1000, x=display.contentCenterX+1770} )
+            SignMove1 ()
+        end
+        if secondsLeft == 45 then
+            transition.to( sign1, { time=1000, x=display.contentCenterX-1790} )
+            transition.to( sign2, { time=1000, x=display.contentCenterX+1770} )
+            SignMove1 ()
+        end
+    end
+
     -- Activates splashscreen transition if time is up
     function timeup ()
 
@@ -651,7 +712,7 @@ function scene:create( event )
         }
    
         if secondsLeft <= 0
-            then composer.gotoScene( "scenes..splashscreen", splashoptions)
+            then composer.gotoScene( "scenes.splashscreen", splashoptions)
             scenechange ()
             physics.stop()
             timer.cancel( cloudsDuplicationTimer )
@@ -665,6 +726,10 @@ function scene:create( event )
             P2Select = nil
             P3Select = nil
             P4Select = nil
+            P1TapChecker = false
+            P2TapChecker = false
+            P3TapChecker = false
+            P4TapChecker = false
         end
 
     end
@@ -689,7 +754,7 @@ function scene:create( event )
 
        function Nextscene()
             if secondsTillchange <= 0 then
-              composer.removeScene( "scenes..proto_spawn")
+              composer.removeScene( "scenes.proto_spawn", false)
             end
         end
     end
@@ -1414,291 +1479,325 @@ function scene:create( event )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P1 ()
-       donebtn_spawnFlaxP1.isVisible = true
-       compostButtonFlaxP1.isVisible = true
+        if P1TapChecker == true then
+         do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnFlaxP1.isVisible = true
+         compostButtonFlaxP1.isVisible = true
 
-       clicksound ()
-       resetTimer()
-       chooseNormalP1 ()
-       createFlaxP1 ()
-       P1stampReset()
-       P1stampCounter()
-       btn_stamp4:setFrame(9)
-       btn_outlineStamp4:setFrame(9)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createFlaxP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(9)
+         btn_outlineStamp4:setFrame(9)
 
-       flax_P1:addEventListener( "tap", tintPlantP1 )
-       flax_P1_2:addEventListener( "tap", tintPlantP1 )
-       flax_P1_3:addEventListener( "tap", tintPlantP1 )
-       flax_P1_4:addEventListener( "tap", tintPlantP1 )
-       flax_P1_5:addEventListener( "tap", tintPlantP1 )
-       flax_P1_6:addEventListener( "tap", tintPlantP1 )
-       flax_P1_7:addEventListener( "tap", tintPlantP1 )
+         flax_P1:addEventListener( "tap", tintPlantP1 )
+         flax_P1_2:addEventListener( "tap", tintPlantP1 )
+         flax_P1_3:addEventListener( "tap", tintPlantP1 )
+         flax_P1_4:addEventListener( "tap", tintPlantP1 )
+         flax_P1_5:addEventListener( "tap", tintPlantP1 )
+         flax_P1_6:addEventListener( "tap", tintPlantP1 )
+         flax_P1_7:addEventListener( "tap", tintPlantP1 )
 
-       P1Colouring:insert( P1Flax )
+         P1Colouring:insert( P1Flax )
 
-       P1ColouringRing:toFront()
+         P1ColouringRing:toFront()
 
-       transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
 
-       transition.to( P1Colouring, { time=600, y=(-600) } )
-
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFlaxP1:addEventListener( "tap", btn_spawn_tapFlax_P1 )
+    btn_spawnFlaxP1:addEventListener( "touch", btn_spawn_tapFlax_P1 )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P1 ()
-        donebtn_spawnFernP1.isVisible = true
-        compostButtonFernP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnFernP1.isVisible = true
+         compostButtonFernP1.isVisible = true
     
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createFernP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(8)
-        btn_outlineStamp4:setFrame(8)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createFernP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(8)
+         btn_outlineStamp4:setFrame(8)
     
-        fern_P1:addEventListener( "tap", tintPlantP1 )
-        fern_P1_2:addEventListener( "tap", tintPlantP1 )
-        fern_P1_3:addEventListener( "tap", tintPlantP1 )
-        fern_P1_4:addEventListener( "tap", tintPlantP1 )
-        fern_P1_5:addEventListener( "tap", tintPlantP1 )
+         fern_P1:addEventListener( "tap", tintPlantP1 )
+         fern_P1_2:addEventListener( "tap", tintPlantP1 )
+         fern_P1_3:addEventListener( "tap", tintPlantP1 )
+         fern_P1_4:addEventListener( "tap", tintPlantP1 )
+         fern_P1_5:addEventListener( "tap", tintPlantP1 )
     
-        P1Colouring:insert( P1Fern )
+         P1Colouring:insert( P1Fern )
 
-        P1ColouringRing:toFront()
+         P1ColouringRing:toFront()
     
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
     
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFernP1:addEventListener( "tap", btn_spawn_tapFern_P1 )
+    btn_spawnFernP1:addEventListener( "touch", btn_spawn_tapFern_P1 )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P1 ()
-        donebtn_spawnHorsetailP1.isVisible = true
-        compostButtonHorsetailP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnHorsetailP1.isVisible = true
+         compostButtonHorsetailP1.isVisible = true
               
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createHorsetailP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(7)
-        btn_outlineStamp4:setFrame(7)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createHorsetailP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(7)
+         btn_outlineStamp4:setFrame(7)
               
-        Horsetail_P1:addEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_2:addEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_3:addEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_4:addEventListener( "tap", tintPlantP1 )
-        Horsetail_P1_5:addEventListener( "tap", tintPlantP1 )
+         Horsetail_P1:addEventListener( "tap", tintPlantP1 )
+         Horsetail_P1_2:addEventListener( "tap", tintPlantP1 )
+         Horsetail_P1_3:addEventListener( "tap", tintPlantP1 )
+         Horsetail_P1_4:addEventListener( "tap", tintPlantP1 )
+         Horsetail_P1_5:addEventListener( "tap", tintPlantP1 )
               
-        P1Colouring:insert( P1Horsetail )
+         P1Colouring:insert( P1Horsetail )
 
-        P1ColouringRing:toFront()
+         P1ColouringRing:toFront()
               
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
               
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-              
-              
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end         
     end
-    btn_spawnHorsetailP1:addEventListener( "tap", btn_spawn_tapHorsetail_P1 )
+    btn_spawnHorsetailP1:addEventListener( "touch", btn_spawn_tapHorsetail_P1 )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P1 ()
-      donebtn_spawnPalmP1.isVisible = true
-      compostButtonPalmP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnPalmP1.isVisible = true
+         compostButtonPalmP1.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP1 ()
-      createPalmP1 ()
-      P1stampReset()
-      P1stampCounter()
-      btn_stamp4:setFrame(6)
-      btn_outlineStamp4:setFrame(6)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createPalmP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(6)
+         btn_outlineStamp4:setFrame(6)
 
-      palm_P1:addEventListener( "tap", tintPlantP1 )
-      palm_P1_2:addEventListener( "tap", tintPlantP1 )
-      palm_P1_3:addEventListener( "tap", tintPlantP1 )
-      palm_P1_4:addEventListener( "tap", tintPlantP1 )
-      palm_P1_5:addEventListener( "tap", tintPlantP1 )
-      palm_P1_6:addEventListener( "tap", tintPlantP1 )
-      palm_P1_7:addEventListener( "tap", tintPlantP1 )
-      palm_P1_8:addEventListener( "tap", tintPlantP1 )
-      palm_P1_9:addEventListener( "tap", tintPlantP1 )
-      palm_P1_10:addEventListener( "tap", tintPlantP1 )
+         palm_P1:addEventListener( "tap", tintPlantP1 )
+         palm_P1_2:addEventListener( "tap", tintPlantP1 )
+         palm_P1_3:addEventListener( "tap", tintPlantP1 )
+         palm_P1_4:addEventListener( "tap", tintPlantP1 )
+         palm_P1_5:addEventListener( "tap", tintPlantP1 )
+         palm_P1_6:addEventListener( "tap", tintPlantP1 )
+         palm_P1_7:addEventListener( "tap", tintPlantP1 )
+         palm_P1_8:addEventListener( "tap", tintPlantP1 )
+         palm_P1_9:addEventListener( "tap", tintPlantP1 )
+         palm_P1_10:addEventListener( "tap", tintPlantP1 )
 
-      P1Colouring:insert( P1Palm )
+         P1Colouring:insert( P1Palm )
 
-      transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
 
-      transition.to( P1Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPalmP1:addEventListener( "tap", btn_spawn_tapPalm_P1 )
+    btn_spawnPalmP1:addEventListener( "touch", btn_spawn_tapPalm_P1 )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P1 ()
-        donebtn_spawnCycadP1.isVisible = true
-        compostButtonCycadP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnCycadP1.isVisible = true
+         compostButtonCycadP1.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createCycadP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(5)
-        btn_outlineStamp4:setFrame(5)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createCycadP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(5)
+         btn_outlineStamp4:setFrame(5)
   
-        Cycad_P1:addEventListener( "tap", tintPlantP1 )
-        Cycad_P1_2:addEventListener( "tap", tintPlantP1 )
-        Cycad_P1_3:addEventListener( "tap", tintPlantP1 )
-        Cycad_P1_4:addEventListener( "tap", tintPlantP1 )
-        Cycad_P1_5:addEventListener( "tap", tintPlantP1 )
-        Cycad_P1_6:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1_2:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1_3:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1_4:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1_5:addEventListener( "tap", tintPlantP1 )
+         Cycad_P1_6:addEventListener( "tap", tintPlantP1 )
   
-        P1Colouring:insert( P1Cycad )
+         P1Colouring:insert( P1Cycad )
   
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
   
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnCycadP1:addEventListener( "tap", btn_spawn_tapCycad_P1 )
+    btn_spawnCycadP1:addEventListener( "touch", btn_spawn_tapCycad_P1 )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P1 ()
-        donebtn_spawnTreeFernP1.isVisible = true
-        compostButtonTreeFernP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnTreeFernP1.isVisible = true
+         compostButtonTreeFernP1.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createTreeFernP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(4)
-        btn_outlineStamp4:setFrame(4)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createTreeFernP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(4)
+         btn_outlineStamp4:setFrame(4)
   
-        TreeFern_P1:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_2:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_3:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_4:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_5:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_6:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_7:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_8:addEventListener( "tap", tintPlantP1 )
-        TreeFern_P1_9:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_2:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_3:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_4:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_5:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_6:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_7:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_8:addEventListener( "tap", tintPlantP1 )
+         TreeFern_P1_9:addEventListener( "tap", tintPlantP1 )
   
-        P1Colouring:insert( P1TreeFern )
+         P1Colouring:insert( P1TreeFern )
   
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
   
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnTreeFernP1:addEventListener( "tap", btn_spawn_tapTreeFern_P1 )
+    btn_spawnTreeFernP1:addEventListener( "touch", btn_spawn_tapTreeFern_P1 )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P1 ()
-        donebtn_spawnPineP1.isVisible = true
-        compostButtonPineP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnPineP1.isVisible = true
+         compostButtonPineP1.isVisible = true
 
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createPineP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(3)
-        btn_outlineStamp4:setFrame(3)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createPineP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(3)
+         btn_outlineStamp4:setFrame(3)
 
-        pine_P1:addEventListener( "tap", tintPlantP1 )
-        pine_P1_2:addEventListener( "tap", tintPlantP1 )
-        pine_P1_3:addEventListener( "tap", tintPlantP1 )
-        pine_P1_4:addEventListener( "tap", tintPlantP1 )
-        pine_P1_5:addEventListener( "tap", tintPlantP1 )
-        pine_P1_6:addEventListener( "tap", tintPlantP1 )
-        pine_P1_7:addEventListener( "tap", tintPlantP1 )
+         pine_P1:addEventListener( "tap", tintPlantP1 )
+         pine_P1_2:addEventListener( "tap", tintPlantP1 )
+         pine_P1_3:addEventListener( "tap", tintPlantP1 )
+         pine_P1_4:addEventListener( "tap", tintPlantP1 )
+         pine_P1_5:addEventListener( "tap", tintPlantP1 )
+         pine_P1_6:addEventListener( "tap", tintPlantP1 )
+         pine_P1_7:addEventListener( "tap", tintPlantP1 )
 
-        P1Colouring:insert( P1Pine )
+         P1Colouring:insert( P1Pine )
 
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
 
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPineP1:addEventListener( "tap", btn_spawn_tapPine_P1 )
+    btn_spawnPineP1:addEventListener( "touch", btn_spawn_tapPine_P1 )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P1 ()
-        donebtn_spawnKaoriP1.isVisible = true
-        compostButtonKaoriP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnKaoriP1.isVisible = true
+         compostButtonKaoriP1.isVisible = true
             
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createKaoriP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(2)
-        btn_outlineStamp4:setFrame(2)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createKaoriP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(2)
+         btn_outlineStamp4:setFrame(2)
             
-        Kaori_P1:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_2:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_3:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_4:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_5:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_6:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_7:addEventListener( "tap", tintPlantP1 )
-        Kaori_P1_8:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_2:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_3:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_4:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_5:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_6:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_7:addEventListener( "tap", tintPlantP1 )
+         Kaori_P1_8:addEventListener( "tap", tintPlantP1 )
             
-        P1Colouring:insert( P1Kaori )
+         P1Colouring:insert( P1Kaori )
             
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
             
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-            
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end 
     end
-    btn_spawnKaoriP1:addEventListener( "tap", btn_spawn_tapKaori_P1 )
+    btn_spawnKaoriP1:addEventListener( "touch", btn_spawn_tapKaori_P1 )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P1 ()
-        donebtn_spawnMagnoliaP1.isVisible = true
-        compostButtonMagnoliaP1.isVisible = true
+        if P1TapChecker == true then
+            do return end
+        else
+         P1TapChecker = true 
+         donebtn_spawnMagnoliaP1.isVisible = true
+         compostButtonMagnoliaP1.isVisible = true
         
-        clicksound ()
-        resetTimer()
-        chooseNormalP1 ()
-        createMagnoliaP1 ()
-        P1stampReset()
-        P1stampCounter()
-        btn_stamp4:setFrame(1)
-        btn_outlineStamp4:setFrame(1)
+         clicksound ()
+         resetTimer()
+         chooseNormalP1 ()
+         createMagnoliaP1 ()
+         P1stampReset()
+         P1stampCounter()
+         btn_stamp4:setFrame(1)
+         btn_outlineStamp4:setFrame(1)
         
-        Magnolia_P1:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_2:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_3:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_4:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_5:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_6:addEventListener( "tap", tintPlantP1 )
-        Magnolia_P1_7:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_2:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_3:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_4:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_5:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_6:addEventListener( "tap", tintPlantP1 )
+         Magnolia_P1_7:addEventListener( "tap", tintPlantP1 )
         
-        P1Colouring:insert( P1Magnolia )
+         P1Colouring:insert( P1Magnolia )
         
-        transition.to( P1Select, { time=500, y=(800) } )
+         transition.to( P1Select, { time=500, y=(800) } )
         
-        transition.to( P1Colouring, { time=600, y=(-600) } )
-        
+         transition.to( P1Colouring, { time=600, y=(-600) } )
+        end 
     end
-    btn_spawnMagnoliaP1:addEventListener( "tap", btn_spawn_tapMagnolia_P1 )
+    btn_spawnMagnoliaP1:addEventListener( "touch", btn_spawn_tapMagnolia_P1 )
 
     ----------------------
     -- Player Two Spawns
@@ -1706,585 +1805,651 @@ function scene:create( event )
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P2 ()
-      donebtn_spawnFlaxP2.isVisible = true
-      compostButtonFlaxP2.isVisible = true
+        if P2TapChecker == true then
+          do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnFlaxP2.isVisible = true
+         compostButtonFlaxP2.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP2 ()
-      createFlaxP2 ()
-      P2stampReset()
-      P2stampCounter()
-      btn_stamp8:setFrame(9)
-      btn_outlineStamp8:setFrame(9)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createFlaxP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(9)
+         btn_outlineStamp8:setFrame(9)
 
-      flax_P2:addEventListener( "tap", tintPlantP2 )
-      flax_P2_2:addEventListener( "tap", tintPlantP2 )
-      flax_P2_3:addEventListener( "tap", tintPlantP2 )
-      flax_P2_4:addEventListener( "tap", tintPlantP2 )
-      flax_P2_5:addEventListener( "tap", tintPlantP2 )
-      flax_P2_6:addEventListener( "tap", tintPlantP2 )
-      flax_P2_7:addEventListener( "tap", tintPlantP2 )
+         flax_P2:addEventListener( "tap", tintPlantP2 )
+         flax_P2_2:addEventListener( "tap", tintPlantP2 )
+         flax_P2_3:addEventListener( "tap", tintPlantP2 )
+         flax_P2_4:addEventListener( "tap", tintPlantP2 )
+         flax_P2_5:addEventListener( "tap", tintPlantP2 )
+         flax_P2_6:addEventListener( "tap", tintPlantP2 )
+         flax_P2_7:addEventListener( "tap", tintPlantP2 )
 
-      P2Colouring:insert( P2Flax )
+         P2Colouring:insert( P2Flax )
 
-      P2ColouringRing:toFront()
+         P2ColouringRing:toFront()
 
-      transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
 
-      transition.to( P2Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFlaxP2:addEventListener( "tap", btn_spawn_tapFlax_P2 )
+    btn_spawnFlaxP2:addEventListener( "touch", btn_spawn_tapFlax_P2 )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P2 ()
-        donebtn_spawnFernP2.isVisible = true
-        compostButtonFernP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnFernP2.isVisible = true
+         compostButtonFernP2.isVisible = true
     
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createFernP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(8)
-        btn_outlineStamp8:setFrame(8)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createFernP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(8)
+         btn_outlineStamp8:setFrame(8)
     
-        fern_P2:addEventListener( "tap", tintPlantP2 )
-        fern_P2_2:addEventListener( "tap", tintPlantP2 )
-        fern_P2_3:addEventListener( "tap", tintPlantP2 )
-        fern_P2_4:addEventListener( "tap", tintPlantP2 )
-        fern_P2_5:addEventListener( "tap", tintPlantP2 )
+         fern_P2:addEventListener( "tap", tintPlantP2 )
+         fern_P2_2:addEventListener( "tap", tintPlantP2 )
+         fern_P2_3:addEventListener( "tap", tintPlantP2 )
+         fern_P2_4:addEventListener( "tap", tintPlantP2 )
+         fern_P2_5:addEventListener( "tap", tintPlantP2 )
     
-        P2Colouring:insert( P2Fern )
+         P2Colouring:insert( P2Fern )
 
-        P2ColouringRing:toFront()
+         P2ColouringRing:toFront()
     
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
     
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end    
     end
-    btn_spawnFernP2:addEventListener( "tap", btn_spawn_tapFern_P2 )
+    btn_spawnFernP2:addEventListener( "touch", btn_spawn_tapFern_P2 )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P2 ()
-        donebtn_spawnHorsetailP2.isVisible = true
-        compostButtonHorsetailP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnHorsetailP2.isVisible = true
+         compostButtonHorsetailP2.isVisible = true
               
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createHorsetailP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(7)
-        btn_outlineStamp8:setFrame(7)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createHorsetailP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(7)
+         btn_outlineStamp8:setFrame(7)
               
-        Horsetail_P2:addEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_2:addEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_3:addEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_4:addEventListener( "tap", tintPlantP2 )
-        Horsetail_P2_5:addEventListener( "tap", tintPlantP2 )
+         Horsetail_P2:addEventListener( "tap", tintPlantP2 )
+         Horsetail_P2_2:addEventListener( "tap", tintPlantP2 )
+         Horsetail_P2_3:addEventListener( "tap", tintPlantP2 )
+         Horsetail_P2_4:addEventListener( "tap", tintPlantP2 )
+         Horsetail_P2_5:addEventListener( "tap", tintPlantP2 )
               
-        P2Colouring:insert( P2Horsetail )
+         P2Colouring:insert( P2Horsetail )
 
-        P2ColouringRing:toFront()
+         P2ColouringRing:toFront()
               
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
               
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-              
-              
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end   
     end
-    btn_spawnHorsetailP2:addEventListener( "tap", btn_spawn_tapHorsetail_P2 )
+    btn_spawnHorsetailP2:addEventListener( "touch", btn_spawn_tapHorsetail_P2 )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P2 ()
-      donebtn_spawnPalmP2.isVisible = true
-      compostButtonPalmP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnPalmP2.isVisible = true
+         compostButtonPalmP2.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP2 ()
-      createPalmP2 ()
-      P2stampReset()
-      P2stampCounter()
-      btn_stamp8:setFrame(6)
-      btn_outlineStamp8:setFrame(6)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createPalmP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(6)
+         btn_outlineStamp8:setFrame(6)
 
-      palm_P2:addEventListener( "tap", tintPlantP2 )
-      palm_P2_2:addEventListener( "tap", tintPlantP2 )
-      palm_P2_3:addEventListener( "tap", tintPlantP2 )
-      palm_P2_4:addEventListener( "tap", tintPlantP2 )
-      palm_P2_5:addEventListener( "tap", tintPlantP2 )
-      palm_P2_6:addEventListener( "tap", tintPlantP2 )
-      palm_P2_7:addEventListener( "tap", tintPlantP2 )
-      palm_P2_8:addEventListener( "tap", tintPlantP2 )
-      palm_P2_9:addEventListener( "tap", tintPlantP2 )
-      palm_P2_10:addEventListener( "tap", tintPlantP2 )
+         palm_P2:addEventListener( "tap", tintPlantP2 )
+         palm_P2_2:addEventListener( "tap", tintPlantP2 )
+         palm_P2_3:addEventListener( "tap", tintPlantP2 )
+         palm_P2_4:addEventListener( "tap", tintPlantP2 )
+         palm_P2_5:addEventListener( "tap", tintPlantP2 )
+         palm_P2_6:addEventListener( "tap", tintPlantP2 )
+         palm_P2_7:addEventListener( "tap", tintPlantP2 )
+         palm_P2_8:addEventListener( "tap", tintPlantP2 )
+         palm_P2_9:addEventListener( "tap", tintPlantP2 )
+         palm_P2_10:addEventListener( "tap", tintPlantP2 )
 
-      P2Colouring:insert( P2Palm )
+         P2Colouring:insert( P2Palm )
 
-      transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
 
-      transition.to( P2Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPalmP2:addEventListener( "tap", btn_spawn_tapPalm_P2 )
+    btn_spawnPalmP2:addEventListener( "touch", btn_spawn_tapPalm_P2 )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P2 ()
-        donebtn_spawnCycadP2.isVisible = true
-        compostButtonCycadP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnCycadP2.isVisible = true
+         compostButtonCycadP2.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createCycadP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(5)
-        btn_outlineStamp8:setFrame(5)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createCycadP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(5)
+         btn_outlineStamp8:setFrame(5)
   
-        Cycad_P2:addEventListener( "tap", tintPlantP2 )
-        Cycad_P2_2:addEventListener( "tap", tintPlantP2 )
-        Cycad_P2_3:addEventListener( "tap", tintPlantP2 )
-        Cycad_P2_4:addEventListener( "tap", tintPlantP2 )
-        Cycad_P2_5:addEventListener( "tap", tintPlantP2 )
-        Cycad_P2_6:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2_2:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2_3:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2_4:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2_5:addEventListener( "tap", tintPlantP2 )
+         Cycad_P2_6:addEventListener( "tap", tintPlantP2 )
   
-        P2Colouring:insert( P2Cycad )
+         P2Colouring:insert( P2Cycad )
   
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
   
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnCycadP2:addEventListener( "tap", btn_spawn_tapCycad_P2 )
+    btn_spawnCycadP2:addEventListener( "touch", btn_spawn_tapCycad_P2 )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P2 ()
-        donebtn_spawnTreeFernP2.isVisible = true
-        compostButtonTreeFernP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnTreeFernP2.isVisible = true
+         compostButtonTreeFernP2.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createTreeFernP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(4)
-        btn_outlineStamp8:setFrame(4)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createTreeFernP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(4)
+         btn_outlineStamp8:setFrame(4)
   
-        TreeFern_P2:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_2:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_3:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_4:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_5:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_6:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_7:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_8:addEventListener( "tap", tintPlantP2 )
-        TreeFern_P2_9:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_2:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_3:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_4:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_5:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_6:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_7:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_8:addEventListener( "tap", tintPlantP2 )
+         TreeFern_P2_9:addEventListener( "tap", tintPlantP2 )
   
-        P2Colouring:insert( P2TreeFern )
+         P2Colouring:insert( P2TreeFern )
   
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
   
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnTreeFernP2:addEventListener( "tap", btn_spawn_tapTreeFern_P2 )
+    btn_spawnTreeFernP2:addEventListener( "touch", btn_spawn_tapTreeFern_P2 )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P2 ()
-        donebtn_spawnPineP2.isVisible = true
-        compostButtonPineP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnPineP2.isVisible = true
+         compostButtonPineP2.isVisible = true
 
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createPineP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(3)
-        btn_outlineStamp8:setFrame(3)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createPineP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(3)
+         btn_outlineStamp8:setFrame(3)
 
-        pine_P2:addEventListener( "tap", tintPlantP2 )
-        pine_P2_2:addEventListener( "tap", tintPlantP2 )
-        pine_P2_3:addEventListener( "tap", tintPlantP2 )
-        pine_P2_4:addEventListener( "tap", tintPlantP2 )
-        pine_P2_5:addEventListener( "tap", tintPlantP2 )
-        pine_P2_6:addEventListener( "tap", tintPlantP2 )
-        pine_P2_7:addEventListener( "tap", tintPlantP2 )
+         pine_P2:addEventListener( "tap", tintPlantP2 )
+         pine_P2_2:addEventListener( "tap", tintPlantP2 )
+         pine_P2_3:addEventListener( "tap", tintPlantP2 )
+         pine_P2_4:addEventListener( "tap", tintPlantP2 )
+         pine_P2_5:addEventListener( "tap", tintPlantP2 )
+         pine_P2_6:addEventListener( "tap", tintPlantP2 )
+         pine_P2_7:addEventListener( "tap", tintPlantP2 )
 
-        P2Colouring:insert( P2Pine )
+         P2Colouring:insert( P2Pine )
 
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
 
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPineP2:addEventListener( "tap", btn_spawn_tapPine_P2 )
+    btn_spawnPineP2:addEventListener( "touch", btn_spawn_tapPine_P2 )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P2 ()
-        donebtn_spawnKaoriP2.isVisible = true
-        compostButtonKaoriP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnKaoriP2.isVisible = true
+         compostButtonKaoriP2.isVisible = true
             
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createKaoriP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(2)
-        btn_outlineStamp8:setFrame(2)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createKaoriP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(2)
+         btn_outlineStamp8:setFrame(2)
             
-        Kaori_P2:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_2:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_3:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_4:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_5:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_6:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_7:addEventListener( "tap", tintPlantP2 )
-        Kaori_P2_8:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_2:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_3:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_4:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_5:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_6:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_7:addEventListener( "tap", tintPlantP2 )
+         Kaori_P2_8:addEventListener( "tap", tintPlantP2 )
             
-        P2Colouring:insert( P2Kaori )
+         P2Colouring:insert( P2Kaori )
             
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
             
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-            
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end   
     end
-    btn_spawnKaoriP2:addEventListener( "tap", btn_spawn_tapKaori_P2 )
+    btn_spawnKaoriP2:addEventListener( "touch", btn_spawn_tapKaori_P2 )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P2 ()
-        donebtn_spawnMagnoliaP2.isVisible = true
-        compostButtonMagnoliaP2.isVisible = true
+        if P2TapChecker == true then
+            do return end
+        else
+         P2TapChecker = true 
+         donebtn_spawnMagnoliaP2.isVisible = true
+         compostButtonMagnoliaP2.isVisible = true
         
-        clicksound ()
-        resetTimer()
-        chooseNormalP2 ()
-        createMagnoliaP2 ()
-        P2stampReset()
-        P2stampCounter()
-        btn_stamp8:setFrame(1)
-        btn_outlineStamp8:setFrame(1)
+         clicksound ()
+         resetTimer()
+         chooseNormalP2 ()
+         createMagnoliaP2 ()
+         P2stampReset()
+         P2stampCounter()
+         btn_stamp8:setFrame(1)
+         btn_outlineStamp8:setFrame(1)
         
-        Magnolia_P2:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_2:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_3:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_4:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_5:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_6:addEventListener( "tap", tintPlantP2 )
-        Magnolia_P2_7:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_2:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_3:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_4:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_5:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_6:addEventListener( "tap", tintPlantP2 )
+         Magnolia_P2_7:addEventListener( "tap", tintPlantP2 )
         
-        P2Colouring:insert( P2Magnolia )
+         P2Colouring:insert( P2Magnolia )
         
-        transition.to( P2Select, { time=500, y=(800) } )
+         transition.to( P2Select, { time=500, y=(800) } )
         
-        transition.to( P2Colouring, { time=600, y=(-600) } )
-        
+         transition.to( P2Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnMagnoliaP2:addEventListener( "tap", btn_spawn_tapMagnolia_P2 )
+    btn_spawnMagnoliaP2:addEventListener( "touch", btn_spawn_tapMagnolia_P2 )
 
-    ----------------------
+    ------------------------
     -- Player Three Spawns
-    ----------------------
+    ------------------------
 
     -- Spawn Flax
     local function btn_spawn_tapFlax_P3 ()
-      donebtn_spawnFlaxP3.isVisible = true
-      compostButtonFlaxP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnFlaxP3.isVisible = true
+         compostButtonFlaxP3.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP3 ()
-      createFlaxP3 ()
-      P3stampReset()
-      P3stampCounter()
-      btn_stamp12:setFrame(9)
-      btn_outlineStamp12:setFrame(9)
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createFlaxP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(9)
+         btn_outlineStamp12:setFrame(9)
 
-      flax_P3:addEventListener( "tap", tintPlantP3 )
-      flax_P3_2:addEventListener( "tap", tintPlantP3 )
-      flax_P3_3:addEventListener( "tap", tintPlantP3 )
-      flax_P3_4:addEventListener( "tap", tintPlantP3 )
-      flax_P3_5:addEventListener( "tap", tintPlantP3 )
-      flax_P3_6:addEventListener( "tap", tintPlantP3 )
-      flax_P3_7:addEventListener( "tap", tintPlantP3 )
+         flax_P3:addEventListener( "tap", tintPlantP3 )
+         flax_P3_2:addEventListener( "tap", tintPlantP3 )
+         flax_P3_3:addEventListener( "tap", tintPlantP3 )
+         flax_P3_4:addEventListener( "tap", tintPlantP3 )
+         flax_P3_5:addEventListener( "tap", tintPlantP3 )
+         flax_P3_6:addEventListener( "tap", tintPlantP3 )
+         flax_P3_7:addEventListener( "tap", tintPlantP3 )
 
-      P3Colouring:insert( P3Flax )
+         P3Colouring:insert( P3Flax )
 
-      P3ColouringRing:toFront()
+         P3ColouringRing:toFront()
 
-      transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
 
-      transition.to( P3Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFlaxP3:addEventListener( "tap", btn_spawn_tapFlax_P3 )
+    btn_spawnFlaxP3:addEventListener( "touch", btn_spawn_tapFlax_P3 )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P3 ()
-        donebtn_spawnFernP3.isVisible = true
-        compostButtonFernP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnFernP3.isVisible = true
+         compostButtonFernP3.isVisible = true
     
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createFernP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(8)
-        btn_outlineStamp12:setFrame(8)
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createFernP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(8)
+         btn_outlineStamp12:setFrame(8)
       
-        fern_P3:addEventListener( "tap", tintPlantP3 )
-        fern_P3_2:addEventListener( "tap", tintPlantP3 )
-        fern_P3_3:addEventListener( "tap", tintPlantP3 )
-        fern_P3_4:addEventListener( "tap", tintPlantP3 )
-        fern_P3_5:addEventListener( "tap", tintPlantP3 )
+         fern_P3:addEventListener( "tap", tintPlantP3 )
+         fern_P3_2:addEventListener( "tap", tintPlantP3 )
+         fern_P3_3:addEventListener( "tap", tintPlantP3 )
+         fern_P3_4:addEventListener( "tap", tintPlantP3 )
+         fern_P3_5:addEventListener( "tap", tintPlantP3 )
     
-        P3Colouring:insert( P3Fern )
+         P3Colouring:insert( P3Fern )
 
-        P3ColouringRing:toFront()
+         P3ColouringRing:toFront()
     
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
     
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFernP3:addEventListener( "tap", btn_spawn_tapFern_P3 )
+    btn_spawnFernP3:addEventListener( "touch", btn_spawn_tapFern_P3 )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P3 ()
-        donebtn_spawnHorsetailP3.isVisible = true
-        compostButtonHorsetailP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnHorsetailP3.isVisible = true
+         compostButtonHorsetailP3.isVisible = true
               
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createHorsetailP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(7)
-        btn_outlineStamp12:setFrame(7)
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createHorsetailP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(7)
+         btn_outlineStamp12:setFrame(7)
               
-        Horsetail_P3:addEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_2:addEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_3:addEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_4:addEventListener( "tap", tintPlantP3 )
-        Horsetail_P3_5:addEventListener( "tap", tintPlantP3 )
+         Horsetail_P3:addEventListener( "tap", tintPlantP3 )
+         Horsetail_P3_2:addEventListener( "tap", tintPlantP3 )
+         Horsetail_P3_3:addEventListener( "tap", tintPlantP3 )
+         Horsetail_P3_4:addEventListener( "tap", tintPlantP3 )
+         Horsetail_P3_5:addEventListener( "tap", tintPlantP3 )
               
-        P3Colouring:insert( P3Horsetail )
+         P3Colouring:insert( P3Horsetail )
 
-        P3ColouringRing:toFront()
+         P3ColouringRing:toFront()
               
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
               
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-              
-              
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end         
     end
-    btn_spawnHorsetailP3:addEventListener( "tap", btn_spawn_tapHorsetail_P3 )
+    btn_spawnHorsetailP3:addEventListener( "touch", btn_spawn_tapHorsetail_P3 )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P3 ()
-      donebtn_spawnPalmP3.isVisible = true
-      compostButtonPalmP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnPalmP3.isVisible = true
+         compostButtonPalmP3.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP3 ()
-      createPalmP3 ()
-      P3stampReset()
-      P3stampCounter()
-      btn_stamp12:setFrame(6)
-      btn_outlineStamp12:setFrame(6)
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createPalmP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(6)
+         btn_outlineStamp12:setFrame(6)
 
-      palm_P3:addEventListener( "tap", tintPlantP3 )
-      palm_P3_2:addEventListener( "tap", tintPlantP3 )
-      palm_P3_3:addEventListener( "tap", tintPlantP3 )
-      palm_P3_4:addEventListener( "tap", tintPlantP3 )
-      palm_P3_5:addEventListener( "tap", tintPlantP3 )
-      palm_P3_6:addEventListener( "tap", tintPlantP3 )
-      palm_P3_7:addEventListener( "tap", tintPlantP3 )
-      palm_P3_8:addEventListener( "tap", tintPlantP3 )
-      palm_P3_9:addEventListener( "tap", tintPlantP3 )
-      palm_P3_10:addEventListener( "tap", tintPlantP3 )
+         palm_P3:addEventListener( "tap", tintPlantP3 )
+         palm_P3_2:addEventListener( "tap", tintPlantP3 )
+         palm_P3_3:addEventListener( "tap", tintPlantP3 )
+         palm_P3_4:addEventListener( "tap", tintPlantP3 )
+         palm_P3_5:addEventListener( "tap", tintPlantP3 )
+         palm_P3_6:addEventListener( "tap", tintPlantP3 )
+         palm_P3_7:addEventListener( "tap", tintPlantP3 )
+         palm_P3_8:addEventListener( "tap", tintPlantP3 )
+         palm_P3_9:addEventListener( "tap", tintPlantP3 )
+         palm_P3_10:addEventListener( "tap", tintPlantP3 )
 
-      P3Colouring:insert( P3Palm )
+         P3Colouring:insert( P3Palm )
 
-      transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
 
-      transition.to( P3Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPalmP3:addEventListener( "tap", btn_spawn_tapPalm_P3 )
+    btn_spawnPalmP3:addEventListener( "touch", btn_spawn_tapPalm_P3 )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P3 ()
-        donebtn_spawnCycadP3.isVisible = true
-        compostButtonCycadP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnCycadP3.isVisible = true
+         compostButtonCycadP3.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createCycadP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(5)
-        btn_outlineStamp12:setFrame(5)
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createCycadP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(5)
+         btn_outlineStamp12:setFrame(5)
   
-        Cycad_P3:addEventListener( "tap", tintPlantP3 )
-        Cycad_P3_2:addEventListener( "tap", tintPlantP3 )
-        Cycad_P3_3:addEventListener( "tap", tintPlantP3 )
-        Cycad_P3_4:addEventListener( "tap", tintPlantP3 )
-        Cycad_P3_5:addEventListener( "tap", tintPlantP3 )
-        Cycad_P3_6:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3_2:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3_3:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3_4:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3_5:addEventListener( "tap", tintPlantP3 )
+         Cycad_P3_6:addEventListener( "tap", tintPlantP3 )
   
-        P3Colouring:insert( P3Cycad )
+         P3Colouring:insert( P3Cycad )
   
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
   
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnCycadP3:addEventListener( "tap", btn_spawn_tapCycad_P3 )
+    btn_spawnCycadP3:addEventListener( "touch", btn_spawn_tapCycad_P3 )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P3 ()
-        donebtn_spawnTreeFernP3.isVisible = true
-        compostButtonTreeFernP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnTreeFernP3.isVisible = true
+         compostButtonTreeFernP3.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createTreeFernP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(4)
-        btn_outlineStamp12:setFrame(4)  
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createTreeFernP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(4)
+         btn_outlineStamp12:setFrame(4)  
   
-        TreeFern_P3:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_2:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_3:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_4:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_5:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_6:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_7:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_8:addEventListener( "tap", tintPlantP3 )
-        TreeFern_P3_9:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_2:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_3:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_4:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_5:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_6:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_7:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_8:addEventListener( "tap", tintPlantP3 )
+         TreeFern_P3_9:addEventListener( "tap", tintPlantP3 )
   
-        P3Colouring:insert( P3TreeFern )
+         P3Colouring:insert( P3TreeFern )
   
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
   
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnTreeFernP3:addEventListener( "tap", btn_spawn_tapTreeFern_P3 )
+    btn_spawnTreeFernP3:addEventListener( "touch", btn_spawn_tapTreeFern_P3 )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P3 ()
-        donebtn_spawnPineP3.isVisible = true
-        compostButtonPineP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnPineP3.isVisible = true
+         compostButtonPineP3.isVisible = true
 
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createPineP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(3)
-        btn_outlineStamp12:setFrame(3)  
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createPineP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(3)
+         btn_outlineStamp12:setFrame(3)  
 
-        pine_P3:addEventListener( "tap", tintPlantP3 )
-        pine_P3_2:addEventListener( "tap", tintPlantP3 )
-        pine_P3_3:addEventListener( "tap", tintPlantP3 )
-        pine_P3_4:addEventListener( "tap", tintPlantP3 )
-        pine_P3_5:addEventListener( "tap", tintPlantP3 )
-        pine_P3_6:addEventListener( "tap", tintPlantP3 )
-        pine_P3_7:addEventListener( "tap", tintPlantP3 )
+         pine_P3:addEventListener( "tap", tintPlantP3 )
+         pine_P3_2:addEventListener( "tap", tintPlantP3 )
+         pine_P3_3:addEventListener( "tap", tintPlantP3 )
+         pine_P3_4:addEventListener( "tap", tintPlantP3 )
+         pine_P3_5:addEventListener( "tap", tintPlantP3 )
+         pine_P3_6:addEventListener( "tap", tintPlantP3 )
+         pine_P3_7:addEventListener( "tap", tintPlantP3 )
 
-        P3Colouring:insert( P3Pine )
+         P3Colouring:insert( P3Pine )
 
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
 
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPineP3:addEventListener( "tap", btn_spawn_tapPine_P3 )
+    btn_spawnPineP3:addEventListener( "touch", btn_spawn_tapPine_P3 )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P3 ()
-        donebtn_spawnKaoriP3.isVisible = true
-        compostButtonKaoriP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnKaoriP3.isVisible = true
+         compostButtonKaoriP3.isVisible = true
             
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createKaoriP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(2)
-        btn_outlineStamp12:setFrame(2)  
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createKaoriP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(2)
+         btn_outlineStamp12:setFrame(2)  
             
-        Kaori_P3:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_2:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_3:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_4:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_5:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_6:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_7:addEventListener( "tap", tintPlantP3 )
-        Kaori_P3_8:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_2:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_3:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_4:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_5:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_6:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_7:addEventListener( "tap", tintPlantP3 )
+         Kaori_P3_8:addEventListener( "tap", tintPlantP3 )
             
-        P3Colouring:insert( P3Kaori )
+         P3Colouring:insert( P3Kaori )
             
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
             
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-            
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end   
     end
-    btn_spawnKaoriP3:addEventListener( "tap", btn_spawn_tapKaori_P3 )
+    btn_spawnKaoriP3:addEventListener( "touch", btn_spawn_tapKaori_P3 )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P3 ()
-        donebtn_spawnMagnoliaP3.isVisible = true
-        compostButtonMagnoliaP3.isVisible = true
+        if P3TapChecker == true then
+            do return end
+        else
+         P3TapChecker = true 
+         donebtn_spawnMagnoliaP3.isVisible = true
+         compostButtonMagnoliaP3.isVisible = true
         
-        clicksound ()
-        resetTimer()
-        chooseNormalP3 ()
-        createMagnoliaP3 ()
-        P3stampReset()
-        P3stampCounter()
-        btn_stamp12:setFrame(1)
-        btn_outlineStamp12:setFrame(1)  
+         clicksound ()
+         resetTimer()
+         chooseNormalP3 ()
+         createMagnoliaP3 ()
+         P3stampReset()
+         P3stampCounter()
+         btn_stamp12:setFrame(1)
+         btn_outlineStamp12:setFrame(1)  
         
-        Magnolia_P3:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_2:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_3:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_4:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_5:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_6:addEventListener( "tap", tintPlantP3 )
-        Magnolia_P3_7:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_2:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_3:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_4:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_5:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_6:addEventListener( "tap", tintPlantP3 )
+         Magnolia_P3_7:addEventListener( "tap", tintPlantP3 )
         
-        P3Colouring:insert( P3Magnolia )
+         P3Colouring:insert( P3Magnolia )
         
-        transition.to( P3Select, { time=500, y=(800) } )
+         transition.to( P3Select, { time=500, y=(800) } )
         
-        transition.to( P3Colouring, { time=600, y=(-600) } )
-        
+         transition.to( P3Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnMagnoliaP3:addEventListener( "tap", btn_spawn_tapMagnolia_P3 )
+    btn_spawnMagnoliaP3:addEventListener( "touch", btn_spawn_tapMagnolia_P3 )
 
     ----------------------
     -- Player Four Spawns
@@ -2292,292 +2457,325 @@ function scene:create( event )
 
    -- Spawn Flax
     local function btn_spawn_tapFlax_P4 ()
-      donebtn_spawnFlaxP4.isVisible = true
-      compostButtonFlaxP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnFlaxP4.isVisible = true
+         compostButtonFlaxP4.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP4 ()
-      createFlaxP4 ()
-      P4stampReset()
-      P4stampCounter()
-      btn_stamp16:setFrame(9)
-      btn_outlineStamp16:setFrame(9)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createFlaxP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(9)
+         btn_outlineStamp16:setFrame(9)
 
-      flax_P4:addEventListener( "tap", tintPlantP4 )
-      flax_P4_2:addEventListener( "tap", tintPlantP4 )
-      flax_P4_3:addEventListener( "tap", tintPlantP4 )
-      flax_P4_4:addEventListener( "tap", tintPlantP4 )
-      flax_P4_5:addEventListener( "tap", tintPlantP4 )
-      flax_P4_6:addEventListener( "tap", tintPlantP4 )
-      flax_P4_7:addEventListener( "tap", tintPlantP4 )
+         flax_P4:addEventListener( "tap", tintPlantP4 )
+         flax_P4_2:addEventListener( "tap", tintPlantP4 )
+         flax_P4_3:addEventListener( "tap", tintPlantP4 )
+         flax_P4_4:addEventListener( "tap", tintPlantP4 )
+         flax_P4_5:addEventListener( "tap", tintPlantP4 )
+         flax_P4_6:addEventListener( "tap", tintPlantP4 )
+         flax_P4_7:addEventListener( "tap", tintPlantP4 )
 
-      P4Colouring:insert( P4Flax )
+         P4Colouring:insert( P4Flax )
 
-      P4ColouringRing:toFront()
+         P4ColouringRing:toFront()
 
-      transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
 
-      transition.to( P4Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFlaxP4:addEventListener( "tap", btn_spawn_tapFlax_P4 )
+    btn_spawnFlaxP4:addEventListener( "touch", btn_spawn_tapFlax_P4 )
 
     -- Spawn Fern
     local function btn_spawn_tapFern_P4 ()
-        donebtn_spawnFernP4.isVisible = true
-        compostButtonFernP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnFernP4.isVisible = true
+         compostButtonFernP4.isVisible = true
     
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createFernP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(8)
-        btn_outlineStamp16:setFrame(8)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createFernP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(8)
+         btn_outlineStamp16:setFrame(8)
     
-        fern_P4:addEventListener( "tap", tintPlantP4 )
-        fern_P4_2:addEventListener( "tap", tintPlantP4 )
-        fern_P4_3:addEventListener( "tap", tintPlantP4 )
-        fern_P4_4:addEventListener( "tap", tintPlantP4 )
-        fern_P4_5:addEventListener( "tap", tintPlantP4 )
+         fern_P4:addEventListener( "tap", tintPlantP4 )
+         fern_P4_2:addEventListener( "tap", tintPlantP4 )
+         fern_P4_3:addEventListener( "tap", tintPlantP4 )
+         fern_P4_4:addEventListener( "tap", tintPlantP4 )
+         fern_P4_5:addEventListener( "tap", tintPlantP4 )
     
-        P4Colouring:insert( P4Fern )
+         P4Colouring:insert( P4Fern )
 
-        P4ColouringRing:toFront()
+         P4ColouringRing:toFront()
     
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
     
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnFernP4:addEventListener( "tap", btn_spawn_tapFern_P4 )
+    btn_spawnFernP4:addEventListener( "touch", btn_spawn_tapFern_P4 )
 
     -- Spawn Horsetail
     local function btn_spawn_tapHorsetail_P4 ()
-        donebtn_spawnHorsetailP4.isVisible = true
-        compostButtonHorsetailP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnHorsetailP4.isVisible = true
+         compostButtonHorsetailP4.isVisible = true
               
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createHorsetailP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(7)
-        btn_outlineStamp16:setFrame(7)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createHorsetailP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(7)
+         btn_outlineStamp16:setFrame(7)
               
-        Horsetail_P4:addEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_2:addEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_3:addEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_4:addEventListener( "tap", tintPlantP4 )
-        Horsetail_P4_5:addEventListener( "tap", tintPlantP4 )
+         Horsetail_P4:addEventListener( "tap", tintPlantP4 )
+         Horsetail_P4_2:addEventListener( "tap", tintPlantP4 )
+         Horsetail_P4_3:addEventListener( "tap", tintPlantP4 )
+         Horsetail_P4_4:addEventListener( "tap", tintPlantP4 )
+         Horsetail_P4_5:addEventListener( "tap", tintPlantP4 )
               
-        P4Colouring:insert( P4Horsetail )
+         P4Colouring:insert( P4Horsetail )
 
-        P4ColouringRing:toFront()
+         P4ColouringRing:toFront()
               
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
               
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-              
-              
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end           
     end
-    btn_spawnHorsetailP4:addEventListener( "tap", btn_spawn_tapHorsetail_P4 )
+    btn_spawnHorsetailP4:addEventListener( "touch", btn_spawn_tapHorsetail_P4 )
 
     -- Spawn Palm
     local function btn_spawn_tapPalm_P4 ()
-      donebtn_spawnPalmP4.isVisible = true
-      compostButtonPalmP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnPalmP4.isVisible = true
+         compostButtonPalmP4.isVisible = true
 
-      clicksound ()
-      resetTimer()
-      chooseNormalP4 ()
-      createPalmP4 ()
-      P4stampReset()
-      P4stampCounter()
-      btn_stamp16:setFrame(6)
-      btn_outlineStamp16:setFrame(6)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createPalmP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(6)
+         btn_outlineStamp16:setFrame(6)
 
-      palm_P4:addEventListener( "tap", tintPlantP4 )
-      palm_P4_2:addEventListener( "tap", tintPlantP4 )
-      palm_P4_3:addEventListener( "tap", tintPlantP4 )
-      palm_P4_4:addEventListener( "tap", tintPlantP4 )
-      palm_P4_5:addEventListener( "tap", tintPlantP4 )
-      palm_P4_6:addEventListener( "tap", tintPlantP4 )
-      palm_P4_7:addEventListener( "tap", tintPlantP4 )
-      palm_P4_8:addEventListener( "tap", tintPlantP4 )
-      palm_P4_9:addEventListener( "tap", tintPlantP4 )
-      palm_P4_10:addEventListener( "tap", tintPlantP4 )
+         palm_P4:addEventListener( "tap", tintPlantP4 )
+         palm_P4_2:addEventListener( "tap", tintPlantP4 )
+         palm_P4_3:addEventListener( "tap", tintPlantP4 )
+         palm_P4_4:addEventListener( "tap", tintPlantP4 )
+         palm_P4_5:addEventListener( "tap", tintPlantP4 )
+         palm_P4_6:addEventListener( "tap", tintPlantP4 )
+         palm_P4_7:addEventListener( "tap", tintPlantP4 )
+         palm_P4_8:addEventListener( "tap", tintPlantP4 )
+         palm_P4_9:addEventListener( "tap", tintPlantP4 )
+         palm_P4_10:addEventListener( "tap", tintPlantP4 )
 
-      P4Colouring:insert( P4Palm )
+         P4Colouring:insert( P4Palm )
 
-      transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
 
-      transition.to( P4Colouring, { time=600, y=(-600) } )
-
-
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPalmP4:addEventListener( "tap", btn_spawn_tapPalm_P4 )
+    btn_spawnPalmP4:addEventListener( "touch", btn_spawn_tapPalm_P4 )
 
     -- Spawn Cycad
     local function btn_spawn_tapCycad_P4 ()
-        donebtn_spawnCycadP4.isVisible = true
-        compostButtonCycadP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnCycadP4.isVisible = true
+         compostButtonCycadP4.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createCycadP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(5)
-        btn_outlineStamp16:setFrame(5)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createCycadP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(5)
+         btn_outlineStamp16:setFrame(5)
   
-        Cycad_P4:addEventListener( "tap", tintPlantP4 )
-        Cycad_P4_2:addEventListener( "tap", tintPlantP4 )
-        Cycad_P4_3:addEventListener( "tap", tintPlantP4 )
-        Cycad_P4_4:addEventListener( "tap", tintPlantP4 )
-        Cycad_P4_5:addEventListener( "tap", tintPlantP4 )
-        Cycad_P4_6:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4_2:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4_3:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4_4:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4_5:addEventListener( "tap", tintPlantP4 )
+         Cycad_P4_6:addEventListener( "tap", tintPlantP4 )
   
-        P4Colouring:insert( P4Cycad )
+         P4Colouring:insert( P4Cycad )
   
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
   
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnCycadP4:addEventListener( "tap", btn_spawn_tapCycad_P4 )
+    btn_spawnCycadP4:addEventListener( "touch", btn_spawn_tapCycad_P4 )
 
     -- Spawn TreeFern
     local function btn_spawn_tapTreeFern_P4 ()
-        donebtn_spawnTreeFernP4.isVisible = true
-        compostButtonTreeFernP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnTreeFernP4.isVisible = true
+         compostButtonTreeFernP4.isVisible = true
   
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createTreeFernP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(4)
-        btn_outlineStamp16:setFrame(4)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createTreeFernP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(4)
+         btn_outlineStamp16:setFrame(4)
   
-        TreeFern_P4:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_2:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_3:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_4:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_5:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_6:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_7:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_8:addEventListener( "tap", tintPlantP4 )
-        TreeFern_P4_9:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_2:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_3:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_4:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_5:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_6:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_7:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_8:addEventListener( "tap", tintPlantP4 )
+         TreeFern_P4_9:addEventListener( "tap", tintPlantP4 )
   
-        P4Colouring:insert( P4TreeFern )
+         P4Colouring:insert( P4TreeFern )
   
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
   
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-    
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnTreeFernP4:addEventListener( "tap", btn_spawn_tapTreeFern_P4 )
+    btn_spawnTreeFernP4:addEventListener( "touch", btn_spawn_tapTreeFern_P4 )
 
     -- Spawn Pine
     local function btn_spawn_tapPine_P4 ()
-        donebtn_spawnPineP4.isVisible = true
-        compostButtonPineP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnPineP4.isVisible = true
+         compostButtonPineP4.isVisible = true
 
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createPineP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(3)
-        btn_outlineStamp16:setFrame(3)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createPineP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(3)
+         btn_outlineStamp16:setFrame(3)
 
-        pine_P4:addEventListener( "tap", tintPlantP4 )
-        pine_P4_2:addEventListener( "tap", tintPlantP4 )
-        pine_P4_3:addEventListener( "tap", tintPlantP4 )
-        pine_P4_4:addEventListener( "tap", tintPlantP4 )
-        pine_P4_5:addEventListener( "tap", tintPlantP4 )
-        pine_P4_6:addEventListener( "tap", tintPlantP4 )
-        pine_P4_7:addEventListener( "tap", tintPlantP4 )
+         pine_P4:addEventListener( "tap", tintPlantP4 )
+         pine_P4_2:addEventListener( "tap", tintPlantP4 )
+         pine_P4_3:addEventListener( "tap", tintPlantP4 )
+         pine_P4_4:addEventListener( "tap", tintPlantP4 )
+         pine_P4_5:addEventListener( "tap", tintPlantP4 )
+         pine_P4_6:addEventListener( "tap", tintPlantP4 )
+         pine_P4_7:addEventListener( "tap", tintPlantP4 )
 
-        P4Colouring:insert( P4Pine )
+         P4Colouring:insert( P4Pine )
 
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
 
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnPineP4:addEventListener( "tap", btn_spawn_tapPine_P4 )
+    btn_spawnPineP4:addEventListener( "touch", btn_spawn_tapPine_P4 )
 
     -- Spawn Kaori
     local function btn_spawn_tapKaori_P4 ()
-        donebtn_spawnKaoriP4.isVisible = true
-        compostButtonKaoriP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnKaoriP4.isVisible = true
+         compostButtonKaoriP4.isVisible = true
             
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createKaoriP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(2)
-        btn_outlineStamp16:setFrame(2)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createKaoriP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(2)
+         btn_outlineStamp16:setFrame(2)
             
-        Kaori_P4:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_2:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_3:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_4:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_5:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_6:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_7:addEventListener( "tap", tintPlantP4 )
-        Kaori_P4_8:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_2:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_3:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_4:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_5:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_6:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_7:addEventListener( "tap", tintPlantP4 )
+         Kaori_P4_8:addEventListener( "tap", tintPlantP4 )
             
-        P4Colouring:insert( P4Kaori )
+         P4Colouring:insert( P4Kaori )
             
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
             
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-            
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end   
     end
-    btn_spawnKaoriP4:addEventListener( "tap", btn_spawn_tapKaori_P4 )
+    btn_spawnKaoriP4:addEventListener( "touch", btn_spawn_tapKaori_P4 )
     
     -- Spawn Magnolia
     local function btn_spawn_tapMagnolia_P4 ()
-        donebtn_spawnMagnoliaP4.isVisible = true
-        compostButtonMagnoliaP4.isVisible = true
+        if P4TapChecker == true then
+            do return end
+        else
+         P4TapChecker = true 
+         donebtn_spawnMagnoliaP4.isVisible = true
+         compostButtonMagnoliaP4.isVisible = true
         
-        clicksound ()
-        resetTimer()
-        chooseNormalP4 ()
-        createMagnoliaP4 ()
-        P4stampReset()
-        P4stampCounter()
-        btn_stamp16:setFrame(1)
-        btn_outlineStamp16:setFrame(1)
+         clicksound ()
+         resetTimer()
+         chooseNormalP4 ()
+         createMagnoliaP4 ()
+         P4stampReset()
+         P4stampCounter()
+         btn_stamp16:setFrame(1)
+         btn_outlineStamp16:setFrame(1)
         
-        Magnolia_P4:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_2:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_3:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_4:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_5:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_6:addEventListener( "tap", tintPlantP4 )
-        Magnolia_P4_7:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_2:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_3:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_4:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_5:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_6:addEventListener( "tap", tintPlantP4 )
+         Magnolia_P4_7:addEventListener( "tap", tintPlantP4 )
         
-        P4Colouring:insert( P4Magnolia )
+         P4Colouring:insert( P4Magnolia )
         
-        transition.to( P4Select, { time=500, y=(800) } )
+         transition.to( P4Select, { time=500, y=(800) } )
         
-        transition.to( P4Colouring, { time=600, y=(-600) } )
-        
+         transition.to( P4Colouring, { time=600, y=(-600) } )
+        end
     end
-    btn_spawnMagnoliaP4:addEventListener( "tap", btn_spawn_tapMagnolia_P4 )
+    btn_spawnMagnoliaP4:addEventListener( "touch", btn_spawn_tapMagnolia_P4 )
 
     ------------------------------------------------------------------------------
     -- sends plant to background, makes them non-interactable (WORK IN PROGRESS)
@@ -2639,7 +2837,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP1.isVisible = false
         compostButtonFlaxP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnFlaxP1:addEventListener( "tap", donebtn_spawn_tapFlaxP1 )
 
@@ -2693,7 +2891,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnFernP1.isVisible = false
         compostButtonFernP1.isVisible = false
-    
+        P1TapChecker = false 
     end
     donebtn_spawnFernP1:addEventListener( "tap", donebtn_spawn_tapFernP1 )
 
@@ -2747,7 +2945,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP1.isVisible = false
         compostButtonHorsetailP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnHorsetailP1:addEventListener( "tap", donebtn_spawn_tapHorsetailP1 )
 
@@ -2805,7 +3003,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP1.isVisible = false
         compostButtonPalmP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnPalmP1:addEventListener( "tap", donebtn_spawn_tapPalmP1 )
 
@@ -2858,7 +3056,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP1.isVisible = false
         compostButtonCycadP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnCycadP1:addEventListener( "tap", donebtn_spawn_tapCycadP1 )
 
@@ -2914,7 +3112,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP1.isVisible = false
         compostButtonTreeFernP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnTreeFernP1:addEventListener( "tap", donebtn_spawn_tapTreeFernP1 )
 
@@ -2965,7 +3163,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnPineP1.isVisible = false
         compostButtonPineP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnPineP1:addEventListener( "tap", donebtn_spawn_tapPineP1 )
 
@@ -3017,7 +3215,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP1.isVisible = false
         compostButtonKaoriP1.isVisible = false
-    
+        P1TapChecker = false 
     end
     donebtn_spawnKaoriP1:addEventListener( "tap", donebtn_spawn_tapKaoriP1 )
 
@@ -3068,7 +3266,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP1.isVisible = false
         compostButtonMagnoliaP1.isVisible = false
-
+        P1TapChecker = false 
     end
     donebtn_spawnMagnoliaP1:addEventListener( "tap", donebtn_spawn_tapMagnoliaP1 )
 
@@ -3128,7 +3326,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP2.isVisible = false
         compostButtonFlaxP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnFlaxP2:addEventListener( "tap", donebtn_spawn_tapFlaxP2 )
 
@@ -3182,7 +3380,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnFernP2.isVisible = false
         compostButtonFernP2.isVisible = false
-    
+        P2TapChecker = false
     end
     donebtn_spawnFernP2:addEventListener( "tap", donebtn_spawn_tapFernP2 )
 
@@ -3236,7 +3434,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP2.isVisible = false
         compostButtonHorsetailP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnHorsetailP2:addEventListener( "tap", donebtn_spawn_tapHorsetailP2 )
 
@@ -3294,7 +3492,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP2.isVisible = false
         compostButtonPalmP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnPalmP2:addEventListener( "tap", donebtn_spawn_tapPalmP2 )
 
@@ -3347,7 +3545,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP2.isVisible = false
         compostButtonCycadP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnCycadP2:addEventListener( "tap", donebtn_spawn_tapCycadP2 )
 
@@ -3403,7 +3601,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP2.isVisible = false
         compostButtonTreeFernP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnTreeFernP2:addEventListener( "tap", donebtn_spawn_tapTreeFernP2 )
 
@@ -3454,7 +3652,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnPineP2.isVisible = false
         compostButtonPineP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnPineP2:addEventListener( "tap", donebtn_spawn_tapPineP2 )
 
@@ -3506,7 +3704,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP2.isVisible = false
         compostButtonKaoriP2.isVisible = false
-    
+        P2TapChecker = false
     end
     donebtn_spawnKaoriP2:addEventListener( "tap", donebtn_spawn_tapKaoriP2 )
 
@@ -3557,7 +3755,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP2.isVisible = false
         compostButtonMagnoliaP2.isVisible = false
-
+        P2TapChecker = false
     end
     donebtn_spawnMagnoliaP2:addEventListener( "tap", donebtn_spawn_tapMagnoliaP2 )
 
@@ -3617,7 +3815,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP3.isVisible = false
         compostButtonFlaxP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnFlaxP3:addEventListener( "tap", donebtn_spawn_tapFlaxP3 )
 
@@ -3671,7 +3869,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnFernP3.isVisible = false
         compostButtonFernP3.isVisible = false
-    
+        P3TapChecker = false
     end
     donebtn_spawnFernP3:addEventListener( "tap", donebtn_spawn_tapFernP3 )
 
@@ -3725,7 +3923,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP3.isVisible = false
         compostButtonHorsetailP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnHorsetailP3:addEventListener( "tap", donebtn_spawn_tapHorsetailP3 )
 
@@ -3783,7 +3981,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP3.isVisible = false
         compostButtonPalmP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnPalmP3:addEventListener( "tap", donebtn_spawn_tapPalmP3 )
 
@@ -3836,7 +4034,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP3.isVisible = false
         compostButtonCycadP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnCycadP3:addEventListener( "tap", donebtn_spawn_tapCycadP3 )
 
@@ -3892,7 +4090,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP3.isVisible = false
         compostButtonTreeFernP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnTreeFernP3:addEventListener( "tap", donebtn_spawn_tapTreeFernP3 )
 
@@ -3943,7 +4141,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnPineP3.isVisible = false
         compostButtonPineP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnPineP3:addEventListener( "tap", donebtn_spawn_tapPineP3 )
 
@@ -3995,7 +4193,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP3.isVisible = false
         compostButtonKaoriP3.isVisible = false
-    
+        P3TapChecker = false
     end
     donebtn_spawnKaoriP3:addEventListener( "tap", donebtn_spawn_tapKaoriP3 )
 
@@ -4046,7 +4244,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP3.isVisible = false
         compostButtonMagnoliaP3.isVisible = false
-
+        P3TapChecker = false
     end
     donebtn_spawnMagnoliaP3:addEventListener( "tap", donebtn_spawn_tapMagnoliaP3 )
 
@@ -4106,7 +4304,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP4.isVisible = false
         compostButtonFlaxP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnFlaxP4:addEventListener( "tap", donebtn_spawn_tapFlaxP4 )
 
@@ -4160,7 +4358,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnFernP4.isVisible = false
         compostButtonFernP4.isVisible = false
-    
+        P4TapChecker = false
     end
     donebtn_spawnFernP4:addEventListener( "tap", donebtn_spawn_tapFernP4 )
 
@@ -4214,7 +4412,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP4.isVisible = false
         compostButtonHorsetailP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnHorsetailP4:addEventListener( "tap", donebtn_spawn_tapHorsetailP4 )
 
@@ -4272,7 +4470,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP4.isVisible = false
         compostButtonPalmP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnPalmP4:addEventListener( "tap", donebtn_spawn_tapPalmP4 )
 
@@ -4325,7 +4523,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP4.isVisible = false
         compostButtonCycadP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnCycadP4:addEventListener( "tap", donebtn_spawn_tapCycadP4 )
 
@@ -4381,7 +4579,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP4.isVisible = false
         compostButtonTreeFernP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnTreeFernP4:addEventListener( "tap", donebtn_spawn_tapTreeFernP4 )
 
@@ -4432,7 +4630,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnPineP4.isVisible = false
         compostButtonPineP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnPineP4:addEventListener( "tap", donebtn_spawn_tapPineP4 )
 
@@ -4484,7 +4682,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP4.isVisible = false
         compostButtonKaoriP4.isVisible = false
-    
+        P4TapChecker = false
     end
     donebtn_spawnKaoriP4:addEventListener( "tap", donebtn_spawn_tapKaoriP4 )
 
@@ -4535,7 +4733,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP4.isVisible = false
         compostButtonMagnoliaP4.isVisible = false
-
+        P4TapChecker = false
     end
     donebtn_spawnMagnoliaP4:addEventListener( "tap", donebtn_spawn_tapMagnoliaP4 )
 
@@ -4554,6 +4752,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP1.isVisible = false
         compostButtonFlaxP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonFlaxP1:addEventListener( "tap", CompostP1Flax )
 
@@ -4565,6 +4764,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnFernP1.isVisible = false
         compostButtonFernP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonFernP1:addEventListener( "tap", CompostP1Fern )
 
@@ -4576,6 +4776,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP1.isVisible = false
         compostButtonHorsetailP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonHorsetailP1:addEventListener( "tap", CompostP1Horsetail )
 
@@ -4587,6 +4788,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP1.isVisible = false
         compostButtonPalmP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonPalmP1:addEventListener( "tap", CompostP1Palm )
 
@@ -4598,6 +4800,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP1.isVisible = false
         compostButtonCycadP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonCycadP1:addEventListener( "tap", CompostP1Cycad )
 
@@ -4609,6 +4812,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP1.isVisible = false
         compostButtonTreeFernP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonTreeFernP1:addEventListener( "tap", CompostP1TreeFern )
 
@@ -4620,6 +4824,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnPineP1.isVisible = false
         compostButtonPineP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonPineP1:addEventListener( "tap", CompostP1Pine )
 
@@ -4631,6 +4836,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP1.isVisible = false
         compostButtonKaoriP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonKaoriP1:addEventListener( "tap", CompostP1Kaori )
 
@@ -4642,6 +4848,7 @@ function scene:create( event )
         transition.to( P1Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP1.isVisible = false
         compostButtonMagnoliaP1.isVisible = false
+        P1TapChecker = false
     end
     compostButtonMagnoliaP1:addEventListener( "tap", CompostP1Magnolia )
 
@@ -4656,6 +4863,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP2.isVisible = false
         compostButtonFlaxP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonFlaxP2:addEventListener( "tap", CompostP2Flax )
 
@@ -4667,6 +4875,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnFernP2.isVisible = false
         compostButtonFernP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonFernP2:addEventListener( "tap", CompostP2Fern )
     
@@ -4678,6 +4887,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP2.isVisible = false
         compostButtonHorsetailP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonHorsetailP2:addEventListener( "tap", CompostP2Horsetail )
 
@@ -4689,6 +4899,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP2.isVisible = false
         compostButtonPalmP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonPalmP2:addEventListener( "tap", CompostP2Palm )
 
@@ -4700,6 +4911,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP2.isVisible = false
         compostButtonCycadP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonCycadP2:addEventListener( "tap", CompostP2Cycad )
 
@@ -4711,6 +4923,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP2.isVisible = false
         compostButtonTreeFernP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonTreeFernP2:addEventListener( "tap", CompostP2TreeFern )
 
@@ -4722,6 +4935,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnPineP2.isVisible = false
         compostButtonPineP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonPineP2:addEventListener( "tap", CompostP2Pine )
 
@@ -4733,6 +4947,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP2.isVisible = false
         compostButtonKaoriP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonKaoriP2:addEventListener( "tap", CompostP2Kaori )
 
@@ -4744,6 +4959,7 @@ function scene:create( event )
         transition.to( P2Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP2.isVisible = false
         compostButtonMagnoliaP2.isVisible = false
+        P2TapChecker = false
     end
     compostButtonMagnoliaP2:addEventListener( "tap", CompostP2Magnolia )
 
@@ -4758,6 +4974,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP3.isVisible = false
         compostButtonFlaxP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonFlaxP3:addEventListener( "tap", CompostP3Flax )
 
@@ -4769,6 +4986,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnFernP3.isVisible = false
         compostButtonFernP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonFernP3:addEventListener( "tap", CompostP3Fern )
     
@@ -4780,6 +4998,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP3.isVisible = false
         compostButtonHorsetailP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonHorsetailP3:addEventListener( "tap", CompostP3Horsetail )
 
@@ -4791,6 +5010,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP3.isVisible = false
         compostButtonPalmP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonPalmP3:addEventListener( "tap", CompostP3Palm )
 
@@ -4802,6 +5022,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP3.isVisible = false
         compostButtonCycadP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonCycadP3:addEventListener( "tap", CompostP3Cycad )
 
@@ -4813,6 +5034,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP3.isVisible = false
         compostButtonTreeFernP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonTreeFernP3:addEventListener( "tap", CompostP3TreeFern )
 
@@ -4824,6 +5046,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnPineP3.isVisible = false
         compostButtonPineP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonPineP3:addEventListener( "tap", CompostP3Pine )
 
@@ -4835,6 +5058,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP3.isVisible = false
         compostButtonKaoriP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonKaoriP3:addEventListener( "tap", CompostP3Kaori )
 
@@ -4846,6 +5070,7 @@ function scene:create( event )
         transition.to( P3Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP3.isVisible = false
         compostButtonMagnoliaP3.isVisible = false
+        P3TapChecker = false
     end
     compostButtonMagnoliaP3:addEventListener( "tap", CompostP3Magnolia )
 
@@ -4860,6 +5085,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnFlaxP4.isVisible = false
         compostButtonFlaxP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonFlaxP4:addEventListener( "tap", CompostP4Flax )
 
@@ -4871,6 +5097,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnFernP4.isVisible = false
         compostButtonFernP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonFernP4:addEventListener( "tap", CompostP4Fern )
     
@@ -4882,6 +5109,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnHorsetailP4.isVisible = false
         compostButtonHorsetailP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonHorsetailP4:addEventListener( "tap", CompostP4Horsetail )
 
@@ -4893,6 +5121,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnPalmP4.isVisible = false
         compostButtonPalmP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonPalmP4:addEventListener( "tap", CompostP4Palm )
 
@@ -4904,6 +5133,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnCycadP4.isVisible = false
         compostButtonCycadP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonCycadP4:addEventListener( "tap", CompostP4Cycad )
 
@@ -4915,6 +5145,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnTreeFernP4.isVisible = false
         compostButtonTreeFernP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonTreeFernP4:addEventListener( "tap", CompostP4TreeFern )
 
@@ -4926,6 +5157,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnPineP4.isVisible = false
         compostButtonPineP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonPineP4:addEventListener( "tap", CompostP4Pine )
 
@@ -4937,6 +5169,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnKaoriP4.isVisible = false
         compostButtonKaoriP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonKaoriP4:addEventListener( "tap", CompostP4Kaori )
 
@@ -4948,6 +5181,7 @@ function scene:create( event )
         transition.to( P4Select, { time=500, y=(-3) } )
         donebtn_spawnMagnoliaP4.isVisible = false
         compostButtonMagnoliaP4.isVisible = false
+        P4TapChecker = false
     end
     compostButtonMagnoliaP4:addEventListener( "tap", CompostP4Magnolia )
 

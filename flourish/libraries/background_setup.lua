@@ -16,7 +16,7 @@ function background()
 
  local backgroundLakeGrass = display.newImageRect( "images/backgroundAssets/ground/lakegrass.png", display.contentWidth, display.contentHeight )
  backgroundLakeGrass.x = display.contentCenterX
- backgroundLakeGrass.y = display.contentCenterY-160
+ backgroundLakeGrass.y = display.contentCenterY-115
 
  local backgroundGrassBack = display.newImageRect( "images/backgroundAssets/ground/grassbackground.png", display.contentWidth, display.contentHeight )
  backgroundGrassBack.x = display.contentCenterX
@@ -35,9 +35,9 @@ function background()
  LakeImageSheet1 = graphics.newImageSheet("images/backgroundAssets/ground/lakesprite.png", LakesheetData1)
  sequenceLakeData = {{name="Lake", sheet=LakeImageSheet1, start=1, count=5, time=1000}}
  Lake = display.newSprite(LakeImageSheet1, sequenceLakeData)
- Lake.x = display.contentCenterX
- Lake.y = display.contentCenterY-180
- Lake:scale(2, 2)
+ Lake.x = display.contentCenterX-150
+ Lake.y = display.contentCenterY-380
+ Lake:scale(2.2, 2.9)
  Lake:play()
 
   -- Sun set up
