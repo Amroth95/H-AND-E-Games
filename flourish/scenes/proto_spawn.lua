@@ -101,7 +101,6 @@ function scene:create( event )
     signs ()
     sceneGroup:insert( sign1 )
     sceneGroup:insert( sign2 )
-    SignMove1 ()
     grass ()
     sceneGroup:insert( backgroundGrassFront )
 
@@ -675,7 +674,6 @@ function scene:create( event )
       local minutes = math.floor( secondsLeft / 300 )
       local seconds = secondsLeft % 300
 
-      signcheck ()
       timeup ()
 
     end
@@ -687,20 +685,6 @@ function scene:create( event )
       timer.cancel(countDownTimer)
       secondsLeft = 300
       countDownTimer = timer.performWithDelay( 1000, updateTime, secondsLeft )
-    end
-
-    -- Brings back instruction signs if nothing happens for a certain amount of time
-    function signcheck ()
-        if secondsLeft == 150 then
-            transition.to( sign1, { time=1000, x=display.contentCenterX-1790} )
-            transition.to( sign2, { time=1000, x=display.contentCenterX+1770} )
-            SignMove1 ()
-        end
-        if secondsLeft == 45 then
-            transition.to( sign1, { time=1000, x=display.contentCenterX-1790} )
-            transition.to( sign2, { time=1000, x=display.contentCenterX+1770} )
-            SignMove1 ()
-        end
     end
 
     -- Activates splashscreen transition if time is up
@@ -720,7 +704,6 @@ function scene:create( event )
             timer.cancel( ButterflyClocktimer )
             timer.cancel( RainbowClocktimer )
             timer.cancel( RingSecondstimer )
-            timer.cancel( SignMove1timer )
             Dino = nil
             P1Select = nil
             P2Select = nil
@@ -847,6 +830,8 @@ function scene:create( event )
         P3Select:toFront(sceneGroup)
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
+        sign1:toFront(sceneGroup)
+        sign2:toFront(sceneGroup)
         print("New Ecosystem Ready")
     end
 
@@ -934,6 +919,8 @@ function scene:create( event )
         P3Select:toFront(sceneGroup)
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
+        sign1:toFront(sceneGroup)
+        sign2:toFront(sceneGroup)
         print("New Ecosystem Ready")
     end
 
@@ -1021,6 +1008,8 @@ function scene:create( event )
         P3Select:toFront(sceneGroup)
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
+        sign1:toFront(sceneGroup)
+        sign2:toFront(sceneGroup)
         print("New Ecosystem Ready")
     end
 
@@ -1107,6 +1096,8 @@ function scene:create( event )
         P3Select:toFront(sceneGroup)
         P4Colouring:toFront(sceneGroup)
         P4Select:toFront(sceneGroup)
+        sign1:toFront(sceneGroup)
+        sign2:toFront(sceneGroup)
         print("New Ecosystem Ready")
     end
 

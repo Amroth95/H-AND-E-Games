@@ -1,19 +1,23 @@
 
 
 function birds ()
-    BirdsheetData1 = { width =282.476190476, height =1399, numFrames=21, sheetContentWidth=5932, sheetContentHeight=1399 } 
+    BirdsheetData1 = { width =348.4, height =1399, numFrames=17, sheetContentWidth=5932, sheetContentHeight=1399 } 
     BirdImageSheet1 = graphics.newImageSheet("images/ambienceAssets/Bird fix.png", BirdsheetData1)
 
-    sequenceBirdData = {{name="normalFly", sheet=BirdImageSheet1, start=1, count=21, time=750}}
+    sequenceBirdData = {
+    {name="normalFly1", sheet=BirdImageSheet1, start=1, count=17, time=750},
+    {name="normalFly2", sheet=BirdImageSheet1, start=1, count=17, time=500}
+    }
 
     Bird = display.newSprite(BirdImageSheet1, sequenceBirdData)
     Bird.x = 7500 ; Bird.y = 620
-    Bird:scale(1.6, 0.6)
+    Bird:scale(1.3, 1)
     Bird:play()
 
     Bird2 = display.newSprite(BirdImageSheet1, sequenceBirdData)
+    Bird2:setSequence( "normalFly2" )
     Bird2.x = 7600 ; Bird2.y = 420
-    Bird2:scale(1.4, 0.4)
+    Bird2:scale(1.1, 0.8)
     Bird2:play()
 
     transition.to( Bird, { time=5000, x=-300 } )

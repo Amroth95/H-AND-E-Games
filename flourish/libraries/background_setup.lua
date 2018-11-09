@@ -14,10 +14,6 @@ function background()
  backgroundDirt.x = display.contentCenterX
  backgroundDirt.y = display.contentCenterY
 
- local backgroundLakeGrass = display.newImageRect( "images/backgroundAssets/ground/lakegrass.png", display.contentWidth, display.contentHeight )
- backgroundLakeGrass.x = display.contentCenterX
- backgroundLakeGrass.y = display.contentCenterY-115
-
  local backgroundGrassBack = display.newImageRect( "images/backgroundAssets/ground/grassbackground.png", display.contentWidth, display.contentHeight )
  backgroundGrassBack.x = display.contentCenterX
  backgroundGrassBack.y = display.contentCenterY
@@ -51,7 +47,6 @@ function background()
   Sun:play()
 
  -- Background asset layering
- backgroundLakeGrass:toBack()
  Lake:toBack()
  Sun:toBack()
  backgroundGrassOverlay:toBack()
@@ -98,34 +93,6 @@ function signs ()
  sign1:rotate( 35 )
  sign2 = createImage("images/backgroundAssets/sign post right.png", 650, 650, display.contentCenterX+1770, display.contentCenterY+100)
  sign2:rotate( -35 )
-end
-
-function SignMove1 ()
-
-    local SignMove1Seconds = 20
-
-    local function SignMove1Time( event )
-  
-     -- Decrement the number of seconds
-     SignMove1Seconds = SignMove1Seconds - 1
-  
-     -- Time is tracked in seconds; convert it to minutes and seconds
-     local minutes = math.floor( SignMove1Seconds / 20 )
-     local seconds = SignMove1Seconds % 20
-  
-     SignMove1timeup ()
-  
-    end
-  
-    SignMove1timer = timer.performWithDelay( 1000, SignMove1Time, SignMove1Seconds )
-
-    function SignMove1timeup ()
-        if SignMove1Seconds <= 0 then
-         transition.to( sign1, { time=1000, x=display.contentCenterX-2390} )
-         transition.to( sign2, { time=1000, x=display.contentCenterX+2370} )
-         timer.cancel( SignMove1timer )
-        end
-    end
 end
 
 
